@@ -1,0 +1,44 @@
+.accounting-form-wrapper{
+    display: grid;
+    gap: 8px;
+}
+.accounting-form-wrapper label{
+    font-size: 16px;
+    font-weight: 500;
+}
+.deposit-container input, .deposit-container select, .deposit-container textarea{
+    outline: none;
+    border: solid 1px #ddd;
+    border-radius: 12px;
+    padding: 5px;
+}
+.deposit-container input, .deposit-container select{
+    height: 2.5rem;
+}
+.deposit-container select{
+    background-color: #fff;
+}
+.account-info span, .account-info p, .account-info label, .account-info select{
+ font-size: 14px;
+}
+.accounting-form-container{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    row-gap: 1rem;
+    column-gap: 2rem;
+}
+.discourse span{
+color: #666666;
+font-size: 14px;
+}
+.discourse p{
+    color: #333333;
+font-size: 14px !important;
+
+}
+
+@media screen and (max-width: 768px) {
+    .accounting-form-container{
+        grid-template-columns: 1fr;
+    }
+}

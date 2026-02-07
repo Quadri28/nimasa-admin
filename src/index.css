@@ -1,0 +1,74 @@
+*{
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  text-decoration: none;
+}
+
+ /* body{
+  overflow-x: hidden;
+  scroll-behavior: smooth;
+} */
+html, body {
+  width: 100%;
+  overflow-x: clip;
+}
+.general-ledger{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+@media screen and (max-width: 768px) {
+  .general-ledger{
+    grid-template-columns: 1fr;
+  }
+}
+ .member{
+  background-color: var(--custom-color);
+  color: #fff;
+  border-radius: 2rem;
+  padding: 8px 15px;
+ }
+ .second-btn{
+  background-color: #e6f0ff;
+  color: var(--custom-color);
+  border-radius: 2rem;
+  padding: 8px 15px;
+ 
+ }
+.loan-modal {
+  overflow: scroll !important;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  height: 70%;
+  width: 65%;
+}
+:root{
+  --custom-color: #007D53;
+}
+.rw-widget-picker {
+  display: grid;
+  overflow: hidden;
+  min-height: 50px;
+  background-color: #f5f5f5;
+  border: #f5f5f5 0px solid;
+  border-radius: 13px;
+}
+label{
+  font-size: 14px;
+  color: #666;
+}
+.dashboard-template-container{
+    height: calc(100vh - 80px);
+}
+@font-face {
+  font-family: 'Aeonik';
+  src: local(Aeonik), url(./fonts/Aeonik-Bold.otf) format('truetype');
+}
+@font-face {
+  font-family: 'Aeonik-md';
+  src: local(Aeonik), url(./fonts/Aeonik-Medium.otf) format('truetype');
+}

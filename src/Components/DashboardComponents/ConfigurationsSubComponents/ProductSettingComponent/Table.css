@@ -1,0 +1,43 @@
+#customers, #admin {
+    border-collapse: collapse;
+    width: 100%;
+  }
+  #customers tr, #admin tr{
+    border-radius: 3px 3px 0 0;
+  } 
+  #customers td, #customers th, #admin td, #admin th {
+    border: 1px solid #ddd;
+  }
+    
+  #customers tr:hover {background-color: #e5e5e5;}
+
+  #customers th, #admin th {
+    font-weight: 500;
+    text-align: left;
+    font-size: 14px;
+    padding-block: 1rem;
+    color: #333333;
+  }
+  #customers th{
+    background-color: #F5F9FF;
+  }
+  #admin th{
+    background-color: #FEF3E6;
+  }
+
+#customers td, #admin td{
+  font-size: 14px !important;
+  color: #333333;
+}
+  #deductions td, #deductions th{
+    border: 1px solid #ddd;
+    font-size: 12px;
+  }
+  
+  #deductions tr:hover {background-color: #ddd;}
+  
+  #deductions th {
+    font-weight: 500;
+    text-align: left;
+    background-color: #F5F9FF;
+  }

@@ -1,0 +1,22 @@
+.election-links a{
+    text-decoration: none;
+    color: #4D4D4D;
+}
+
+.election-selector{
+    cursor: pointer;
+    color: #4D4D4D;
+}
+.stat{
+    display: none;
+  }
+  .status-icon:hover{
+    .stat{
+      position: absolute;
+      top:-5px;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      display: block !important;
+      font-size: 10px;
+    }
+  }

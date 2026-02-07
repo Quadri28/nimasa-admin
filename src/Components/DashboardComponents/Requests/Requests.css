@@ -1,0 +1,43 @@
+.status-wrapper{
+    background-color: #F2F2F2;
+    border-radius: 2rem;
+    outline: none;
+    padding-block: 0;
+    padding: 10px;
+    height: 25px;
+    width: fit-content;
+}
+.status-wrapper hr{
+    width: 10px;
+    height: 10px;
+    background-color: #000;
+    border-radius: 50%;
+    padding-block: 0;
+
+}
+.status-wrapper span{
+    padding-block: 0;
+    font-size: 12px;
+}
+.cta-wrapper >form .reject{
+    color:#DC2626;
+    border-radius: 2rem;
+    font-size: 12px;
+    background-color: #F6DADA;
+}
+.cta-wrapper >form .approved{
+    background-color: #D8EDE0;
+    border-radius: 2rem;
+    color: #333333;
+    font-size: 12px;
+}
+
+.request-table thead th{
+font-size: 15px;
+text-align: center;
+padding: 3px 7px;
+}
+.request-table tbody td{
+    font-size: 14px;
+    padding: 7px;
+}

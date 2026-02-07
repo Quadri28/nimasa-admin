@@ -1,0 +1,90 @@
+.text-success{
+    font-size: 10px;
+}
+.small-card-title{
+    font-size: 12px;
+    color:#999999;
+    font-weight: 500;
+}
+.small-card-container{
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+}
+.small-cards{
+    background-color: #fff !important;
+    border: solid 1px #f4f4f4;
+}
+.small-cards:hover{
+    border: solid 1px var(--custom-color)!important;
+    background-color: #E6F0FF !important;
+    color: #033E96;
+}
+
+.doughnut-container{
+    display: grid;
+    grid-template-columns: 1fr 1.5fr;
+    gap: 1rem;
+}
+.product-overview-container{
+    height: fit-content;
+}
+.member-overview-container img{
+    height: 280px !important;
+}
+.financial-overview div select{
+    padding: 9px 12px;
+}
+
+a.mng-btn {
+background-color: #033E96;
+ color: #fff; 
+ border-radius:1rem;
+ font-size:12px
+}
+.mng-btn:hover{
+    background-color: #033E96;
+    color: #fff;
+}
+.financial-overview div select option{
+    background-color: #fff;
+    font-size: 12px;
+}
+
+@media screen and (max-width:1024px) {
+    .doughnut-container {
+        grid-template-columns: .9fr;
+        justify-content: center;
+    }
+    .financial-overview{
+        width: 90%;
+        margin-inline: auto;
+    }
+    .small-card-container{
+        grid-template-columns: repeat(3, 230px);
+        justify-content: center;
+        padding: 1rem 2rem;
+    }
+}
+@media screen and (max-width:786px) {
+    .small-card-container{
+        grid-template-columns: repeat(3, 1fr);
+        justify-content: center;
+        padding: 1rem;
+    }
+    .doughnut-container{
+        grid-template-columns: 1fr;
+    }
+    .financial-overview{
+        width: 100%
+    }
+}
+
+@media screen and (max-width:480px) {
+    .small-card-container{
+        grid-template-columns: 1fr 1fr;
+        padding: 0;
+    }
+    .overview-title{
+        font-size: 16px;
+    }    
+}

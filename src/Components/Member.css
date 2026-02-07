@@ -1,0 +1,25 @@
+.sign-link{
+    color: #000;
+    font-size:15px;
+}
+.dont{
+    font-size: 12px;
+}
+
+@media screen and (max-width: 768px) {
+    .sign-link{
+        font-size: 13px;
+    }
+    .dont{
+        font-size: 10px;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .sign-link{
+        font-size: 11px;
+    }
+    .dont{
+        font-size: 9px;
+    }
+}

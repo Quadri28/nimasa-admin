@@ -1,0 +1,38 @@
+.active-link-container a{
+    text-decoration: none;
+    color: #4D4D4D;
+}
+
+.select-member-container select{
+    border-radius: 10px;
+    height: 3rem;
+    padding: 10px;
+    border: none;
+    background-color: #fafafa;
+}
+.select-member-container label{
+    font-weight: 500;
+}
+.configuration-modal{
+    height: 70%;
+    width: 50%;
+    position: absolute;
+    top: 20%;
+    left: 50%;
+    padding: 1rem;
+    border-radius: 1rem;
+    transform: translateX(-50%);
+    overflow-y:scroll !important
+}
+.share-report-wrapper select, .share-report-wrapper input{
+    border: none;
+    outline: none;
+    background-color: #F7F7F7;   
+    padding: 15px 10px;
+    border-radius: 12px;
+}
+@media screen and (max-width:600px) {
+    .configuration-modal{
+        width: 90%;
+    }
+}

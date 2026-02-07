@@ -1,0 +1,11 @@
+.account-creation-wrapper label{
+    font-weight: 500;
+    font-size: 18;
+}
+.account-creation-wrapper input, .account-creation-wrapper select, .account-creation-wrapper textarea{
+    outline: none;
+    background-color:  #f7f4fa;
+    border-radius: 1.5rem;
+    border: none;
+    height: 3rem;
+}

@@ -1,0 +1,37 @@
+.report-links a{
+    text-decoration: none;
+    color: #4D4D4D;
+    cursor: pointer;
+}
+
+.communication-report{
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 10px;
+}
+.communication-report .card{
+    background-color: #fafafa;
+    border-radius: 15px;
+}
+.communication-report .card p{
+    color: #999999;
+    font-weight: 500;
+    font-size: 12px;
+}
+.communication-report .card h4{
+    font-size: 18px;
+    font-weight: 500;
+}
+.communication-report .card:hover{
+    background-color: #D2EDF9;
+}
+.communication-report .card:hover h4{
+    color: #033E96;
+}
+
+.clicked{
+    display: none;
+}
+.not-clicked{
+    display: flex;
+}

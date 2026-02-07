@@ -1,0 +1,101 @@
+.selectors-wrapper{
+    display: flex;
+    gap: 3rem;
+}
+
+.selectors-wrapper a{
+    text-decoration: none;
+    color: #4D4D4D;
+    font-family: 'General sans';
+    padding-inline: 10px;
+}
+.active-selector{
+    color: #0452C8 !important;
+    position: relative;
+    font-weight: 400;
+    cursor: pointer;
+    padding-inline: 10px;
+    width: fit-content;
+}
+.pub-btn{
+    background-color: #0452c8 !important;
+    color: #fff !important;
+    padding: 8px 10px !important;
+    border-radius: 1.5rem !important;
+}
+.globe-btn{
+    background-color: #F79F3B !important;
+    color: #fff !important;
+    padding: 8px 10px !important;
+    border-radius: 1.5rem !important;
+}
+.active-selector::before{
+    content: '';
+    width: 100%;
+    background-color: #0452C8;
+    height: 1px;
+    position: absolute;
+    left: 0;
+    top: 25px;
+}
+.inner-selector{
+    width:40%
+}
+.btn-upload-container{
+    display: flex;
+    gap:10px;
+}
+.form-header{
+    display: flex;
+}
+.cooperative-info-form-wrapper {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    row-gap: .5rem;
+    align-items: start;
+    column-gap: 1.5rem;
+    margin-top: 2rem;
+}
+.cooperative-info-form-wrapper input, .cooperative-info-form-wrapper select, .cooperative-info-form-wrapper textarea{
+    padding: 15px 10px;
+    outline: none;
+    width: 100%;
+    background-color: #f5f5f5;
+    border-radius: 10px;
+    border: none;
+}
+
+@media screen and (max-width: 768px) {
+    .inner-selector{
+        width: 80%;
+    }
+    
+}
+
+
+@media screen and (max-width:480px) {
+    .selectors-wrapper span{
+        gap: 10px;
+    }
+    .config-header{
+        font-size: 14px;
+    }
+    .selectors-wrapper span{
+        font-size: 12px;
+    }
+    .inner-selector{
+        width: 100%;
+    }
+    .form-header{
+        display: block;
+    }
+    .btn-upload-container{
+        margin-top: 1rem;
+    }
+    .coop-title-wrapper b, .coop-title-wrapper span{
+        font-size: 12px;
+    }
+    .cooperative-info-form-wrapper{
+        grid-template-columns: 1fr;
+    }
+}

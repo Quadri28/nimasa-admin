@@ -1,0 +1,16 @@
+.add-new-btn{
+    background-color: #0452C8;
+    color: #fff;
+    border-radius: 1rem;
+    font-size: 14px;
+}
+.add-new-btn:hover{
+    background-color: #0452C8;
+    color: #fff;
+}
+
+@media screen and (max-width: 600px) {
+    .add-new-btn{
+        margin-top: 1rem;
+    }
+}

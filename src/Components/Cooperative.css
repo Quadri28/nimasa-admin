@@ -1,0 +1,87 @@
+.cooperative-form-container, .reset-password{
+    width: 33%;
+    border-radius: 1.5rem;
+}
+.cooperative-signup-form-container{
+    width: 33%;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
+.cooperative-form-container, .reset-password{
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
+.inputs-container{
+    margin-bottom: 10px;
+}
+.inputs-container label{
+    font-size: 13px;
+    font-weight: 500;
+}
+
+.inputs-container input{
+    border-radius: 10px;
+}
+
+.reset-password-container label{
+    font-size: 14px;
+    color: #4d4d4d;
+    font-weight: 400;
+}
+.reset-password-container input{
+    border-radius: 10px;
+    padding: 12px 10px;
+    font-size: 14px;
+    border: none;
+    background-color: #f7f7f7;
+}
+.cooperative-form-container form{
+    border-radius: 1.3rem;
+    padding: 30px;
+}
+input:-webkit-autofill,
+textarea:-webkit-autofill,
+select:-webkit-autofill {
+  -webkit-box-shadow: 0 0 0 30px #F5F5F5 inset !important;
+  -webkit-text-fill-color: #000 !important; 
+}
+.form-header-container{
+background-color: #F2F2F2;
+border-top-right-radius: 1rem;
+border-top-left-radius: 1rem;
+padding: .7rem;
+}
+.form-check-label, .form-check{
+    font-size: 12px;
+}
+.great{
+    font-size: 15px;
+}
+.setting-modal{
+    width: 33%;
+    top: 50%;
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border-radius: 20px;
+    border: solid .5px #f2f2f2;
+}
+
+@media screen and (max-width: 789px) {
+    .cooperative-form-container, .reset-password, .cooperative-signup-form-container, .setting-modal{
+        width:75% !important;
+    }
+}
+
+@media screen and (max-width: 600px) {
+    .cooperative-form-container, .reset-password, .cooperative-signup-form-container, .setting-modal{
+        width:90% !important
+    }
+    .great{
+        font-size: 12px;
+    }
+}

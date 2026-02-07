@@ -1,0 +1,11 @@
+.search-input{
+    outline: none;
+    width: 100%;
+    padding: 10px;
+    border-radius: 12px;
+    border: solid 1px #f4f4f4;
+    background-color: #fafafa;
+}
+.focused{
+    bottom: 1rem;
+}

@@ -1,0 +1,40 @@
+.item-reg-wrapper{
+    display: grid;
+    grid-template-columns: 380px 380px;
+    gap: 10px;
+    justify-content: space-between;
+}
+.item-reg-wrapper label{
+    font-size: 14px;
+    font-weight: 600;
+}
+.item-reg-wrapper input, .item-reg-wrapper select{
+    border-radius: 10px;
+    padding: 5px 8px;
+    outline: none;
+    border: solid 1px #ddd;
+    background-color: #fafafa;
+
+}
+
+.item-register-container{
+    display: grid;
+    grid-template-columns: 360px 360px;
+    justify-content: center;
+    column-gap: 1.5rem;
+    row-gap: 1rem;
+    input, select{
+        height: 2.5rem;
+        background-color: #fafafa;
+        border: solid .3px #ddd;
+        border-radius: 12px;
+        padding: 3px 10px;
+        outline: var(--custom-color) !important;
+    }
+}
+@media screen and (max-width: 780px) {
+    .item-reg-wrapper,  .item-register-container{
+        grid-template-columns: 280px;
+   
+    }
+}

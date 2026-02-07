@@ -1,0 +1,37 @@
+.cooperative-container{
+background-color: #fdfdfd;
+}
+
+.sign-container h2{
+    font-weight: 700;
+    font-size: 35px;
+    line-height: 40px;
+    font-family: Aeonik, serif;
+}
+.sign-container p{
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 22px;
+    color: #4d4d4d;
+}
+.cooperative-container label, .cooperative-container span{
+    font-size: 14px;
+}
+.sign-form{
+    width: 40%;
+    border-radius: 1rem;
+}
+.cooperative-choice p{
+    cursor: pointer;
+}
+
+
+@media screen and (max-width:789px) {
+    .sign-form{
+        width: 100%;
+    }
+    .sign-container h2{
+        font-size: 30px;
+        line-height: 35px;
+    }
+}

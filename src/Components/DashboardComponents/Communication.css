@@ -1,0 +1,22 @@
+.selector-container{
+    margin: 2rem 0;
+}
+.selector-container a{
+    color: #4D4D4D;
+    text-decoration: none;
+    padding-inline: 10px;
+}
+.subscribers{
+    width:max-content;
+}
+.table-responsive, .table{
+    border-radius: 8px 8px 0 0;
+}
+.subscribers:hover{
+    background-color: #D2EDF9 !important;
+    color: #033E96;
+}
+.sms:hover{
+    background-color: #D2EDF9 !important;
+    color: #033E96;
+}

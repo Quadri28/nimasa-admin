@@ -1,0 +1,89 @@
+.hero{
+    background: linear-gradient(180deg, #E8F1FF 0%, #FAF9FF 100%);
+    padding: 2rem 1rem 0 ;
+}
+.hero-white{
+    border-radius: 2rem;
+    margin-top: 1rem;
+    width: max-content;
+    text-align: center;
+    margin: 0 auto;
+    font-weight: 400;
+    font-size: 16px;
+    padding: 8px 10px !important;
+}
+.inner-coming{
+    background-color: #D2EDF9;
+    padding: 4px 10px;
+    border-radius: 1.6rem;
+    font-size: 14px;
+}
+
+.new-look{
+    margin-left: 8px;
+}
+.simplify{
+    background: #5F27FF;
+    background-image: linear-gradient(271.37deg, #5F27FF 1.17%, #FF1FC0 95.9%),
+     linear-gradient(269.55deg, #5F27FF 44.95%, #FF1FC0 75.74%);
+     -webkit-background-clip: text;
+    -moz-background-clip: text;
+    -webkit-text-fill-color: transparent; 
+    -moz-text-fill-color: transparent;
+    font-family: Aeonik, serif;
+}
+
+.hero-heading{
+    font-size: 45px;
+    line-height: 55px;
+    margin-top: 1rem;
+    font-weight: 700;
+    font-family: Aeonik, sans-serif;
+}
+.hero-para{
+    font-size: 17px;
+    margin-top: 1rem;
+    font-weight: 400;
+    width: 60%;
+}
+
+.community-btn{
+    background-color: #0452C8;
+    color: #fff;
+    font-size: 15px;
+    font-weight: 400;
+    border-radius: 18px;
+}
+.community-btn:hover{
+    background-color:#2a078b;
+    color: #fff;
+}
+
+
+@media screen and (max-width:768px) {
+    .hero-para{
+        width: 90%;
+    }
+    .inner-coming{
+        padding: 3px 7px;
+        font-size: 10px;
+    }
+    .hero-white{
+        font-size: 13px;
+    }
+}
+
+
+@media screen and (max-width: 600px) {
+    .hero-white{
+        font-size: 11px;
+    }
+    .hero-heading{
+        font-size: 26px;
+        line-height: 34px;
+    }
+    .hero-para{
+        width: 100%;
+        font-size: 15px;
+    }
+}

@@ -1,0 +1,129 @@
+.search-bar{
+    width: 70%;
+    height: 3rem;
+    border: none;
+    border-radius: 1rem;
+    outline: none;
+    padding: 10px;
+    background-color: #FAFAFA;
+}
+.admin-nav{
+    width: 100% ;
+    position: sticky;
+    top:0;
+    z-index: 999;
+    height: 80px;
+}
+
+.toggle-icon{
+    display: none;
+}
+.nav-icon{
+    font-size: 20px;
+}
+.nav-drop{
+    font-size: 10px;
+    position: relative;
+    cursor: pointer;
+}
+.drop-down{
+    position: absolute;
+    top: 3.5rem;
+    right: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding-block: 1rem;
+}
+.drop-down a{
+    text-decoration: none;
+    color: #4D4D4D;
+    font-size: 13px;
+}
+.show-button{
+    background-color: #F6DADA;
+    color: #DC2626;
+    width: 100%;
+    font-size: 14px;
+    font-weight: 400;
+}
+.show-button:hover{
+    background-color: #F6DADA;
+    color: #DC2626;   
+}
+.no-show{
+    display: none;
+    position: relative;
+}
+.icon-container{
+    display: flex;
+    gap: 2rem;
+}
+.profile-img{
+    height: 2rem;
+    width: 2rem;
+    float: left;
+    border-radius: 50%;
+}
+.bell{
+    cursor: pointer;
+    display: inline-block;
+}
+.badge{
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    background-color: red;
+    color: white;
+    border-radius: 50%;
+    padding: 5px;
+    font-size: 12px;
+}
+.notification-dropdown{
+    position: absolute !important;
+    top: 110%;
+    right: 0;
+    background-color: white;
+    color: black;
+    width: 320px;
+    /* padding-inline: 15px; */
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    border-radius: 5px;
+    z-index: 1000;
+    overflow-y: scroll;
+    height: 90vh;
+}
+
+@media screen and (max-width: 768px) {
+    .search-bar{
+        width: 90%;
+        height: 2rem;
+        border-radius: .7rem;
+    }
+    .toggle-icon{
+        display: block;
+        cursor: pointer;
+    }
+    .icon-container{
+        gap: 1rem;
+    }
+}
+@media screen and (max-width: 480px) {
+    .search-bar{
+        display: none;
+    }
+   .notification-dropdown{
+    right: -700%;
+    transform: translate(50%);
+   }
+    .nav-icon{
+        font-size: 16px;
+    }
+    .icon-container{
+        gap: 10px;
+    }
+    .profile-img{
+        width: 2rem;
+        height: 2rem;
+    }
+}

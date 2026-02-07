@@ -1,0 +1,42 @@
+.investment-cards span{
+    font-size: 14px;
+    font-weight: 500;
+    color: #999999;
+}
+.investment-cards h4{
+    font-size: 17px;
+    font-weight: 500;
+    margin-top: 1rem;
+}
+.investment-card-container div{
+    background-color: #FAFAFA;
+    border: solid 1px #E6E6E6;
+    outline: none;
+}
+.investment-card-container div:hover{
+    color: #4025c8 !important;
+    background-color: #D2EDF9;
+}
+
+.investment-cards-container{
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;
+}
+
+@media screen and (max-width:900px) {
+    .investment-cards-container{
+        grid-template-columns: 1fr 1fr 1fr;
+    }
+}
+@media screen and (max-width:768px) {
+    .investment-cards-container{
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+@media screen and (max-width:480px) {
+    .investment-cards-container{
+        grid-template-columns: 1fr;
+    }
+}
