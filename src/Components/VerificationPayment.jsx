@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Link, useLocation } from 'react-router-dom';
-import Logo from '../assets/logo.png'
-import Union from '../assets/Union.png'
+import Logo from '../assets/Logo.png'
 import axios from './axios';
 import { toast } from 'react-toastify';
 
