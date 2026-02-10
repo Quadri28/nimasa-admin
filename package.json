@@ -10,6 +10,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@ckeditor/ckeditor5-build-classic": "^41.4.2",
+    "@ckeditor/ckeditor5-react": "^11.0.1",
     "@ramonak/react-progress-bar": "^5.4.0",
     "@react-pdf/renderer": "^4.3.2",
     "@splidejs/react-splide": "^0.7.12",
@@ -35,7 +37,6 @@
     "react-loader-spinner": "^8.0.2",
     "react-modal": "^3.16.3",
     "react-number-format": "^5.4.4",
-    "react-quill": "^2.0.0-beta.4",
     "react-router-dom": "^7.13.0",
     "react-table": "7.8",
     "react-toastify": "^11.0.5",

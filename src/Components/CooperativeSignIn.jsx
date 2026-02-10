@@ -176,9 +176,8 @@ const CooperativeSignIn = () => {
               {error && (
                 <p className="text-danger text-center">{error}</p>
               )}
-
               <div className="inputs-container">
-                <label>User ID *</label>
+                <label>User ID <sup className="text-danger">*</sup></label>
                 <Field
                   type="text"
                   name="userId"
@@ -191,9 +190,8 @@ const CooperativeSignIn = () => {
                 />
                 <ErrorMessage name="userId" component={ErrorText} />
               </div>
-
               <div className="inputs-container">
-                <label>Password *</label>
+                <label>Password  <sup className="text-danger">*</sup></label>
                 <Field
                   type="password"
                   name="password"
