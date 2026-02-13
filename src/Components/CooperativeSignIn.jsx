@@ -152,7 +152,7 @@ const CooperativeSignIn = () => {
     >
       <div className="container pt-2 mb-5">
         <Link to="/">
-          <img src={Logo} alt="Logo" className="img-fluid" />
+          <img src={Logo} alt="Logo" className="img-fluid" style={{width:'100px'}}/>
         </Link>
       </div>
       <div className="cooperative-form-container mt-3">
@@ -215,10 +215,9 @@ const CooperativeSignIn = () => {
                       setFieldValue("agreement", !values.agreement)
                     }
                   />{" "}
-                  Remember my username
+                  Remember me
                 </label>
               </div>
-
               <div className="d-flex justify-content-center mt-2">
                 <ReCAPTCHA
                   sitekey={import.meta.env.VITE_SITE_KEY}

@@ -141,7 +141,7 @@ const resendAccess=(id)=>{
             <div className="d-flex justify-content-around gap-2 align-items-center px-3">
               <div className="status-icon position-relative">
                 <span className="stat">Edit member</span>
-                <Link className="fs-6" to={type === "INDIVIDUAL" ? `edit-member/${id}` : `edit-corporate-member/${id}`}>
+                <Link className="fs-6 text-dark" to={type === "INDIVIDUAL" ? `edit-member/${id}` : `edit-corporate-member/${id}`}>
                   <GrEdit />
                 </Link>
               </div>
