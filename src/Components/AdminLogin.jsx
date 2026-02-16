@@ -14,7 +14,7 @@ import Modal from "react-modal";
 
 const REMEMBERED_USER_KEY = "remembered-userId";
 
-const CooperativeSignIn = () => {
+const AdminLogin = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [open, setOpen] = useState(false);
@@ -38,6 +38,7 @@ const CooperativeSignIn = () => {
   };
 
   const validationSchema = Yup.object({
+    nodeId: Yup.number().required('Required'),
     userId: Yup.string().required("Required"),
     password: Yup.string().required("Required"),
     agreement: Yup.boolean(),
@@ -45,7 +46,7 @@ const CooperativeSignIn = () => {
 
   const onSubmit = async (values) => {
     const payload = {
-      cooperativeId: 251,
+      cooperativeId: values.nodeId,
       userId: values.userId,
       password: values.password,
     };
@@ -145,7 +146,7 @@ const CooperativeSignIn = () => {
     <div
       style={{
         backgroundColor: "#f2f2f2",
-        minHeight: "110vh",
+        minHeight: "130vh",
         fontFamily: "General Sans",
         position:'relative'
       }}
@@ -176,6 +177,20 @@ const CooperativeSignIn = () => {
               {error && (
                 <p className="text-danger text-center">{error}</p>
               )}
+              <div className="inputs-container">
+                <label>Cooperative ID <sup className="text-danger">*</sup></label>
+                <Field
+                  type="text"
+                  name="nodeId"
+                  className="border-0 w-100"
+                  style={{
+                    backgroundColor: "#f2f2f2",
+                    borderRadius: 10,
+                    padding: "10px 12px",
+                  }}
+                />
+                <ErrorMessage name="ndoeId" component={ErrorText} />
+              </div>
               <div className="inputs-container">
                 <label>User ID <sup className="text-danger">*</sup></label>
                 <Field
@@ -284,4 +299,4 @@ const CooperativeSignIn = () => {
   );
 };
 
-export default CooperativeSignIn;
+export default AdminLogin;

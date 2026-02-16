@@ -88,11 +88,11 @@ const ManageUsers = () => {
     <div className='bg-white p-3 rounded-3'>
     <div className="d-flex justify-content-between align-items-center mb-3">
       <h4 style={{fontSize:'16px', color:'#1d1d1d'}}>Manage users</h4>
-      <Link to='add-user' className='btn btn-md pub-btn rounded-5 px-3'>Add new user</Link>
+      <Link to='add-user' className='border-0 btn-md member rounded-5 px-3' style={{textDecoration:'none'}}>Add new user</Link>
       </div>
 
       <form className="search-form mb-4">
-        <input
+        <input 
           type="text"
           placeholder="Search anything"
           className="w-100 "

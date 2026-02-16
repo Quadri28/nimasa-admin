@@ -156,7 +156,7 @@ const [searchTerm, setSearchTerm] = useState("");
         <div style={{display:'flex', gap:'5px'}}>
           <FaUserCircle size={30}/>
        <div className="row" onClick={()=>setShow(prev=>!prev)}>
-        <span style={{color:'#022B69', fontFamily:'Aeonik-md', fontWeight:'500'}}>{credentials?.logInfo?.fullname} </span> 
+        <span style={{color:'var(--custom-color)', fontFamily:'Aeonik-md', fontWeight:'500'}}>{credentials?.logInfo?.fullname} </span> 
         <span >{credentials?.logInfo?.emailAddress} {show? <LiaAngleUpSolid /> :<LiaAngleDownSolid />}</span>
        </div>
        </div>

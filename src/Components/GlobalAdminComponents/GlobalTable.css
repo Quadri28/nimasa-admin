@@ -1,0 +1,23 @@
+#globalTable {
+    border-collapse: collapse;
+    width: 100%;
+  }
+  
+  #globalTable td, #globalTable th {
+    border: .5px solid #E6E6E6;
+    
+  }
+    
+  #globalTable tr:hover {background-color: #e5e5e5;}
+
+  #globalTable th {
+    font-weight: 500;
+    text-align: left;
+    font-size: 14px;
+    padding-block: 1rem;
+    background-color: #F5F9FF;
+  }
+#globalTable td{
+  font-size: 14px !important;
+}
+

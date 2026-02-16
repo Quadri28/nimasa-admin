@@ -1,0 +1,115 @@
+.display-container{
+    background-color: #F5F9FF;
+    padding:20px;
+    border-radius: 10px 10px 0 0;
+}
+.container-title{
+    font-size: 20px;
+    font-weight: 500;
+}
+.global-admin-forms{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    row-gap: 1.5rem;
+    margin-top: 1rem;
+    column-gap: 2rem;
+}
+.global-admin-forms input, .global-admin-forms select, .global-admin-forms textarea{
+    outline-color:  #F6911E !important;
+    outline-width: .2px;
+    border: none !important;
+    background-color: #F5F5F5 !important;
+    border-radius: 12px;
+    padding: 10px;
+    font-size: 14px !important;
+}
+.global-admin-forms input, .global-admin-forms select{
+    height: 3.5rem !important;
+}
+.global-overview-card-container{
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;
+    border-radius: 0 0 10px 10px;
+    .card{
+        border: solid 0.3px #E6E6E6;
+        border-radius: 12px;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        .head{
+            font-size: 14px;
+            font-weight: 400;
+            line-height: 24px;
+            color: #333333;
+            text-transform: uppercase;
+            
+        }
+        span{
+            font-size: 18px;
+            font-weight: 700;
+            line-height: 23.5px;
+            color: #4d4d4d;
+        }
+        
+    }
+    .card:hover{
+        border: solid 1px var(--custom-color);
+        background-color: #F5F9FF;
+        span{
+            color: var(--custom-color) !important;
+        }
+    }
+}
+
+.global-charts-container{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    align-items: center;
+ 
+}
+.navigation-links span{
+    color: #4D4D4D;
+    cursor: pointer;
+}
+.active-navigator{
+color: var(--custom-color) !important;
+position: relative;
+padding-inline: 10px;
+cursor: pointer;
+}
+.active-navigator::before, .active-navigator::before{
+    content: '';
+    width: 100%;
+    height: 1px;
+    position: absolute;
+    left: 0;
+    top: 28px;
+    color: var(--custom-color) !important;
+    background-color: var(--custom-color) !important;
+}
+.in-active-navigator{
+    cursor: pointer;
+}
+
+@media screen and (max-width: 900) {
+    .global-overview-card-container{
+        grid-template-columns: repeat(3, 1fr);
+    }
+   
+}
+
+@media screen and (max-width: 768px) {
+    .global-overview-card-container{
+        grid-template-columns: repeat(2, 1fr);
+    }
+    .global-charts-container{
+        grid-template-columns: 1fr;
+    }
+    @media screen and (max-width: 768px) {
+        .global-admin-forms{
+            grid-template-columns: 1fr;
+        }
+    }
+}

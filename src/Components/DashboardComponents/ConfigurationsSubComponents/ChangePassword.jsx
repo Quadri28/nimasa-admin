@@ -99,7 +99,7 @@ const submitHandler=(values)=>{
 
   return (
     <div className="bg-white px-2 py-4 border-0 rounded-4">
-      <div className='active-selector mb-4' style={{width:'fit-content'}}>
+      <div className='active-navigator mb-4' style={{width:'fit-content'}}>
         Change password
       </div>
     <div className="rounded-4" style={{border:'solid 1px #f7f4f7'}}>

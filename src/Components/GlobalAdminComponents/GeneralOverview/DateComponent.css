@@ -1,0 +1,11 @@
+.active-date{
+background-color: var(--custom-color);
+/* border: solid .6px #fff; */
+color: #fff !important;
+}
+.in-active-date{
+    background-color: rgb(237, 244, 255);;
+}
+.in-active-date:hover{
+    background-color: #F5F9FF;
+}

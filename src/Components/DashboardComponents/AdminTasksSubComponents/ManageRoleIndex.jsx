@@ -99,7 +99,7 @@ const {credentials}=useContext(UserContext)
      <div className='bg-white p-3 rounded-3'>
      <div className="d-flex justify-content-between align-items-center mb-3">
        <h4 style={{fontSize:'16px', color:'#1d1d1d'}}>Manage role</h4>
-       <Link to='add-new-role'  className='btn pub-btn btn-md rounded-5 px-3'>
+       <Link to='add-new-role'  className='border-0 member btn-md rounded-5 px-3' style={{textDecoration:'none'}}>
             Add new role</Link>
        </div>
        <form className="search-form mb-4">
