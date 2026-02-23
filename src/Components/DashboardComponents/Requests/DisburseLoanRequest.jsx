@@ -101,13 +101,30 @@ getProductDetails()
 const handleChange = (e) => {
   const { name, value } = e.target;
 
-  setDetail((prevState) => ({
-    ...prevState,
-    productOtherDetail: {
-      ...prevState.productOtherDetail,
+  const nestedFields = [
+    "loanRate",
+    "calculationMethod",
+    "repaymentType",
+    "collateralValue",
+    "collateralType",
+    "collateralDetail",
+    "lendingModel",
+  ];
+
+  if (nestedFields.includes(name)) {
+    setDetail((prevState) => ({
+      ...prevState,
+      productOtherDetail: {
+        ...prevState.productOtherDetail,
+        [name]: value,
+      },
+    }));
+  } else {
+    setDetail((prevState) => ({
+      ...prevState,
       [name]: value,
-    },
-  }));
+    }));
+  }
 };
 
 const disburseLoan=(e)=>{

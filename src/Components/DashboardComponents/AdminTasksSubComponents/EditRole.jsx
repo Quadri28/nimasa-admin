@@ -54,38 +54,44 @@ const EditRole = () => {
     setPrivileges(updatedList);
   };
 
-  const editRole = (e) => {
-    e.preventDefault();
-    const payload = {
-      isOperation: Number(isOperation),
-      canAuthenticate: Number(canAuthenticate),
-      roleId: id,
-      roleName: roleName,
-      roleDescription: roleDescription,
-      accessDays: Number(accessDays),
-      privileges: privileges,
-    };
-    axios
-      .post("Roles/update-role", payload, {
-        headers: {
-          Authorization: `Bearer ${credentials.token}`,
-        },
-      })
-      .then((resp) => {
-        toast(resp.data.data, {
-          type: "success",
-          pauseOnHover: true,
-          autoClose: 5000,
-        });
-        setTimeout(() => {
-          navigate(-1);
-        }, 5000);
-      })
-      .catch((error) =>
-        toast(error.response.data.message, { type: "error", autoClose: false })
-      );
+   const editRole = (e) => {
+  e.preventDefault();
+
+  const formattedPrivileges = privileges.map((priv) => ({
+    ...priv,
+    menuId: String(priv.menuId),
+  }));
+
+  const payload = {
+    isOperation: Number(isOperation),
+    canAuthenticate: Number(canAuthenticate),
+    roleId: id,
+    roleName: roleName,
+    roleDescription: roleDescription,
+    accessDays: Number(accessDays),
+    privileges: formattedPrivileges,
   };
 
+  axios
+    .post("Roles/update-role", payload, {
+      headers: {
+        Authorization: `Bearer ${credentials.token}`,
+      },
+    })
+    .then((resp) => {
+      toast(resp.data.data, {
+        type: "success",
+        pauseOnHover: true,
+        autoClose: 5000,
+      });
+      setTimeout(() => {
+        navigate(-1);
+      }, 5000);
+    })
+    .catch((error) =>
+      toast(error.response.data.message, { type: "error", autoClose: false })
+    );
+};
   return (
     <div className="bg-white p-3 rounded-4">
       <h4 style={{ fontSize: "18px", fontFamily: "General sans" }}>
