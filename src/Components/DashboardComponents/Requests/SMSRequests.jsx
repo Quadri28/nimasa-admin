@@ -133,7 +133,9 @@ const SMSRequests = () => {
       <Modal
         isOpen={isOpen}
         onRequestClose={closeModal}
-        className="loan-modal rounded-3 card p-3"
+        overlayClassName="loan-overlay"
+        ariaHideApp={false}
+        className='loan-modal rounded-3 card p-3'
       >
         <div className="px-3 mt-3">
           <h4

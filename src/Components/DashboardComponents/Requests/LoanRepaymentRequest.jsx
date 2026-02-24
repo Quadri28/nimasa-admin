@@ -136,9 +136,9 @@ const rejectAccount=(e)=>{
       <Modal
         isOpen={isOpen}
         onRequestClose={closeView}
-        style={customStyles}
-        contentLabel="Example Modal"
+           overlayClassName="loan-overlay"
         ariaHideApp={false}
+        className='loan-modal rounded-3 card p-3'
       >
        <h4 className="text-uppercase" style={{fontSize:'18px', fontWeight:'600', textAlign:'center'}}>Loan Repayment Request </h4> 
       <div className='d-flex flex-column gap-2 mt-3'>
@@ -206,7 +206,7 @@ const rejectAccount=(e)=>{
            className='w-100 mb-2 p-2 rounded-3' style={{backgroundColor:'#fafafa', border:'solid 1px #f2f2f2'}}>
             <option value="">Select Account</option>
             {
-              accounts.map(account=>(
+              accounts?.map(account=>(
                 <option value={account.glNumber} key={account.glNumber}>{account.accountName}</option>
               ))
             }

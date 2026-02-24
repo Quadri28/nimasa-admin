@@ -204,23 +204,7 @@ getVendorDetails()
       toast(error.response.data.message, {type:'error', autoClose:false})
     })
   }
-  const { width } = useScreenSize();
-  const customStyles = {
-    content: {
-      top: "50%",
-      left: "50%",
-      right: "auto",
-      height: "65%",
-      bottom: "auto",
-      marginRight: "-50%",
-      transform: "translate(-50%, -50%)",
-      // padding:'1rem',
-      borderRadius: "1rem",
-      width: width > 900 ? "800px" : "320px",
-      // overFlowY: "scroll",
-    },
-  };
-
+ 
   return (
     <div className="card p-3 border-0 rounded-4">
       <div className="d-flex justify-content-between">
@@ -237,7 +221,11 @@ getVendorDetails()
               <Modal
               isOpen={isOpen}
               onRequestClose={closeModal}
-              style={customStyles}>
+                overlayClassName="loan-overlay"
+        ariaHideApp={false}
+        className='loan-modal rounded-3 card p-3'
+              
+              >
               <form onSubmit={onSubmit} >
                 <div className="px-2">
                   <h4 className="text-center" style={{fontSize:'18px'}}>Add new vendor</h4>
@@ -313,7 +301,9 @@ getVendorDetails()
         <Modal 
         isOpen={open}
         onRequestClose={handleCloseModal}
-        style={customStyles}
+          overlayClassName="loan-overlay"
+        ariaHideApp={false}
+        className='loan-modal rounded-3 card p-3'
         >
               <form onSubmit={updateVendor}>
                 <h2 style={{fontSize:'18px', fontWeight:'600', textAlign:'center'}}>Update Vendor</h2>

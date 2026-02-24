@@ -133,7 +133,7 @@ const rejectSaving=(e)=>{
       <Modal
         isOpen={isOpen}
         onRequestClose={closeModal}
-        contentLabel="Example Modal"
+          overlayClassName="loan-overlay"
         ariaHideApp={false}
         className='loan-modal rounded-3 card p-3'
       >

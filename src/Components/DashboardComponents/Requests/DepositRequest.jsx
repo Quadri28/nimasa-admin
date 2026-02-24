@@ -210,9 +210,9 @@ const DepositRequest = () => {
       <Modal
         isOpen={isOpen}
         onRequestClose={closeView}
-        style={customStyles}
-        contentLabel="Example Modal"
+          overlayClassName="loan-overlay"
         ariaHideApp={false}
+        className='loan-modal rounded-3 card p-3'
       >
         <h4
           className="text-capitalize text-center"
@@ -267,7 +267,7 @@ const DepositRequest = () => {
             style={{ backgroundColor: "#fafafa", border: "solid 1px #f2f2f2" }}
           >
             <option value="">Select Account</option>
-            {accounts.map((account) => (
+            {accounts?.map((account) => (
               <option value={account.glNumber} key={account.glNumber}>
                 {account.accountName}
               </option>

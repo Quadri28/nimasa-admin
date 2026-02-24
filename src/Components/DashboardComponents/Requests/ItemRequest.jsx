@@ -290,9 +290,9 @@ const ItemRequest = () => {
       <Modal
         isOpen={isOpen}
         onRequestClose={closeView}
-        style={customStyles}
-        contentLabel="Example Modal"
+          overlayClassName="loan-overlay"
         ariaHideApp={false}
+        className='loan-modal rounded-3 card p-3'
       >
         <div>
           <h3
@@ -354,9 +354,9 @@ const ItemRequest = () => {
       <Modal
         isOpen={modalOpen}
         onRequestClose={closeUpload}
-        style={customStyles}
-        contentLabel="Example Modal"
+          overlayClassName="loan-overlay"
         ariaHideApp={false}
+        className='loan-modal rounded-3 card p-3'
       >
         <h4  className="text-capitalize text-center" style={{fontSize:'18px', fontWeight:'600'}}>
           Post Items Purchased</h4>

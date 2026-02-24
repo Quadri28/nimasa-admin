@@ -196,9 +196,9 @@ const rejectRequest=()=>{
    <Modal
         isOpen={guarantorOpen}
         onRequestClose={closeGuarantor}
-        style={customStyles}
-        contentLabel="Example Modal"
+          overlayClassName="loan-overlay"
         ariaHideApp={false}
+        className='loan-modal rounded-3 card p-3'
       >
           <h3 style={{fontSize:'18px', fontWeight:'600', textAlign:'center', marginBottom:'1rem'}}>View Guarantors</h3>
           <div className="table-responsive">
@@ -285,7 +285,7 @@ const rejectRequest=()=>{
       <Modal
         isOpen={isOpen}
         onRequestClose={closeLoan}
-        contentLabel="Example Modal"
+         overlayClassName="loan-overlay"
         ariaHideApp={false}
         className='loan-modal rounded-3 card p-3'
       >

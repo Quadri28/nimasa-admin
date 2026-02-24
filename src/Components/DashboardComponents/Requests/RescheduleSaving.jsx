@@ -184,9 +184,9 @@ const RescheduleSaving = () => {
       <Modal
         isOpen={isOpen}
         onRequestClose={closeView}
-        style={customStyles}
-        contentLabel="Example Modal"
+           overlayClassName="loan-overlay"
         ariaHideApp={false}
+        className='loan-modal rounded-3 card p-3'
       >
         <h4
           className="text-uppercase mt-3 text-center"

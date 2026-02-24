@@ -380,9 +380,9 @@ const onSubmit=(values)=>{
       <Modal
         isOpen={add}
         onRequestClose={closeAddRegister}
-        style={customStyles}
-        contentLabel="Example Modal"
+         overlayClassName="loan-overlay"
         ariaHideApp={false}
+        className='loan-modal rounded-3 card p-3'
       >
         <h4 style={{ fontSize: "18px", fontWeight: "600" }}>
           Register New Item
@@ -518,13 +518,13 @@ const onSubmit=(values)=>{
       <Modal
         isOpen={view}
         onRequestClose={closeViewRegister}
-        style={customStyles}
-        contentLabel="Example Modal"
+       overlayClassName="loan-overlay"
         ariaHideApp={false}
+        className='loan-modal rounded-3 card p-3'
       >
         <h4 style={{ fontSize: "18px", fontWeight: "600", textAlign:'center' }}>Edit Item</h4>
         <form onSubmit={updateItem}>
-          <div className="item-register-container">
+          <div className="cooperative-info-form-wrapper">
             <div className="d-flex flex-column">
               <label htmlFor="vendorId">Select Vendor:</label>
               <select

@@ -212,9 +212,9 @@ const WithdrawalRequest = () => {
       <Modal
         isOpen={isOpen}
         onRequestClose={closeView}
-        style={customStyles}
-        contentLabel="Example Modal"
+          overlayClassName="loan-overlay"
         ariaHideApp={false}
+        className='loan-modal rounded-3 card p-3'
       >
         <h4
           className="text-uppercase text-center"
@@ -262,7 +262,7 @@ const WithdrawalRequest = () => {
           style={{border:'solid 1px #d3d3d3'}}
           >
             <option value="">Select Account</option>
-            {accounts.map((account) => (
+            {accounts?.map((account) => (
               <option value={account.glNumber} key={account.glNumber}>
                 {account.accountName}
               </option>
