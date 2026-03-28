@@ -32,7 +32,7 @@ const OverviewChart = ({members}) => {
     datasets: [
       {
         data: flattenedArray,
-        backgroundColor: ["#082460", "#007D53", '#0098DA', "#4CB8E6", ],
+        backgroundColor: ['#E8F1FF',"#4CB8E6","#3785FB",  "#F6911E", ],
       },
     ],
   };

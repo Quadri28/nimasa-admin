@@ -263,7 +263,7 @@ const AddSingleShare = () => {
           </button>
           <button
             className="btn btn-md text-white rounded-5"
-            style={{ backgroundColor: "var(--custom-color)", fontSize: "14px" }}
+            style={{ backgroundColor: "#0452C8", fontSize: "14px" }}
             type="submit"
           >
             Add Share

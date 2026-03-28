@@ -4,6 +4,7 @@ import { UserContext } from "../../AuthContext";
 import { toast, ToastContainer } from "react-toastify";
 import { NumericFormat } from "react-number-format";
 import DatePicker from "react-datepicker";
+import { Combobox } from "react-widgets/cjs";
 
 const LoanRestructure = () => {
   const [sources, setSources] = useState([]);
@@ -17,7 +18,9 @@ const LoanRestructure = () => {
   const [members, setMembers] = useState([]);
   const [noOfDays, setNoOFDays] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [loanAccount, setLoanAccount]= useState('')
+  const [loanAccount, setLoanAccount] = useState("");
+  const [member, setMember] = useState("");
+
   const [details, setDetails] = useState({
     customerId: "",
     group: "",
@@ -41,14 +44,14 @@ const LoanRestructure = () => {
     const value = e.target.value;
     setDetails({ ...details, [name]: value });
   };
- 
+
   const addMonths = (startDate, monthsToAdd) => {
-  const date = new Date(startDate);
-  if (isNaN(date) || isNaN(monthsToAdd)) return null;
-  date.setMonth(date.getMonth() + monthsToAdd);
-  return date;
-};
-const futureDate = addMonths(details?.firstPaymentDate, details?.term -1);
+    const date = new Date(startDate);
+    if (isNaN(date) || isNaN(monthsToAdd)) return null;
+    date.setMonth(date.getMonth() + monthsToAdd);
+    return date;
+  };
+  const futureDate = addMonths(details?.firstPaymentDate, details?.term - 1);
 
   const getMembers = () => {
     axios("MemberManagement/get-member-detail-slim", {
@@ -122,7 +125,6 @@ const futureDate = addMonths(details?.firstPaymentDate, details?.term -1);
     }
   };
 
-  
   useEffect(() => {
     getNoOfDays();
   }, [details?.term, details?.frequency]);
@@ -139,23 +141,23 @@ const futureDate = addMonths(details?.firstPaymentDate, details?.term -1);
 
   const getLoanAccounts = async () => {
     await axios(
-      `LoanApplication/get-member-loan-account-numbers?customerId=${details?.customerId}`,
+      `LoanApplication/get-member-loan-account-numbers?customerId=${member}`,
       {
         headers: {
           Authorization: `Bearer ${credentials.token}`,
         },
-      }
+      },
     ).then((resp) => setAccounts(resp.data.data));
   };
 
   useEffect(() => {
     getLoanAccounts();
-  }, [details?.customerId]);
+  }, [member]);
 
   const getDetails = async () => {
     await axios(
       `LoanApplication/get-loan-account-detail-by-loan-account-number?AccountNumber=${loanAccount}`,
-      { headers: { Authorization: `Bearer ${credentials.token}` } }
+      { headers: { Authorization: `Bearer ${credentials.token}` } },
     ).then((resp) => setDetails(resp.data.data));
   };
   useEffect(() => {
@@ -166,12 +168,14 @@ const futureDate = addMonths(details?.firstPaymentDate, details?.term -1);
     e.preventDefault();
     const payload = {
       loanAccountNumber: loanAccount,
-      customerId: details.customerId,
+      customerId: member,
       group: details.group,
       loanProduct: details.loanProduct,
       loanFundingSource: details.loanFundingSource,
       branch: "001",
-      loanAmount: Number((details?.loanAmount || "").toString().replace(/,/g, "")),
+      loanAmount: Number(
+        (details?.loanAmount || "").toString().replace(/,/g, ""),
+      ),
       loanRate: details.loanRate,
       term: String(details.term),
       frequency: details.frequency,
@@ -181,7 +185,7 @@ const futureDate = addMonths(details?.firstPaymentDate, details?.term -1);
       repaymentType: String(details.repaymentType),
       collateralValue: String(details.collateralValue),
       collateralType: String(details.collateralType),
-      drawDownDate: details.drawDownDate,
+      drawDownDate: details.startDate,
       startDate: details.startDate,
       firstPaymentDate: details.firstPaymentDate,
       maturityDate: futureDate,
@@ -189,7 +193,7 @@ const futureDate = addMonths(details?.firstPaymentDate, details?.term -1);
       collateralDetail: details.collateralDetail,
       loanPurpose: details.loanPurpose,
       lending: details?.lending,
-      lien: details.lien
+      lien: details.lien,
     };
     setLoading(true);
     axios
@@ -212,6 +216,11 @@ const futureDate = addMonths(details?.firstPaymentDate, details?.term -1);
       });
   };
 
+  const formattedMembers = members.map((e) => ({
+    ...e,
+    label: e.fullname,
+  }));
+
   return (
     <>
       <form
@@ -223,10 +232,7 @@ const futureDate = addMonths(details?.firstPaymentDate, details?.term -1);
           className="p-3 justify-content-between align-items-center d-flex"
           style={{ backgroundColor: "#f4fAfd", borderRadius: "15px 15px 0 0" }}
         >
-          <span
-          
-            style={{ fontWeight: "500", fontSize: "16px", color: "#333" }}
-          >
+          <span style={{ fontWeight: "500", fontSize: "16px", color: "#333" }}>
             Loan Restructuring
           </span>
         </div>
@@ -235,22 +241,14 @@ const futureDate = addMonths(details?.firstPaymentDate, details?.term -1);
             <label htmlFor="customerId" style={{ fontWeight: "500" }}>
               Customer ID<sup className="text-danger">*</sup>
             </label>
-            <select
-              name="customerId"
-              onChange={handleChange}
-              className="text-lowercase"
-            >
-              <option value="">Select</option>
-              {members.map((member) => (
-                <option
-                  value={member.customerId}
-                  key={member.customerId}
-                  className="text-lowercase"
-                >
-                  {member.fullname}{" "}
-                </option>
-              ))}
-            </select>
+            <Combobox
+              data={formattedMembers}
+              value={member}
+              onChange={(val) => setMember(val.customerId)}
+              valueField="customerId"
+              textField="label"
+              filter="contains"
+            />
           </div>
           <div className="d-flex flex-column gap-1">
             <label htmlFor="loanAccount" style={{ fontWeight: "500" }}>
@@ -258,7 +256,7 @@ const futureDate = addMonths(details?.firstPaymentDate, details?.term -1);
             </label>
             <select
               name="loanAccount"
-              onChange={(e)=>setLoanAccount(e.target.value)}
+              onChange={(e) => setLoanAccount(e.target.value)}
               className="text-lowercase"
             >
               <option value="">Select</option>
@@ -291,7 +289,11 @@ const futureDate = addMonths(details?.firstPaymentDate, details?.term -1);
             <label htmlFor="loanFundingSource" style={{ fontWeight: "500" }}>
               Loan funding source<sup className="text-danger">*</sup>
             </label>
-            <select name="loanFundingSource" value={details?.loanFundingSource} disabled>
+            <select
+              name="loanFundingSource"
+              value={details?.loanFundingSource}
+              disabled
+            >
               <option value="">Select</option>
               {sources.map((source) => (
                 <option value={source.glNumber} key={source.glNumber}>
@@ -329,11 +331,7 @@ const futureDate = addMonths(details?.firstPaymentDate, details?.term -1);
             <label htmlFor="frequency" style={{ fontWeight: "500" }}>
               Frequency<sup className="text-danger">*</sup>
             </label>
-            <select
-              name="frequency"
-              value={details?.frequency}
-              disabled
-            >
+            <select name="frequency" value={details?.frequency} disabled>
               <option value="">Select</option>
               {frequencies.map((freq) => (
                 <option value={freq.frequencyCode} key={freq.frequencyCode}>
@@ -341,16 +339,6 @@ const futureDate = addMonths(details?.firstPaymentDate, details?.term -1);
                 </option>
               ))}
             </select>
-          </div>
-          <div className="d-flex flex-column gap-1">
-            <label htmlFor="postingDate" style={{ fontWeight: "500" }}>
-              Posting date<sup className="text-danger">*</sup>
-            </label>
-            <input
-              name="postingDate"
-              disabled
-              value={new Date().toLocaleDateString("en-US")}
-            />
           </div>
           <div className="d-flex flex-column gap-1">
             <label htmlFor="calculationMethod" style={{ fontWeight: "500" }}>
@@ -370,10 +358,70 @@ const futureDate = addMonths(details?.firstPaymentDate, details?.term -1);
             </select>
           </div>
           <div className="d-flex flex-column gap-1">
+            <label htmlFor="postingDate" style={{ fontWeight: "500" }}>
+              Posting date<sup className="text-danger">*</sup>
+            </label>
+            <input
+              name="postingDate"
+              disabled
+              value={new Date().toLocaleDateString("en-US")}
+            />
+          </div>
+          <div className="d-flex flex-column gap-1 ">
+            <label htmlFor="startDate" style={{ fontWeight: "500" }}>
+              Start date<sup className="text-danger">*</sup>
+            </label>
+            <DatePicker
+              selected={
+                details?.startDate ? new Date(details?.startDate) : null
+              }
+              onChange={(date) =>
+                handleChange({
+                  target: { name: "startDate", value: date },
+                })
+              }
+              className="w-100"
+              dateFormat="dd-MM-yyyy"
+            />
+          </div>
+          <div className="d-flex flex-column gap-1">
+            <label htmlFor="firstPaymentDate" style={{ fontWeight: "500" }}>
+              First payment date<sup className="text-danger">*</sup>
+            </label>
+            <DatePicker
+              selected={
+                details?.firstPaymentDate
+                  ? new Date(details?.firstPaymentDate)
+                  : null
+              }
+              onChange={(date) =>
+                handleChange({
+                  target: { name: "firstPaymentDate", value: date },
+                })
+              }
+              className="w-100"
+              dateFormat="dd-MM-yyyy"
+            />
+          </div>
+          <div className="d-flex flex-column gap-1">
+            <label htmlFor="maturityDate" style={{ fontWeight: "500" }}>
+              Maturity date<sup className="text-danger">*</sup>
+            </label>
+            <DatePicker
+              selected={futureDate instanceof Date ? futureDate : null}
+              dateFormat="dd-MM-yyyy"
+            />
+          </div>
+          <div className="d-flex flex-column gap-1">
             <label htmlFor="term" style={{ fontWeight: "500" }}>
               Term<sup className="text-danger">*</sup>
             </label>
-            <input name="term" type="number" value={details?.term} onChange={handleChange}/>
+            <input
+              name="term"
+              type="number"
+              value={details?.term}
+              onChange={handleChange}
+            />
           </div>
           <div className="d-flex flex-column gap-1">
             <label htmlFor="repaymentType" style={{ fontWeight: "500" }}>
@@ -382,7 +430,7 @@ const futureDate = addMonths(details?.firstPaymentDate, details?.term -1);
             <select
               name="repaymentType"
               value={details?.repaymentType}
-            onChange={handleChange}              
+              onChange={handleChange}
             >
               <option value="">Select</option>
               {repayTypes.map((type) => (
@@ -422,30 +470,18 @@ const futureDate = addMonths(details?.firstPaymentDate, details?.term -1);
               disabled
             />
           </div>
-          <div className="d-flex flex-column gap-1 ">
-            <label htmlFor="startDate" style={{ fontWeight: "500" }}>
-              Start date<sup className="text-danger">*</sup>
-            </label>
-            <DatePicker
-              selected={
-                details?.startDate ? new Date(details?.startDate) : null
-              }
-              onChange={(date) =>
-                handleChange({
-                  target: { name: "startDate", value: date },
-                })
-              }
-              className="w-100"
-              dateFormat="dd-MM-yyyy"
-            />
-          </div>
+
           <div className="d-flex flex-column gap-1">
             <label htmlFor="collateralDetail" style={{ fontWeight: "500" }}>
               Collateral detail<sup className="text-danger">*</sup>
             </label>
-            <input name="collateralDetail" value={details?.collateralDetail} disabled/>
+            <input
+              name="collateralDetail"
+              value={details?.collateralDetail}
+              disabled
+            />
           </div>
-          <div className="d-flex flex-column gap-1">
+          {/* <div className="d-flex flex-column gap-1">
             <label htmlFor="drawDownDate" style={{ fontWeight: "500" }}>
               Drawdown date<sup className="text-danger">*</sup>
             </label>
@@ -461,40 +497,12 @@ const futureDate = addMonths(details?.firstPaymentDate, details?.term -1);
               className="w-100"
               dateFormat="dd-MM-yyyy"
             />
-          </div>
+          </div> */}
           <div className="d-flex flex-column gap-1">
             <label htmlFor="noOfDays" style={{ fontWeight: "500" }}>
               Number of days<sup className="text-danger">*</sup>
             </label>
             <input name={noOfDays} value={noOfDays} disabled />
-          </div>
-          <div className="d-flex flex-column gap-1">
-            <label htmlFor="firstPaymentDate" style={{ fontWeight: "500" }}>
-              First payment date<sup className="text-danger">*</sup>
-            </label>
-            <DatePicker
-              selected={
-                details?.firstPaymentDate
-                  ? new Date(details?.firstPaymentDate)
-                  : null
-              }
-              onChange={(date) =>
-                handleChange({
-                  target: { name: "firstPaymentDate", value: date },
-                })
-              }
-              className="w-100"
-              dateFormat="dd-MM-yyyy"
-            />
-          </div>
-          <div className="d-flex flex-column gap-1">
-            <label htmlFor="maturityDate" style={{ fontWeight: "500" }}>
-              Maturity date<sup className="text-danger">*</sup>
-            </label>
-             <DatePicker
-  selected={futureDate instanceof Date ? futureDate : null}
-  dateFormat="dd-MM-yyyy"
-/>
           </div>
           <div className="d-flex flex-column gap-1">
             <label htmlFor="loanSource" style={{ fontWeight: "500" }}>
@@ -513,7 +521,7 @@ const futureDate = addMonths(details?.firstPaymentDate, details?.term -1);
             <label htmlFor="loanPurpose" style={{ fontWeight: "500" }}>
               Loan purpose<sup className="text-danger">*</sup>
             </label>
-            <input name="loanPurpose" value={details?.loanPurpose} disabled/>
+            <input name="loanPurpose" value={details?.loanPurpose} disabled />
           </div>
         </div>
         <div
@@ -522,7 +530,7 @@ const futureDate = addMonths(details?.firstPaymentDate, details?.term -1);
         >
           <button
             className="btn btn-md text-white rounded-5"
-            style={{ backgroundColor: "var(--custom-color)" }}
+            style={{ backgroundColor: "#0452C8" }}
             type="submit"
             disabled={loading}
           >

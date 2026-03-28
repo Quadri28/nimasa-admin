@@ -56,7 +56,7 @@ const ManageGLAccount = () => {
         return <span>{new Date(value).toLocaleDateString()}</span>;
       },
     },
-    {Header:'Update', accessor:'', Cell:(({cell})=>{
+    {Header:'Action', accessor:'', Cell:(({cell})=>{
       const id = cell.row.original.glAccountNumber
       return <div className="d-flex align-items-center">
        <Link to={`/admin-dashboard/admin-tasks/edit-gl-account/${id}`} className='border-0 btn-md member'

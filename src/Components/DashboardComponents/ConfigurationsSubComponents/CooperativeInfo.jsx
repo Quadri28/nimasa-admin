@@ -129,7 +129,7 @@ const CooperativeInfo = ({
             onClick={() => handleOpenModal()}
             className="btn btn-sm p-2"
             style={{
-              backgroundColor: "var(--custom-color)",
+              backgroundColor: "#0452c8",
               color: "#fff",
               borderRadius: "1.2rem",
               fontSize: "12px",
@@ -324,7 +324,7 @@ const CooperativeInfo = ({
             <button
               className="btn btn-md py-2"
               style={{
-                backgroundColor: "var(--custom-color)",
+                backgroundColor: "#0452c8",
                 color: "#fff",
                 borderRadius: "1.5rem",
                 fontSize: "14px",

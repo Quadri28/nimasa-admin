@@ -12,6 +12,7 @@ const AddBulkShare = () => {
   const [batchNo, setBatchNo] = useState("");
   const [data, setData] = useState([]);
   const [info, setInfo] = useState([])
+  const [loading, setLoading] = useState(false)
 
   const handleChange = (file) => {
     setFile(file);
@@ -64,6 +65,7 @@ const AddBulkShare = () => {
 
   const postBulkShare = (e) => {
     e.preventDefault();
+    setLoading(true)
     const payload ={
       batchNo: batchNo
     }
@@ -80,11 +82,13 @@ const AddBulkShare = () => {
           autoClose: 5000,
           pauseOnHover: true,
         });
+        setLoading(false)
         setInfo(resp.data.data)
       })
-      .catch((error) =>
+      .catch((error) =>{
         toast(error.response.data.message, { type: "error", autoClose: false })
-      );
+      setLoading(false)
+  });
   };
 
   //Displaying Table
@@ -185,7 +189,7 @@ const AddBulkShare = () => {
           >
             Discard
           </button>
-          <button type="submit" className="border-0 btn-sm member px-4 ">
+          <button type="submit" className="border-0 btn-sm member px-4 " disabled={loading}>
             Post
           </button>
         </div>

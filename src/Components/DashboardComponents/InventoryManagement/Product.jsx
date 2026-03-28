@@ -150,7 +150,7 @@ sales: Yup.string().required().label('Sales Account')
         <p className="active-selector">Item Category</p>
         <div data-bs-toggle="modal" data-bs-target="#product">
         <button className="btn btn-md text-white rounded-5" 
-        style={{backgroundColor:'var(--custom-color)', fontSize:'14px'}}>
+        style={{backgroundColor:'#0452C8', fontSize:'14px'}}>
             Add new category
         </button>
          </div>

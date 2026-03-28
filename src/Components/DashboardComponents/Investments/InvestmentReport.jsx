@@ -66,7 +66,7 @@ const InvestmentReport = () => {
       <CSVLink data={statuses ? statuses : ''} filename={"InvestmentReports.csv"}>
       <button
         className="btn btn-md text-white rounded-4" type='button'
-        style={{ backgroundColor: "var(--custom-color)", fontSize:'14px' }}
+        style={{ backgroundColor: "#033E96", fontSize:'14px' }}
       >
         Export
       </button>

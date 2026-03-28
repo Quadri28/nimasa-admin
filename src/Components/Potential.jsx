@@ -276,7 +276,7 @@ const Potential = () => {
                 <div className="social-btns">
                   <Link
                     className="app-btn blu flex px-2"
-                    to="https://play.google.com/store/apps/details?id=com.cwg.ucpmobile&hl=en"
+                    to="https://play.google.com/store/apps/details?id=com.fifthlab.ucpcooperative.ucp&hl=en"
                     target="_blank"
                   >
                     <img src={Google} alt="google-icon" className="img-fluid" />

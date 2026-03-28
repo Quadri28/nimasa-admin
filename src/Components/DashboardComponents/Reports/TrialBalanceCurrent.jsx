@@ -165,8 +165,8 @@ const TrialBalanceCurrent = () => {
 
         <button
           onClick={handleExport}
-          className="btn btn-md px-4 rounded-5 text-white"
-         style={{ backgroundColor: "var(--custom-color)" }}
+          className="btn btn-md px-4 rounded-3 text-white"
+         style={{ backgroundColor: "#033E96" }}
         >
           Export to Excel
         </button>

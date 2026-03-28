@@ -133,36 +133,36 @@ const SMSRequests = () => {
       <Modal
         isOpen={isOpen}
         onRequestClose={closeModal}
-        overlayClassName="loan-overlay"
+       overlayClassName="loan-overlay"
         ariaHideApp={false}
         className='loan-modal rounded-3 card p-3'
       >
-        <div className="px-3 mt-3">
+        <div className="mt-3">
           <h4
-            className="text-center"
-            style={{ fontSize: "16px", fontWeight: "600" }}
+            style={{ fontSize: "18px", fontWeight: "600" }}
           >
             SMS Request
           </h4>
-          <div className="d-flex flex-column gap-2">
-            <div className="d-flex gap-3">
-              <strong>Phone Number </strong>: <span>{request.phoneNumber}</span>
+          <div className="d-flex flex-column gap-2 mt-3">
+             <div className="d-flex gap-3 flex-wrap align-items-center mb-3 discourse">
+             <div> <span>Member ID: </span> <span>{request?.employeeId}</span> </div>
+              <div><span>Full Name: </span> <span className="text-capitalize">{request?.fullName}</span></div>
+              <img src={request?.profileImageUrl} alt="Profile Image" className="view-img img-fluid"/>
+             </div>
+              <div className="d-flex justify-content-between discourse align-items-center p-2" style={{backgroundColor:'var(--light-blue)'}} >
+             <div>
+              <span>Phone Number: </span> <span>{request?.phoneNumber}</span>
+             </div>
+             <div className="d-flex gap-2 discourse align-items-center" >
+              <span>Transaction Date: </span>
+              <span>{request?.approvedDate}</span>
             </div>
-            <div className="d-flex gap-3">
-              <strong>Full Name </strong>: <span>{request.fullName}</span>
             </div>
-            <div className="d-flex gap-3">
-              <strong>Member ID </strong>: <span>{request.employeeId}</span>
+            <div className="d-flex justify-content-between discourse align-items-center p-2" >
+              <div><span>Status: </span> <span>{request?.smsStatus}</span></div>
+             <div className="d-flex justify-content-between discourse align-items-center p-2" >
+              <span>Email: </span> <span>{request?.email}</span>
             </div>
-            <div className="d-flex gap-3">
-              <strong>Transaction Date </strong>:{" "}
-              <span>{request.approvedDate}</span>
-            </div>
-            <div className="d-flex gap-3">
-              <strong>Status </strong>: <span>{request.smsStatus}</span>
-            </div>
-            <div className="d-flex gap-3">
-              <strong>Email </strong>: <span>{request.email}</span>
             </div>
             {isReject ? (
               <div className="d-flex mt-3 flex-column">
@@ -178,13 +178,13 @@ const SMSRequests = () => {
             ) : (
               ""
             )}
-            <div className="d-flex gap-3 my-3">
+            <div className="d-flex gap-3 mt-4 justify-content-end">
               <form onSubmit={approveSMS}>
-                <button className="btn btn-md member">Approve</button>
+                <button className="btn-md border-0 px-3 member">Approve</button>
               </form>
               {!isReject ? (
                 <button
-                  className="btn btn-md"
+                  className="btn btn-md second-btn px-3"
                   onClick={() => setIsReject(true)}
                   style={{ backgroundColor: "#ddd", fontSize: "14px" }}
                 >

@@ -82,9 +82,9 @@ const [searchTerm, setSearchTerm] = useState("");
 
   return (
     <div className="py-3 row admin-nav bg-white container-fluid align-items-center">
-      <div className="ml-2 col-2">
-        <img src={adminLogo} 
-        alt="Logo" className="img-fluid" style={{ height:'60px', objectFit:'contain'}}/>
+     <div className="ml-2 col-2">
+        <img src={credentials?.logInfo?.cooperativeImageUrl || adminLogo} 
+        alt="Logo" className="img-fluid" style={{width:'70px', height:'60px', objectFit:'contain'}}/>
       </div>
       <div className="icon-container align-items-center col position-relative">
       <input
@@ -156,7 +156,7 @@ const [searchTerm, setSearchTerm] = useState("");
         <div style={{display:'flex', gap:'5px'}}>
           <FaUserCircle size={30}/>
        <div className="row" onClick={()=>setShow(prev=>!prev)}>
-        <span style={{color:'var(--custom-color)', fontFamily:'Aeonik-md', fontWeight:'500'}}>{credentials?.logInfo?.fullname} </span> 
+        <span style={{color:'#022B69', fontFamily:'Aeonik-md', fontWeight:'500'}}>{credentials?.logInfo?.fullname} </span> 
         <span >{credentials?.logInfo?.emailAddress} {show? <LiaAngleUpSolid /> :<LiaAngleDownSolid />}</span>
        </div>
        </div>

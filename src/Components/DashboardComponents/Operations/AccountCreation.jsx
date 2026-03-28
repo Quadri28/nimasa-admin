@@ -343,14 +343,13 @@ await axios (`MemberManagement/get-product-information?productCode=${accountProd
             <button
               type="reset"
               className="btn btn-md rounded-5"
-              style={{ backgroundColor: "#FAFAFA", fontSize:'14px' }}
+              style={{ backgroundColor: "#FAFAFA" }}
             >
               Reset
             </button>
             <button
               type="submit"
-              className="btn btn-md rounded-5 text-white"
-              style={{ backgroundColor: "var(--custom-color)", fontSize:'14px' }}
+              className="btn px-3  member text-white"
             >
               Submit
             </button>

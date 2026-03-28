@@ -101,7 +101,7 @@ const CooperativeApproval = () => {
       <>
       <div className="d-flex justify-content-between align-items-center mb-3 flex-wrap">
         <h4 style={{fontSize:'16px', color:'#1d1d1d'}}>Cooperative approval</h4>
-        <button className='border-0 btn-md member rounded-5 px-3'
+        <button className='btn btn-md pub-btn rounded-5 px-3'
           >Add new user</button>
         </div>
   

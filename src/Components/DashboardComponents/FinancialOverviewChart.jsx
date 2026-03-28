@@ -15,7 +15,7 @@ const FinancialOverviewChart = ({financial}) => {
         datasets:[{
             label:'Financial Overview',
             data: financialValues,
-            backgroundColor:['#007D53', '#033E96', "#082460", "#007D53", '#0098DA', "#4CB8E6",],
+            backgroundColor:['#033E96', '#0452C8', '#022B69', '#3785FB', '#69A4FC', '#9BC2FD'],
             borderRadius: 5,
             barPercentage:.9,
             categoryPercentage:.8

@@ -22,6 +22,7 @@ const MemberDeduction = () => {
   const [period, setPeriod] = useState('')
   const [deductions, setDeductions]= useState([])
   const [loading, setLoading] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
   const [dloading, setDLoading] = useState(false)
   const initialValues ={
 
@@ -46,15 +47,31 @@ const MemberDeduction = () => {
   }, [])
 
 // Fetching Deductions
-const getDeduction = async ()=>{
-  await axios(`MemberManagement/deduction-download?Period=${period}&BatchNumber=${batchNo}`, {headers:{
-    Authorization: `Bearer ${credentials.token}`
-  }}).then(resp=>{
-   if (resp.data.data) {
-    setDeductions(resp?.data.data)
-   }
-  })
+const getDeduction = async () => {
+  if (!period) return;
+
+  try {
+    setIsLoading(true)
+
+    const resp = await axios(
+      `MemberManagement/deduction-download?Period=${period}&BatchNumber=${batchNo}`,
+      {
+        headers: {
+          Authorization: `Bearer ${credentials.token}`
+        }
+      }
+    )
+    setDeductions(resp?.data?.data || [])
+  } catch (error) {
+    toast.error(
+      error?.response?.data?.message || "Failed to fetch deductions",
+      { autoClose: 5000 }
+    )
+  } finally {
+    setIsLoading(false) // 🔥 Always stop loading
+  }
 }
+
 
  useEffect(()=>{
   getDeduction()
@@ -227,7 +244,8 @@ const getDeduction = async ()=>{
         </form>
     </div>
       <div>
-      {deductions?.length > 0 &&
+      {!isLoading &&
+      <>
       <form className="search-form mb-4">
         <input
           type="text"
@@ -236,7 +254,7 @@ const getDeduction = async ()=>{
           value={globalFilter || ""}
           onChange={(e) => setGlobalFilter(e.target.value)}
         />
-      </form>}
+      </form>
       <div className="table-responsive" >
         <table {...getTableProps()} id='deductions' className="table">
           <thead>
@@ -301,7 +319,12 @@ const getDeduction = async ()=>{
          onClick={()=>confirmDownload} type='submit' 
       >Complete validation</button>
        </form>
+       </>
+       }
+
+       {isLoading && <p className="text-center">Loading...</p> }
       </div>
+      
       
       
       <div

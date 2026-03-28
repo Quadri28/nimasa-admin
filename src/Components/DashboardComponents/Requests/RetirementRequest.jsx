@@ -123,22 +123,7 @@ const RetirementRequest = () => {
   }
 
   const columns = useMemo(() => column, []);
-  const { width } = useScreenSize();
-
-  const customStyles = {
-    content: {
-      top: "50%",
-      left: "50%",
-      right: "auto",
-      height: '65%',
-      bottom: "auto",
-      marginRight: "-50%",
-      transform: "translate(-50%, -50%)",
-      borderRadius: "1rem",
-      width: width > 600 ? "800px" : "320px",
-      overFlowY: "scroll",
-    },
-  };
+  
   return (
     <div>
       <UnpaginatedTable
@@ -149,37 +134,52 @@ const RetirementRequest = () => {
       <Modal
       isOpen={isOpen}
       onRequestClose={handleCloseModal}
-      ariaHideApp={false}
-      style={customStyles}
+        overlayClassName="loan-overlay"
+        ariaHideApp={false}
+        className='loan-modal rounded-3 card p-3'
       >
-            <div className="px-3 mt-3">
-              <h4 style={{fontSize:'18px', fontWeight:'600', textAlign:'center'}}>Retirement Request</h4>
+            <div className="mt-3">
+              <h4 style={{fontSize:'18px', fontWeight:'600'}}>Retirement Request</h4>
               <div className="d-flex flex-column gap-3 mt-3">
-                <div className="d-flex gap-3">
-                  <strong>Account Number: </strong>
-                  <span>{request.accountNumber}</span>
+                <div className="d-flex gap-3 flex-wrap align-items-center discourse">
+                    <div className="d-flex gap-3">
+                  <span>Member ID: </span>
+                  <span>{request?.memberId}</span>
+                </div>
+                  <div className="d-flex gap-3">
+                  <span>Full Name: </span>
+                  <span>{request?.fullName}</span>
+                </div>
+                <img src={request?.profileImageUrl} alt="profile image" className="view-img img-fluid" />
+                </div>
+               <div className="d-flex justify-content-between discourse flex-wrap align-items-center p-2"
+                style={{backgroundColor:'var(--light-blue)'}} >
+                  <div className="d-flex gap-3">
+                  <span>Account Number: </span>
+                  <span>{request?.accountNumber}</span>
+                </div>
+                 <div className="d-flex gap-3">
+                  <span>Balance: </span> <span>{new Intl.NumberFormat('en-US', {minimumFractionDigits:2}).format(request?.amount)}</span>
+                </div>
+                </div>
+               <div className="d-flex justify-content-between discourse flex-wrap align-items-center p-2">
+               <div className="d-flex gap-3">
+                  <span>Transaction Date: </span>
+                  <span>{request?.transactionDate}</span>
                 </div>
                 <div className="d-flex gap-3">
-                  <strong>Full Name: </strong> <span>{request.fullName}</span>
+                  <span>Charges: </span> <span>{new Intl.NumberFormat('en-US', {minimumFractionDigits:2}).format(request?.chargesAmount)}</span>
+                </div>
+                </div>
+              
+               <div className="d-flex justify-content-between discourse flex-wrap align-items-center p-2"
+               style={{backgroundColor:'var(--light-blue)'}}>
+                <div className="d-flex gap-3">
+                  <span>Status: </span><span>{request?.status}</span>
                 </div>
                 <div className="d-flex gap-3">
-                  <strong>Balance: </strong> <span>{new Intl.NumberFormat('en-US', {minimumFractionDigits:2}).format(request.amount)}</span>
+                  <span>Email: </span><span>{request?.email}</span>
                 </div>
-                <div className="d-flex gap-3">
-                  <strong>Charges: </strong> <span>{new Intl.NumberFormat('en-US', {minimumFractionDigits:2}).format(request.chargesAmount)}</span>
-                </div>
-                <div className="d-flex gap-3">
-                  <strong>Member ID: </strong> <span>{request.memberId}</span>
-                </div>
-                <div className="d-flex gap-3">
-                  <strong>Transaction Date: </strong>
-                  <span>{request.transactionDate}</span>
-                </div>
-                <div className="d-flex gap-3">
-                  <strong>Status: </strong><span>{request.status}</span>
-                </div>
-                <div className="d-flex gap-3">
-                  <strong>Email: </strong><span>{request.email}</span>
                 </div>
                 {isReject && (
               <div className="d-flex mt-3 flex-column">

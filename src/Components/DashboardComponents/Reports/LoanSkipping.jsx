@@ -86,7 +86,7 @@ useEffect(()=>{
        className='p-2 search-inputs w-100 rounded-3' style={{border:'solid 1px #f2f2f2', backgroundColor:'#f2f2f2'}}/>
       </form>
       <CSVLink data={reports} filename={"loanSkippingReports.csv"}>
-      <button className='btn btn-md text-white fz-6 px-4 rounded-5' style={{backgroundColor:'var(--custom-color)'}}>
+      <button className='btn btn-md text-white fz-6 px-4 rounded-4' style={{backgroundColor:'#033E96'}}>
         Export</button>
         </CSVLink>
     </div> </> }

@@ -35,7 +35,7 @@ const GlobalNav = ({handleShowSidebar, showSidebar}) => {
   return (
     <div className="py-3 row admin-nav bg-white container-fluid align-items-center">
     <div className="mx-2 col-4 col-md-2 ">
-      <img src={globalLogo} alt="Logo" className="img-fluid" style={{width:'60px'}}/>
+      <img src={globalLogo} alt="Logo" className="img-fluid"/>
     </div>
     <div className="icon-container align-items-center col position-relative">
           <input

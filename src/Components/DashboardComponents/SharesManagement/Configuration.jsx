@@ -84,7 +84,7 @@ const Configuration = () => {
           <Link to='add-new-type'
             className="btn btn-md continue"
             style={{
-              backgroundColor: "var(--custom-color)",
+              backgroundColor: "#0452C8",
               color: "#fff",
               fontSize: "12px",
               borderRadius: "1.2rem",

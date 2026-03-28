@@ -1,6 +1,8 @@
 import React, { useContext, lazy, Suspense, useState, useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import LandingPageTemplate from "./LandingPageTemplate";
 import DashboardTemplate from "./DashboardTemplate";
+
 import Dashboard from "../../Components/DashboardComponents/Dashboard";
 import Configurations from "../../Components/DashboardComponents/Configurations";
 import NotFound from "../NotFound";
@@ -149,6 +151,37 @@ import CreateElection from "../../Components/Elections/CreateElection";
 import AddContestant from "../../Components/Elections/AddContestant";
 import UpdateCandidate from "../../Components/Elections/UpdateCandidate";
 import CandidateIndex from "../../Components/Elections/CandidateIndex";
+import GlobalAdminTemplate from "./GlobalAdminTemplate";
+import Setup from "../../Components/GlobalAdminComponents/Setup/Setup";
+import GlobalAdminTasks from "../../Components/GlobalAdminComponents/GlobalAdminTasks/GlobalAdminTasks";
+import GlobalReports from "../../Components/GlobalAdminComponents/GlobalReports";
+import GeneralOverview from "../../Components/GlobalAdminComponents/GeneralOverview/GeneralOverview";
+import ExpiredSubscriptions from "../../Components/GlobalAdminComponents/GeneralOverview/ExpiredSubscriptions";
+import ExpiringSoon from "../../Components/GlobalAdminComponents/GeneralOverview/ExpiringSoon";
+import ManageCooperative from "../../Components/GlobalAdminComponents/Setup/ManageCooperative";
+import ManageBank from "../../Components/GlobalAdminComponents/Setup/ManageBank";
+import OperationLockStatus from "../../Components/GlobalAdminComponents/GlobalAdminTasks/OperationLockStatus";
+import CooperativeApproval from "../../Components/GlobalAdminComponents/GlobalAdminTasks/CooperativeApproval";
+import GlobalUserReset from "../../Components/GlobalAdminComponents/GlobalAdminTasks/GlobalUserReset";
+import GlobalRoleConfig from "../../Components/GlobalAdminComponents/GlobalAdminTasks/GlobalRoleConfig";
+import ManageTenant from "../../Components/GlobalAdminComponents/GlobalAdminTasks/ManageTenant";
+import CoopSubInfo from "../../Components/GlobalAdminComponents/GlobalAdminTasks/CoopSubInfo";
+import PostCoopSettlement from "../../Components/GlobalAdminComponents/GlobalAdminTasks/PostCoopSettlement";
+import ViewRequest from "../../Components/GlobalAdminComponents/GlobalAdminTasks/ViewRequest";
+import CooperativeApprovalIndex from "../../Components/GlobalAdminComponents/GlobalAdminTasks/CooperativeApprovalIndex";
+import LoginStatus from "../../Components/GlobalAdminComponents/GlobalAdminTasks/LoginStatus";
+import AddNewUser from "../../Components/DashboardComponents/AdminTasksSubComponents/AddNewUser";
+import EditGlobalRole from "../../Components/GlobalAdminComponents/GlobalAdminTasks/EditGlobalRole";
+import GlobalRoleConfigIndex from "../../Components/GlobalAdminComponents/GlobalAdminTasks/GlobalRoleConfigIndex";
+import AddNewTenant from "../../Components/GlobalAdminComponents/GlobalAdminTasks/AddNewTenant";
+import Support from "../../Components/GlobalAdminComponents/Support/Support";
+import Supports from "../../Components/GlobalAdminComponents/Support/Supports";
+import CreateFaqs from "../../Components/GlobalAdminComponents/Support/CreateFaqs";
+import EditFaqs from "../../Components/GlobalAdminComponents/Support/EditFaq";
+import FaqSection from "../../Components/GlobalAdminComponents/Support/FaqSection";
+import CreateFaqSection from "../../Components/GlobalAdminComponents/Support/CreateFaqSection";
+import FaqSections from "../../Components/GlobalAdminComponents/Support/FaqSections";
+import EditFaqSection from "../../Components/GlobalAdminComponents/Support/EditFaqSection";
 import IdleTimer from "../../Components/IdleTimer";
 import { RequiredAuth } from "../../Components/RequiredAuth";
 import AgreementFile from "../../Components/CooperativeRegForms/AgreementFile";
@@ -192,7 +225,6 @@ import AppLoanRepaymentRequest from "../../Components/DashboardComponents/Report
 import AppLoanRequest from "../../Components/DashboardComponents/Reports/RequestReports/AppLoanRequest";
 import { UserContext } from "../../Components/AuthContext";
 import LoanRestructure from "../../Components/DashboardComponents/LoanManagement/LoanRestructure";
-import PrivacyPolicy from "../PrivacyPolicy";
 import GLAccountStatement from "../../Components/DashboardComponents/Reports/GLAccountStatement";
 import SubscriptionRenewal from "../../Components/SubscriptionRenewal";
 import BulkLoginAccess from "../../Components/DashboardComponents/Operations/BulkLoginAccess";
@@ -201,39 +233,6 @@ import MemberContributionDetails from "../../Components/DashboardComponents/Repo
 import Signatory from "../../Components/DashboardComponents/Operations/Signatory";
 import CookieConsentModal from "../../Components/DashboardComponents/CookieModal";
 import AdminResetPassword from "../../Components/AdminResetPassword";
-import AddNewUser from "../../Components/DashboardComponents/AdminTasksSubComponents/AddNewUser";
-import AdminLogin from "../../Components/AdminLogin";
-import GlobalAdminTemplate from "./GlobalAdminTemplate";
-import GeneralOverview from "../../Components/GlobalAdminComponents/GeneralOverview/GeneralOverview";
-import ExpiredSubscriptions from "../../Components/GlobalAdminComponents/GeneralOverview/ExpiredSubscriptions";
-import OutstandingSubscriptions from "../../Components/GlobalAdminComponents/GeneralOverview/OutstandingSubscriptions";
-import ExpiringSoon from "../../Components/GlobalAdminComponents/GeneralOverview/ExpiringSoon";
-import Setup from "../../Components/GlobalAdminComponents/Setup/Setup";
-import ManageCooperative from "../../Components/GlobalAdminComponents/Setup/ManageCooperative";
-import ManageBank from "../../Components/GlobalAdminComponents/Setup/ManageBank";
-import GlobalAdminTasks from "../../Components/GlobalAdminComponents/GlobalAdminTasks/GlobalAdminTasks";
-import OperationLockStatus from "../../Components/GlobalAdminComponents/GlobalAdminTasks/OperationLockStatus";
-import CooperativeApprovalIndex from "../../Components/GlobalAdminComponents/GlobalAdminTasks/CooperativeApprovalIndex";
-import CooperativeApproval from "../../Components/GlobalAdminComponents/GlobalAdminTasks/CooperativeApproval";
-import ViewRequest from "../../Components/GlobalAdminComponents/GlobalAdminTasks/ViewRequest";
-import GlobalUserReset from "../../Components/GlobalAdminComponents/GlobalAdminTasks/GlobalUserReset";
-import GlobalRoleConfigIndex from "../../Components/GlobalAdminComponents/GlobalAdminTasks/GlobalRoleConfigIndex";
-import GlobalRoleConfig from "../../Components/GlobalAdminComponents/GlobalAdminTasks/GlobalRoleConfig";
-import EditGlobalRole from "../../Components/GlobalAdminComponents/GlobalAdminTasks/EditGlobalRole";
-import AddNewTenant from "../../Components/GlobalAdminComponents/GlobalAdminTasks/AddNewTenant";
-import ManageTenant from "../../Components/GlobalAdminComponents/GlobalAdminTasks/ManageTenant";
-import CoopSubInfo from "../../Components/GlobalAdminComponents/GlobalAdminTasks/CoopSubInfo";
-import PostCoopSettlement from "../../Components/GlobalAdminComponents/GlobalAdminTasks/PostCoopSettlement";
-import GlobalReports from "../../Components/GlobalAdminComponents/GlobalReports";
-import LoginStatus from "../../Components/GlobalAdminComponents/GlobalAdminTasks/LoginStatus";
-import Supports from "../../Components/GlobalAdminComponents/Support/Supports";
-import Support from "../../Components/GlobalAdminComponents/Support/Support";
-import CreateFaqs from "../../Components/GlobalAdminComponents/Support/CreateFaqs";
-import EditFaqs from "../../Components/GlobalAdminComponents/Support/EditFaq";
-import FaqSections from "../../Components/GlobalAdminComponents/Support/FaqSections";
-import FaqSection from "../../Components/GlobalAdminComponents/Support/FaqSection";
-import CreateFaqSection from "../../Components/GlobalAdminComponents/Support/CreateFaqSection";
-import EditFaqSection from "../../Components/GlobalAdminComponents/Support/EditFaqSection";
 
 const Layout = () => {
   const { credentials } = useContext(UserContext);
@@ -263,8 +262,11 @@ const Layout = () => {
           <CookieConsentModal onAccept={handleAccept} onReject={handleReject} />
         )}
         <Routes>
-          <Route path="/" element={<CooperativeSignIn />} />
-          <Route path="/global-admin-signin" element={<AdminLogin />} />
+          <Route path="/" element={<LandingPageTemplate />}>
+            <Route path="/" element={<CooperativeSignIn/>} />
+            <Route path="confirm" element={<ConfirmAccount />} />
+          </Route>
+
           <Route
             path="/subscription-renewal"
             element={<SubscriptionRenewal />}
@@ -708,7 +710,7 @@ const Layout = () => {
             />
             <Route
               path="outstanding-subscriptions"
-              element={<OutstandingSubscriptions />}
+              element={<OutstandingSubscription />}
             />
             <Route path="expiring-soon" element={<ExpiringSoon />} />
             <Route path="set-up" element={<Setup />}>
@@ -789,8 +791,6 @@ const Layout = () => {
               <Route path="edit-faqs" element={<EditFaqs />} />
             </Route>
           </Route>
-
-          {/* Catch all route */}
           <Route path="*" element={<NotFound />} />
         </Routes>
       </Suspense>

@@ -49,7 +49,7 @@ const IdleTimer = () => {
     clearTimeout(sessionTimeOutRef.current);
   }, []);
 
-  // ✅ Always call the hook, but disable it if there's no token:
+  // Always call the hook, but disable it if there's no token:
   const { getRemainingTime } = useIdleTimer({
     timeout: 300000,
     onIdle: handleOnIdle,
@@ -127,7 +127,7 @@ const IdleTimer = () => {
                 color: "#fff",
                 fontSize: "15px",
                 cursor: "pointer",
-                backgroundColor: "var(--custom-color)",
+                backgroundColor: "#3a358c",
               }}
               onClick={handleClose}
             >

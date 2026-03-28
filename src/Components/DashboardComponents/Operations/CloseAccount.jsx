@@ -282,15 +282,14 @@ const CloseAccount = () => {
           >
             <button
               type="reset"
-              className="border-0 rounded-5 px-3 btn-md"
-              style={{ backgroundColor: "#f7f4fa", fontSize:'14px' }}
+              className="border-0 rounded-4 px-3 btn-md"
+              style={{ backgroundColor: "#f7f4fa" }}
             >
               Reset
             </button>
             <button
               type="submit"
-              className="border-0 member btn-md"
-              style={{ backgroundColor: "var(--custom-color)", fontSize:'14px' }}
+              className="border-0 member btn-md px-3"
             >
               Submit
             </button>

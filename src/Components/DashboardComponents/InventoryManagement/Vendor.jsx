@@ -205,6 +205,7 @@ getVendorDetails()
     })
   }
  
+
   return (
     <div className="card p-3 border-0 rounded-4">
       <div className="d-flex justify-content-between">
@@ -212,7 +213,7 @@ getVendorDetails()
           <button
             className="btn btn-md text-white rounded-5"
             onClick={()=>{openModal()}}
-            style={{ backgroundColor: "var(--custom-color)", fontSize: "14px" }}
+            style={{ backgroundColor: "#0452C8", fontSize: "14px" }}
           >
             Add new vendor
           </button>
@@ -287,7 +288,7 @@ getVendorDetails()
                     <button type="reset" className="btn btn-md" style={{fontSize:'14px', color:'#666', backgroundColor:'#e5e5e5'}}>
                       Discard
                     </button>
-                    <button className="btn btn-md btn-primary" type="submit" style={{fontSize:'14px'}}>
+                    <button className="border-0 btn-md member" type="submit" style={{fontSize:'14px'}}>
                       Add Vendor
                     </button>
                   </div>
@@ -301,7 +302,7 @@ getVendorDetails()
         <Modal 
         isOpen={open}
         onRequestClose={handleCloseModal}
-          overlayClassName="loan-overlay"
+        overlayClassName="loan-overlay"
         ariaHideApp={false}
         className='loan-modal rounded-3 card p-3'
         >

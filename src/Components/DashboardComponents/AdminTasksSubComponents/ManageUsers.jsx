@@ -12,6 +12,8 @@ import { Link } from "react-router-dom";
 import { BsArrowRepeat } from "react-icons/bs";
 import { MdOutlineEdit } from "react-icons/md";
 import {LiaTimesCircle} from 'react-icons/lia'
+import {AiOutlineDelete} from 'react-icons/ai'
+import { toast } from "react-toastify";
 
 const ManageUsers = () => {
   const [data, setData] = useState([])
@@ -25,6 +27,23 @@ const ManageUsers = () => {
     useEffect(()=>{
       getUsers()
     },[])
+
+  const deleteUser =async(id)=>{
+    const confirm = window.confirm('Are you sure you want to delete the user?')
+    if (!confirm) {
+      return
+    }
+    await axios(`Users/delete-user?UniqueId=${id}`, {headers:{
+      Authorization: `Bearer ${credentials.token}`
+    }}).then(resp=>{
+      toast(resp.data.message, {autoClose:5000, type:'success', pauseOnHover:true})
+      setTimeout(() => {
+      getUsers()
+      }, 5000);
+    })
+    .catch(error=>toast(error.response.data.message, {autoClose:false, type:'error'}))
+  }
+
     const column = [
         { Header: "User ID", accessor: "userId" },
         { Header: "Full Name", accessor: "fullName" },
@@ -48,6 +67,11 @@ const ManageUsers = () => {
                 <div style={{ position: "relative" }} className="status-icon">
                 <span className="stat">Edit</span>
                 <Link to={`edit-user/${id}`} style={{color:'#1d1d1d'}}> <MdOutlineEdit/></Link>
+                </div>
+                <div style={{ position: "relative", cursor:'pointer' }} className="status-icon"
+                onClick={()=>deleteUser(id)}>
+                <span className="stat">Delete</span>
+                  <AiOutlineDelete />
                 </div>
             </div>
         })}
@@ -88,11 +112,11 @@ const ManageUsers = () => {
     <div className='bg-white p-3 rounded-3'>
     <div className="d-flex justify-content-between align-items-center mb-3">
       <h4 style={{fontSize:'16px', color:'#1d1d1d'}}>Manage users</h4>
-      <Link to='add-user' className='border-0 btn-md member rounded-5 px-3' style={{textDecoration:'none'}}>Add new user</Link>
+      <Link to='add-user' className='btn btn-md pub-btn rounded-5 px-3'>Add new user</Link>
       </div>
 
       <form className="search-form mb-4">
-        <input 
+        <input
           type="text"
           placeholder="Search anything"
           className="w-100 "

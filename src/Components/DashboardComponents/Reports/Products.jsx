@@ -36,8 +36,6 @@ const Products = () => {
     getReports()
     getVariances()
   },[])
-
-  console.log(variances)
  
 
     return (

@@ -216,7 +216,7 @@ const EditLoanProduct = () => {
               <button
                 className="btn btn-sm"
                 style={{
-                  backgroundColor: "var(--custom-color)",
+                  backgroundColor: "#0452c8",
                   color: "#fff",
                   padding: "8px 10px",
                   borderRadius: "1.5rem",

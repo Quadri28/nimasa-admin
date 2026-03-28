@@ -104,22 +104,6 @@ const RegisterItem = () => {
     setView(false);
   };
 
-  const { width } = useScreenSize();
-  const customStyles = {
-    content: {
-      top: "50%",
-      left: "50%",
-      right: "auto",
-      height: "65%",
-      bottom: "auto",
-      marginRight: "-50%",
-      transform: "translate(-50%, -50%)",
-      // padding:'1rem',
-      borderRadius: "1rem",
-      width: width > 900 ? "800px" : "320px",
-      // overFlowY: "scroll",
-    },
-  };
 
   const handleChange = (e) => {
     const name = e.target.name;
@@ -306,7 +290,7 @@ const onSubmit=(values)=>{
         <p className="active-selector">Register Item</p>
         <button
           className="btn btn-md text-white rounded-5"
-          style={{ backgroundColor: "var(--custom-color)", fontSize: "14px" }}
+          style={{ backgroundColor: "#0452C8", fontSize: "14px" }}
           onClick={openAddRegister}
         >
           + Register items
@@ -393,7 +377,7 @@ const onSubmit=(values)=>{
          >
           {({ values }) => (
           <Form>
-          <div className="item-register-container">
+          <div className="cooperative-info-form-wrapper">
           <div className="">
               <label htmlFor="vendorId">Select Vendor:</label>
               <Field as='select'
@@ -518,7 +502,7 @@ const onSubmit=(values)=>{
       <Modal
         isOpen={view}
         onRequestClose={closeViewRegister}
-       overlayClassName="loan-overlay"
+          overlayClassName="loan-overlay"
         ariaHideApp={false}
         className='loan-modal rounded-3 card p-3'
       >

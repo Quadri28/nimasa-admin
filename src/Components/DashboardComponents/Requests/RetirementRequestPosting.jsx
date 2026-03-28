@@ -72,21 +72,7 @@ function openView() {
   setIsOpen(true);
 }
 const columns = useMemo(() => column, []);
-const { width } = useScreenSize();
-const customStyles = {
-  content: {
-    top: "50%",
-    left: "50%",
-    right: "auto",
-    height:'65%',
-    bottom: "auto",
-    marginRight: "-50%",
-    transform: "translate(-50%, -50%)",
-    borderRadius: "1rem",
-    width: width > 900 ? "500px" : "320px",
-    overFlowY: "scroll",
-  },
-};
+
 
 const postPosting=(e)=>{
   e.preventDefault()
@@ -122,37 +108,47 @@ const rejectPosting=(e)=>{
       <Modal
         isOpen={isOpen}
         onRequestClose={closeView}
-        style={customStyles}
-        contentLabel="Example Modal"
+          overlayClassName="loan-overlay"
         ariaHideApp={false}
+        className='loan-modal rounded-3 card p-3'
       >
-       <h4 className="text-uppercase" style={{fontSize:'18px', fontWeight:'600'}}>Retirement posting </h4> 
-      <div className='d-flex flex-column gap-2 mt-3'>
+       <h4 className="text-capitalize" style={{fontSize:'18px', fontWeight:'600'}}>Retirement posting </h4> 
+      <div className='d-flex flex-column gap-3 mt-3'>
+        <div className="d-flex gap-3 align-items-center discourse">
         <div className="d-flex gap-3" style={{fontSize:'14px'}}>
-        <strong>Account Number:</strong> <span> {request?.accountNumber}</span>
+        <span>Member ID: </span> <span>{request?.memberId}</span>
         </div>
+         <div className="d-flex gap-3" style={{fontSize:'14px'}}>
+        <span>Full Name:</span> <span>{request?.fullName}</span>
+        </div>
+        <img src={request?.profileImageUrl} alt="Profile image" className='view-img img-fluid' />
+        </div>
+        <div className="d-flex justify-content-between discourse flex-wrap align-items-center p-2" style={{backgroundColor:'var(--light-blue)'}} >
+        <div>
+          <span>Account Number:</span> <span> {request?.accountNumber}</span>
+        </div>
+       <div className="d-flex gap-3" style={{fontSize:'14px'}}>
+        <span>Amount: </span> <span>{request?.amount?.toLocaleString('en-US')}</span>
+        </div>
+        </div>
+        
+        <div className="d-flex justify-content-between discourse flex-wrap align-items-center p-2" >
         <div className="d-flex gap-3" style={{fontSize:'14px'}}>
-        <strong>Full Name:</strong> <span>{request?.fullName}</span>
+        <span>Transaction Date:  </span> <span>{request?.transactionDate}</span>
         </div>
-        <div className="d-flex gap-3" style={{fontSize:'14px'}}>
-        <strong>Member ID: </strong> <span>{request?.memberId}</span>
-        </div>
-        <div className="d-flex gap-3" style={{fontSize:'14px'}}>
-        <strong>Transaction Date:  </strong> <span>{request?.transactionDate}</span>
-        </div>
-        <div className="d-flex gap-3" style={{fontSize:'14px'}}>
-        <strong>Amount: </strong> <span>{request?.amount?.toLocaleString('en-US')}</span>
-        </div>
-       { request?.totalSavingBalance && <div className="d-flex gap-3" style={{fontSize:'14px'}}>
-        <strong>Total Saving Bal: </strong>
-         <span>{request?.totalSavingBalance?.toLocaleString('en-US')}</span>
+         { request?.totalSavingBalance && <div className="d-flex gap-3" style={{fontSize:'14px'}}>
+        <span>Total Saving Bal: </span>
+         <span>{new Intl.NumberFormat('en-US', {minimumFractionDigits:2}).format(request?.totalSavingBalance)}</span>
         </div>
         }
+        </div>
+        <div className="d-flex justify-content-between discourse flex-wrap align-items-center p-2" style={{backgroundColor:'var(--light-blue)'}} >
         <div className="d-flex gap-3" style={{fontSize:'14px'}}>
-        <strong>Status: </strong> <span>{request?.status}</span>
+        <span>Status: </span> <span>{request?.status}</span>
         </div>
         <div className="d-flex gap-3" style={{fontSize:'14px'}}>
-        <strong>Email: </strong> <span>{request?.email}</span>
+        <span>Email: </span> <span>{request?.email}</span>
+        </div>
         </div>
       </div>
       <div className="d-flex flex-column gap-3 mt-3">
@@ -161,7 +157,7 @@ const rejectPosting=(e)=>{
                   style={{border:'solid 1px #d3d3d3'}}>
             <option value="">Select Account</option>
             {
-              accounts.map(account=>(
+              accounts?.map(account=>(
                 <option value={account.glNumber} key={account.glNumber}>{account.accountName}</option>
               ))
             }
@@ -178,7 +174,7 @@ const rejectPosting=(e)=>{
                 />
               </div>
             ) }
-        <div className="d-flex gap-3">
+        <div className="d-flex gap-3 justify-content-end">
         <form onSubmit={postPosting}>
           <button className='btn btn-md member px-4 py-2'>Post</button>
         </form>

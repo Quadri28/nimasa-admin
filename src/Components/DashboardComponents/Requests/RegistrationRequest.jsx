@@ -14,8 +14,7 @@ const RegistrationRequest = () => {
   const { credentials } = useContext(UserContext);
   const [request, setRequest] = useState({});
   const [isOpen, setIsOpen] = useState(false);
-    const [isReject, setIsReject] = useState(false)
-  
+  const [isReject, setIsReject] = useState(false);
 
   const getReports = () => {
     axios("RequestVerification/user-registration-requests", {
@@ -132,10 +131,10 @@ const RegistrationRequest = () => {
           type: "success",
           autoClose: 5000,
           pauseOnHover: true,
-        })
+        }),
       )
       .catch((error) =>
-        toast(error.response.data.message, { type: "error", autoClose: false })
+        toast(error.response.data.message, { type: "error", autoClose: false }),
       );
   };
 
@@ -157,10 +156,10 @@ const RegistrationRequest = () => {
           type: "success",
           autoClose: 5000,
           pauseOnHover: true,
-        })
+        }),
       )
       .catch((error) =>
-        toast(error.response.data.message, { type: "error", autoClose: false })
+        toast(error.response.data.message, { type: "error", autoClose: false }),
       );
   };
   return (
@@ -173,66 +172,84 @@ const RegistrationRequest = () => {
       <Modal
         isOpen={isOpen}
         onRequestClose={closeView}
-        style={customStyles}
-        contentLabel="Example Modal"
+        overlayClassName="loan-overlay"
         ariaHideApp={false}
+        className="loan-modal rounded-3 card p-3"
       >
         <h4
-          className="text-uppercase text-center"
+          className="text-capitalize"
           style={{ fontSize: "18px", fontWeight: "600" }}
         >
           User Details{" "}
         </h4>
-        <div className="d-flex flex-column gap-2 mt-3 mx-auto">
+        <div className="d-flex flex-column gap-3 mt-3">
+          <div className="d-flex gap-3 align-items-center flex-wrap discourse">
+            <div className="d-flex gap-2">
+              <span>Full Name:</span> <span>{request?.fullName}</span>
+            </div>
+            <div className="d-flex gap-2">
+              <span>Member ID: </span> <span>{request?.memberId}</span>
+            </div>
+            <div>
+              <img src={request?.profileImage} alt="profile-img view-img" />
+            </div>
+          </div>
           <div
-            className="d-flex gap-3 align-items-center"
-            style={{ fontSize: "14px" }}
+            className="d-flex justify-content-between discourse align-items-center p-2"
+            style={{ backgroundColor: "var(--light-blue)" }}
           >
-            <strong>Member photo:</strong>{" "}
-            <img src={request?.profileImage} alt="profile-img" width={50} />
+            <div>
+              <span>Gender: </span> <span>{request?.gender}</span>
+            </div>
+            <div className="d-flex gap-3">
+              <span>Bank Name: </span> <span>{request?.bankName}</span>
+            </div>
           </div>
-          <div className="d-flex gap-3" style={{ fontSize: "14px" }}>
-            <strong>Full Name:</strong> <span>{request?.fullName}</span>
+
+          <div className="d-flex justify-content-between discourse align-items-center p-2">
+            <div className="d-flex gap-3">
+              <span>Account Number:</span>
+              <span> {request?.accountNumber}</span>
+            </div>
+            <div className="d-flex gap-3">
+              <span>Account Name: </span> <span>{request?.accountName}</span>
+            </div>
           </div>
-          <div className="d-flex gap-3" style={{ fontSize: "14px" }}>
-            <strong>Member ID: </strong> <span>{request?.memberId}</span>
+          <div
+            className="d-flex justify-content-between discourse align-items-center p-2"
+            style={{ backgroundColor: "var(--light-blue)" }}
+          >
+            <div className="d-flex gap-3">
+              <span>Status: </span> <span>{request?.status}</span>
+            </div>
+            <div className="d-flex gap-3">
+              <span>Email: </span> <span>{request?.email}</span>
+            </div>
           </div>
-          <div className="d-flex gap-3" style={{ fontSize: "14px" }}>
-            <strong>Gender: </strong> <span>{request?.gender}</span>
+          <div className="d-flex justify-content-between discourse align-items-center p-2">
+          <div className="d-flex gap-3">
+            <span>Phone NO: </span> <span>{request?.mobileNumber}</span>
           </div>
-          <div className="d-flex gap-3" style={{ fontSize: "14px" }}>
-            <strong>Bank Name: </strong> <span>{request?.bankName}</span>
+          <div className="d-flex gap-3">
+            <span>DOB: </span> <span> {request?.dob}</span>
           </div>
-          <div className="d-flex gap-3" style={{ fontSize: "14px" }}>
-            <strong>Account Number:</strong>{" "}
-            <span> {request?.accountNumber}</span>
           </div>
-          <div className="d-flex gap-3" style={{ fontSize: "14px" }}>
-            <strong>Account Name: </strong> <span>{request?.accountName}</span>
-          </div>
-          <div className="d-flex gap-3" style={{ fontSize: "14px" }}>
-            <strong>Status: </strong> <span>{request?.status}</span>
-          </div>
-          <div className="d-flex gap-3" style={{ fontSize: "14px" }}>
-            <strong>Email: </strong> <span>{request?.email}</span>
-          </div>
-          <div className="d-flex gap-3" style={{ fontSize: "14px" }}>
-            <strong>Phone NO: </strong> <span>{request?.mobileNumber}</span>
-          </div>
-          <div className="d-flex gap-3" style={{ fontSize: "14px" }}>
-            <strong>DOB: </strong> <span> {request?.dob}</span>
-          </div>
+          <div
+            className="d-flex justify-content-between discourse align-items-center p-2"
+            style={{ backgroundColor: "var(--light-blue)" }}
+          >
           {request.uniqueId}
           <div className="d-flex gap-3" style={{ fontSize: "14px" }}>
-            <strong>Monthly Contribution: </strong>{" "}
+            <span>Monthly Contribution: </span>{" "}
             <span>
               {new Intl.NumberFormat("en-US", {
                 minimumFractionDigits: 2,
               }).format(request?.monthlyContribution)}
             </span>
           </div>
+          </div>
         </div>
-        <div className="d-flex flex-column gap-3 mt-3">
+        <div className="d-flex flex-column gap-3 mt-4">
           <select
             name={account}
             onChange={(e) => setAccount(e.target.value)}

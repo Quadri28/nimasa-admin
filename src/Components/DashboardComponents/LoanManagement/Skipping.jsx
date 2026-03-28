@@ -4,6 +4,7 @@ import { UserContext } from '../../AuthContext'
 import axios from '../../axios'
 import UnpaginatedTable from '../Reports/UnpaginatedTable'
 import { toast, ToastContainer } from 'react-toastify'
+import { Combobox } from 'react-widgets/cjs'
 
 const Skipping = () => {
   const [accounts, setAccounts]= useState([])
@@ -70,6 +71,10 @@ const column = [
   }) },
 ];
 
+ const formattedAccounts = accounts.map((e) => ({
+  ...e,
+  label: `${e.acctName}  >> ${e.accountNumber} >> ${e.product}`,
+}));
 
 const columns = useMemo(() => column, []);
   return (
@@ -92,16 +97,14 @@ const columns = useMemo(() => column, []);
               <label htmlFor="account" style={{ fontWeight: "500" }}>
                 Select Account Number<sup className="text-danger">*</sup>
               </label>
-              <select name={account} required onChange={(e)=>setAccount(e.target.value)}>
-                <option value="">Select</option>
-                {
-                  accounts.map((account, i)=>(
-                    <option value={account.accountNumber} key={i}>
-                    {`${account.acctName}  >> ${account.accountNumber} >> ${account.product}`}
-                  </option>
-                  ))
-                }
-                </select>
+                <Combobox
+                      data={formattedAccounts}
+                      value={account}
+                      onChange={(val) => setAccount(val.accountNumber)}
+                      valueField="accountNumber"
+                      textField="label"
+                      filter="contains"
+                       />
             </div>
           </div>
     </div>

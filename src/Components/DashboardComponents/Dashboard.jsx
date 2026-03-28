@@ -6,7 +6,9 @@ import FinancialOverviewChart from "./FinancialOverviewChart";
 import ProductOverviewChart from "./ProductOverviewChart";
 import { UserContext } from "../AuthContext";
 import axios from "../axios";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import Modal from 'react-modal'
+import useScreenSize from "../ScreenSizeHook";
 
 const Dashboard = () => {
   const {credentials} = useContext(UserContext)
@@ -14,7 +16,18 @@ const Dashboard = () => {
   const [members, setMembers]= useState([])
   const [financial, setFinancial]= useState([])
   const [isLoaded, setIsLoaded] = useState(false);
+  const [isVerified, setIsVerified] = useState(null)
+  const [isOpen, setIsOpen] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
+  const navigate = useNavigate()
 
+  function handleOpenModal(){
+    setIsOpen(true)
+  }
+
+  function handleCloseModal(){
+    setIsOpen(false)
+  }
   useEffect(() => {
     setTimeout(() => {
       setIsLoaded(true);
@@ -28,7 +41,7 @@ const getDashboardDetails=()=>{
     setDetails(resp.data.data)
   })
 }
-
+console.log(isVerified)
 const getMemberOverview=()=>{
   axios('DashBoard/member-overview', {headers:{
     Authorization: `Bearer ${credentials.token}`
@@ -44,14 +57,51 @@ const getFinancialOverview=()=>{
   })
 }
 
+const checkIfBankIsLinked= async()=>{
+  setIsLoading(true)
+  try {
+     const resp = await axios('/BankAccount/verify-bank-account', {headers:{
+    Authorization: `Bearer ${credentials.token}`
+  }})
+  setIsLoading(false)
+  setIsVerified(resp.data.data.isVerify)
+  } catch (error) {
+  }
+}
+
 useEffect(()=>{
+  checkIfBankIsLinked()
   getDashboardDetails()
   getFinancialOverview()
   getMemberOverview()
 }, [])
 
+useEffect(() => {
+  if (!isLoading && isVerified === false) {
+    const timer = setTimeout(() => {
+      handleOpenModal();
+    }, 1000);
+
+    return () => clearTimeout(timer);
+  }
+}, [isLoading, isVerified])
+
+const {width} = useScreenSize()
+const customStyles = {
+    content: {
+      top: "35%",
+      left: "50%",
+      right: "auto",
+      bottom: "auto",
+      marginRight: "-50%",
+      transform: "translate(-50%, -50%)",
+      borderRadius: "1rem",
+      width: width > 900 ? "400px" : '300px',
+    },
+  };
 
   return (
+    <>
     <div>
       <div className="d-flex flex-column" style={{fontFamily:'DM Sans'}}>
         <h5 className="dash-title" style={{fontSize:'18px', fontWeight:'500'}}> General Overview</h5>
@@ -138,8 +188,9 @@ useEffect(()=>{
         <div className="card p-3 rounded-3 border-0" style={{height:'fit-content'}}>
           <div className="d-flex justify-content-between flex-wrap member-overview-container align-items-center">
             <h5 className="overview-title" style={{fontSize:'16px'}}>Member Overview</h5>
-            <Link to='/admin-dashboard/member-management'
-              className="border-0 member px-3 py-1" style={{textDecoration:'none', fontSize:'14px'}}>      Membership Management
+            <Link to='/member-management/members'
+              className="border-0 btn-md mng-btn px-2 py-1" style={{textDecoration:'none'}}>  
+                  Membership Management
             </Link>
           </div>
           <OverviewChart members={members}/>
@@ -158,6 +209,26 @@ useEffect(()=>{
             <ProductOverviewChart/>
         </div>
     </div>
+       <Modal
+        isOpen={isOpen}
+        onRequestClose={handleCloseModal}
+        overlayClassName="loan-overlay"
+        ariaHideApp={false}
+        style={customStyles}
+        >
+              <h4 className="text-center">Account Setup</h4>
+              <p style={{fontSize:'14px', textAlign:'center'}}>
+                Please Set Up Bank Account for Easy Remittance of Payment made via the Channels: <br />
+                <strong> CONFIGURATIONS</strong> {'>>'} <strong>MANAGE BANK ACCOUNT </strong>
+              </p>
+              <div className="d-flex justify-content-end">
+                <button className="member border-0"
+                 onClick={()=>navigate('/admin-dashboard/configurations/manage-bank-account')}>
+                  Set up account</button>
+              </div>
+             </Modal>
+
+    </>
   );
 };
 

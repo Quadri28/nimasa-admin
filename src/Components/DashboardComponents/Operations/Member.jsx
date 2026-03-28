@@ -141,7 +141,7 @@ const resendAccess=(id)=>{
             <div className="d-flex justify-content-around gap-2 align-items-center px-3">
               <div className="status-icon position-relative">
                 <span className="stat">Edit member</span>
-                <Link className="fs-6 text-dark" to={type === "INDIVIDUAL" ? `edit-member/${id}` : `edit-corporate-member/${id}`}>
+                <Link className="fs-6" to={type === "INDIVIDUAL" ? `edit-member/${id}` : `edit-corporate-member/${id}`}>
                   <GrEdit />
                 </Link>
               </div>
@@ -217,22 +217,7 @@ const resendAccess=(id)=>{
     }).catch(error=>toast(error.response.data.message, {type:'error', autoClose:false}))
   }
  
-  const customStyles = {
-    content: {
-      top: "50%",
-      left: "50%",
-      right: "auto",
-      height: "60%",
-      bottom: "auto",
-      marginRight: "-50%",
-      transform: "translate(-50%, -50%)",
-      // padding:'1rem',
-      borderRadius: "1rem",
-      width: "330px",
-      overFlowY: "scroll",
-    },
-  };
-
+  
   const handleSubmit=(e)=>{
     e.preventDefault()
     const payload={
@@ -276,7 +261,10 @@ const resendAccess=(id)=>{
       <Modal 
        isOpen={isOpen}
        onRequestClose={handleCloseModal}
-       style={customStyles}>
+      overlayClassName="loan-overlay"
+        ariaHideApp={false}
+        className='loan-modal rounded-3 card p-3'
+       >
         <form onSubmit={handleSubmit}>
           <h2 className="text-center" style={{fontSize:'16px', fontWeight:'600', color:'#1d1d1d'}}>Edit Contribution</h2>
         <div className="d-flex flex-column gap-2 item-register-container">
@@ -312,8 +300,10 @@ const resendAccess=(id)=>{
         <Modal 
        isOpen={modalOpen}
        onRequestClose={handleClose}
-       style={customStyles}
-       ariaHideApp={false}>
+     overlayClassName="loan-overlay"
+        ariaHideApp={false}
+        className='loan-modal rounded-3 card p-3'
+       >
         <Formik onSubmit={onSubmit}
         initialValues={initialValues}
         validationSchema={validationSchema}>

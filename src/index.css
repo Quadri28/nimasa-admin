@@ -32,10 +32,10 @@ html, body {
  }
  .second-btn{
   background-color: #e6f0ff;
-  color: var(--custom-color);
+  color: #0452C8;
   border-radius: 2rem;
   padding: 8px 15px;
- 
+ font-size: 14px;
  }
 .loan-overlay {
   position: fixed;
@@ -48,12 +48,14 @@ html, body {
   position: absolute;
   inset: 0;
   margin: auto;
-  height: 70%;
+  height: 65%;
   width: 60%;
   overflow: auto;
+  outline: none;
 }
 :root{
-  --custom-color: #007D53;
+  --custom-color: #23396A;
+  --light-blue: #F4FAFD;
 }
 .rw-widget-picker {
   display: grid;
@@ -66,10 +68,30 @@ html, body {
 label{
   font-size: 14px;
   color: #666;
+
 }
-.dashboard-template-container{
-    height: calc(100vh - 80px);
+.view-img{
+  height: 5rem;
+  width: 5rem;
+  cursor: pointer;
+  border-radius: 10px;
 }
+.view-img:hover{
+  z-index: 9999;
+  width: 70%;
+  height: 60%;
+  position: absolute;
+  top: 60%;
+  left: 50%;
+  transform: translate(-50%, 50%);
+}
+.inputs-container input, .inputs-container select{
+  padding: 10px 12px;
+  background-color: rgb(242, 242, 242);
+  border: none;
+  border-radius: 10px;
+}
+
 @font-face {
   font-family: 'Aeonik';
   src: local(Aeonik), url(./fonts/Aeonik-Bold.otf) format('truetype');
@@ -77,4 +99,14 @@ label{
 @font-face {
   font-family: 'Aeonik-md';
   src: local(Aeonik), url(./fonts/Aeonik-Medium.otf) format('truetype');
+}
+.logo{
+  width: 100px !important;
+}
+
+
+@media screen and (max-width:480px) {
+  .logo{
+    width: 60px !important;
+  }
 }

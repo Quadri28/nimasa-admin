@@ -85,11 +85,11 @@ const ListOfBalances = ({ groupedLoans }) => {
       {/* EXPORT BUTTON */}
       <div className="d-flex gap-2 mb-3 justify-content-end">
         <button 
-         className="btn btn-md rounded-5 text-white px-4 fs-6"
-            style={{ backgroundColor: "var(--custom-color)" }} onClick={exportToExcel}>
+         className="btn btn-md rounded-4 text-white px-4 fs-6"
+            style={{ backgroundColor: "#033E96" }} onClick={exportToExcel}>
           Export Excel
         </button>
-        <button className="btn btn-md rounded-5 px-4 fs-6 border" onClick={exportToPDF}>
+        <button className="btn btn-md rounded-4 px-4 fs-6 border" onClick={exportToPDF}>
           Export PDF
         </button>
       </div>

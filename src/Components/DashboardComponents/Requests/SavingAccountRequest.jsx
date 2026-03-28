@@ -133,44 +133,44 @@ const rejectSaving=(e)=>{
       <Modal
         isOpen={isOpen}
         onRequestClose={closeModal}
-          overlayClassName="loan-overlay"
+         overlayClassName="loan-overlay"
         ariaHideApp={false}
         className='loan-modal rounded-3 card p-3'
+      
       >
-        <h3 style={{fontSize:'16px', fontWeight:'600', textAlign:'center'}}>Add savings Account</h3>
-              <div className="row mt-3">
-              <hr />
-                <div className='d-flex justify-content-between flex-wrap'>
-                  <span>Full Name: {request?.fullName}</span>
-                  <span>Employee ID: {request?.employeeId}</span>
-                  <span>Employee Username: {request?.employeeUsername}</span>
-                </div>
-                <hr />
-                <div className='d-flex justify-content-between flex-wrap'>
+        <h3 style={{fontSize:'18px', fontWeight:'600'}}>Add savings Account</h3>
+              <div className="d-flex gap-3 flex-column mt-3" style={{fontSize:'14px'}}>
+           <div className="d-flex gap-3 align-items-center flex-wrap" style={{fontSize:'14px', color:'#0D0D0D'}}>
+            <span>Member No: {request?.employeeId}</span>
+            <span>Member Name: {request?.fullName}</span>
+             <img src={request?.profileImageUrl} alt="profile picture" 
+        style={{width:'4rem', height:'4rem', borderRadius:'10px'}} />
+          </div>
+           <div className="d-flex justify-content-between discourse align-items-center p-2" style={{backgroundColor:'var(--light-blue)'}} >
                   <span>Branch Code: {request?.branchCode} </span>
                   <span>Branch Name: {request?.branchName}</span>
-                  <span>Status: {request?.status}</span>
                 </div>
-                <hr />
-                <div className='d-flex justify-content-between flex-wrap'>
+                 <div className="d-flex justify-content-between discourse align-items-center p-2" >
+                  <span>Status: {request?.status}</span>
                   <span>Email: {request?.email}</span>
-                  <span>Product Name: {request?.product?.productName}</span>
+                </div>
+           <div className="d-flex justify-content-between discourse align-items-center p-2" style={{backgroundColor:'var(--light-blue)'}} >
+                <span>Product Name: {request?.product?.productName}</span>
                   <span>Product Start Date: {request?.product?.productStartDate}</span>
                 </div>
-                <hr />
-                <div className='d-flex justify-content-between flex-wrap'>
+               <div className="d-flex justify-content-between discourse align-items-center p-2" >
                   <span>Product Expiry Date: {request?.product?.productExpiryDate}</span>
                   <span>Product Currency: {request?.product?.productCurrency}</span>
-                  <span>Min. Acct. Bal: {request?.product?.minimumAccountBalance}</span>
                 </div>
-                <hr />
-                <div className='d-flex justify-content-between flex-wrap'>
+                 <div className="d-flex justify-content-between discourse align-items-center p-2" style={{backgroundColor:'var(--light-blue)'}} >
+                  <span>Min. Acct. Bal: {request?.product?.minimumAccountBalance}</span>
                   <span>Product Type: {request?.product?.productType}</span>
-                  <span>Opening Bal. : {request?.product?.openingBalance}</span>
+                </div>
+               <div className="d-flex justify-content-between discourse align-items-center p-2" >
+                 <span>Opening Bal. : {request?.product?.openingBalance}</span>
                   <span>Closing Bal. : {request?.product?.closingBalance}</span>
                 </div>
-                <hr />
-                <div className='d-flex justify-content-between flex-wrap'>
+              <div className="d-flex justify-content-between discourse align-items-center p-2" style={{backgroundColor:'var(--light-blue)'}} >
                   <span>Min. Interest: {request?.product?.minimumInterest}</span>
                   <span>Credit Interest : {request?.product?.creditInterest}</span>
                   <span>Debit Interest. : {request?.product?.debitInterest}</span>

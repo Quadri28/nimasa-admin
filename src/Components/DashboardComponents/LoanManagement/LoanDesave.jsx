@@ -1,13 +1,14 @@
 import React, { useContext, useEffect, useState } from 'react'
-import { Formik, Form, Field, ErrorMessage } from 'formik'
 import { UserContext } from '../../AuthContext'
 import axios from '../../axios'
 import { toast, ToastContainer } from 'react-toastify'
+import { Combobox } from 'react-widgets/cjs'
 
 const LoanDesave = () => {
   const [accounts, setAccounts]= useState([])
   const [gl, setGl]= useState('')
   const [account, setAccount]= useState('')
+  const [date, setDate]= useState('')
   const [mode, setMode]= useState('')
   const [details, setDetails]= useState({})
   const [settlement, setSettlement]= useState({})
@@ -57,7 +58,7 @@ const postDesave=(e)=>{
   const payload={
   accountNumber: account,
   accountToRepayFrom: gl,
-  valueDate: new Date(),
+  valueDate: date,
   liquidationMode: mode
   }
   e.preventDefault()
@@ -66,10 +67,15 @@ const postDesave=(e)=>{
   }}).then(resp=>toast(resp.data.data, {type:'success', autoClose:5000, pauseOnHover:true}))
   .catch(error=>toast(error.response.data.message, {type:'error', autoClose:false}))
 }
+
+   const formattedAccounts = accounts.map((e) => ({
+  ...e,
+  label: `${e.acctName}  >> ${e.accountNumber} >> ${e.product}`,
+}));
   return (
     <div className="mt-4 bg-white px-3 py-3 rounded-4">
     <div className="mb-4 mt-2">
-      <span className="active-selector">Loan Liqudation</span>
+      <span className="active-selector">Liquidate Loan</span>
     </div>
     <div style={{ border: "solid 1px #fafafa" }} className="rounded-4">
       <div
@@ -77,7 +83,7 @@ const postDesave=(e)=>{
         style={{ backgroundColor: "#f4fAfd", borderRadius: "10px 10px 0 0" }}
       >
         <span style={{ fontWeight: "500", fontSize: "16px", color:'#333' }}>
-         Loan Liqudation
+         Liquidate Loan
           </span>
       </div>
         <form onSubmit={postDesave}>
@@ -87,16 +93,14 @@ const postDesave=(e)=>{
               <label htmlFor="account" style={{ fontWeight: "500" }}>
                 Select Account Number<sup className="text-danger">*</sup>
               </label>
-              <select name="account" required onChange={(e)=>setAccount(e.target.value)}>
-                <option value="">Select</option>
-                {
-                  accounts.map((account, i)=>(
-                    <option value={account.accountNumber} key={i}>
-                    {`${account.acctName}  >> ${account.accountNumber} >> ${account.product}`}
-                  </option>
-                  ))
-                }
-                </select>
+               <Combobox
+                      data={formattedAccounts}
+                      value={account}
+                      onChange={(val) => setAccount(val.accountNumber)}
+                      valueField="accountNumber"
+                      textField="label"
+                      filter="contains"
+                       />
             </div>
             <div className="d-flex flex-column gap-1 ">
               <label htmlFor="account" style={{ fontWeight: "500" }}>
@@ -124,6 +128,12 @@ const postDesave=(e)=>{
 			          <option Value="3" > No Interest Charged</option>
                 </select>
             </div>
+             <div className="d-flex flex-column gap-1 ">
+              <label htmlFor="date" style={{ fontWeight: "500" }}>
+                Liquidation Date<sup className="text-danger">*</sup>
+                <input type="date" name='date' onChange={(e)=>setDate(e.target.value)} required/>
+              </label>
+              </div>
           </div>
     </div>
         <div className="px-3 mb-4">
@@ -203,7 +213,7 @@ const postDesave=(e)=>{
         </button>
         <button
           className="btn btn-md text-white rounded-5"
-          style={{ backgroundColor: "var(--custom-color)" }}
+          style={{ backgroundColor: "#0452C8" }}
           type="submit"
         >
           Proceed

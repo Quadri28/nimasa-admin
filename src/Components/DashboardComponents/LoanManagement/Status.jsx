@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import axios from "../../axios";
 import { UserContext } from "../../AuthContext";
+import { Combobox } from "react-widgets/cjs";
 
 const Status = () => {
   const [accounts, setAccounts] = useState([]);
@@ -32,6 +33,12 @@ const Status = () => {
     getDetails();
   }, [account]);
 
+
+    const formattedAccounts = accounts.map((e) => ({
+  ...e,
+  label: `${e.acctName}  >> ${e.accountNumber} >> ${e.product}`,
+}));
+
   return (
     <div className="mt-2 bg-white px-3 py-3 rounded-4">
       <div className="mb-4 mt-2">
@@ -50,17 +57,16 @@ const Status = () => {
               <label htmlFor="acctNumber" style={{ fontWeight: "500" }}>
                 Select Account Number<sup className="text-danger">*</sup>
               </label>
-              <select
-                name="account"
-                onChange={(e) => setAccount(e.target.value)}
-              >
-                <option value="">Select account number</option>
-                {accounts.map((account) => (
-                  <option value={account.accountNumber} key={account.id}>
-                    {`${account.acctName}  >> ${account.accountNumber} >> ${account.product}`}{" "}
-                  </option>
-                ))}
-              </select>
+              
+                     <Combobox
+                      data={formattedAccounts}
+                      value={account}
+                      onChange={(val) => setAccount(val.accountNumber)}
+                      valueField="accountNumber"
+                      textField="label"
+                      filter="contains"
+                       />
+             
             </div>
           </div>
         </div>

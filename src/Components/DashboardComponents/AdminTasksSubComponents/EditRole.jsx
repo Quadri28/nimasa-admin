@@ -54,7 +54,7 @@ const EditRole = () => {
     setPrivileges(updatedList);
   };
 
-   const editRole = (e) => {
+  const editRole = (e) => {
   e.preventDefault();
 
   const formattedPrivileges = privileges.map((priv) => ({

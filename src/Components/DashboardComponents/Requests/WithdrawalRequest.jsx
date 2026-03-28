@@ -217,40 +217,50 @@ const WithdrawalRequest = () => {
         className='loan-modal rounded-3 card p-3'
       >
         <h4
-          className="text-uppercase text-center"
+          className="text-capitalize"
           style={{ fontSize: "18px", fontWeight: "600" }}
         >
           Withdrawal posting
         </h4>
-        <div className="d-flex flex-column gap-2 mt-3">
-          <div className="d-flex gap-3" style={{ fontSize: "14px" }}>
-            <strong>Account Number:</strong>{" "}
+        <div className="d-flex flex-column gap-3 mt-3">
+          <div className="d-flex gap-3 flex-wrap align-items-center discourse">
+          <div className="d-flex gap-2" >
+            <span>Member ID: </span> <span>{request?.memberId}</span>
+          </div>
+          <div className="d-flex gap-2" >
+            <span>Full Name:</span> <span>{request?.fullName}</span>
+          </div>
+          <div className="d-flex gap-3" >
+            <img src={request?.profileImageUrl} alt="Profile Image" className="view-img img-fluid"/>
+          </div>
+          </div>
+          <div className="d-flex justify-content-between discourse align-items-center p-2" style={{backgroundColor:'var(--light-blue)'}} >
+          <div className="d-flex gap-2">
+            <span>Account Number:</span>
             <span> {request?.accountNumber}</span>
           </div>
-          <div className="d-flex gap-3" style={{ fontSize: "14px" }}>
-            <strong>Full Name:</strong> <span>{request?.fullName}</span>
-          </div>
-          <div className="d-flex gap-3" style={{ fontSize: "14px" }}>
-            <strong>Member ID: </strong> <span>{request?.memberId}</span>
-          </div>
-          <div className="d-flex gap-3" style={{ fontSize: "14px" }}>
-            <strong>Transaction Date: </strong>{" "}
+          <div className="d-flex gap-2" >
+            <span>Transaction Date: </span>{" "}
             <span>{request?.transactionDate}</span>
           </div>
-          <div className="d-flex gap-3" style={{ fontSize: "14px" }}>
-            <strong>Amount: </strong> <span>{request?.amount}</span>
           </div>
-          <div className="d-flex gap-3" style={{ fontSize: "14px" }}>
-            <strong>Status: </strong> <span>{request?.status}</span>
+        <div className="d-flex justify-content-between discourse align-items-center p-2">
+            <div><span>Amount: </span> <span>{request?.amount}</span>
           </div>
-          <div className="d-flex gap-3" style={{ fontSize: "14px" }}>
-            <strong>Email: </strong> <span>{request?.email}</span>
+          <div className="d-flex gap-3" >
+            <span>Status: </span> <span>{request?.status}</span>
           </div>
-          <div className="d-flex gap-3" style={{ fontSize: "14px" }}>
-            <strong>Narration: </strong> <span>{request?.narration}</span>
           </div>
-          <div className="d-flex gap-3" style={{ fontSize: "14px" }}>
-            <strong>Account Balance: </strong> <span> 
+          <div className="d-flex justify-content-between discourse align-items-center p-2" style={{backgroundColor:'var(--light-blue)'}} >
+          <div className="d-flex gap-3" >
+            <span>Email: </span> <span>{request?.email}</span>
+          </div>
+          <div className="d-flex gap-3" >
+            <span>Narration: </span> <span>{request?.narration}</span>
+          </div>
+          </div>
+          <div className="d-flex gap-3 discourse px-2" >
+            <span>Account Balance: </span> <span> 
               {new Intl.NumberFormat('en-US', {minimumFractionDigits:2}).format(request?.balance)}</span>
           </div>
         </div>

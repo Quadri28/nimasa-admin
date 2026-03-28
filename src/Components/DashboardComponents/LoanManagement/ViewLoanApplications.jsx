@@ -195,7 +195,7 @@ const tableInstance = useTable(
                 onChange={(e) => setEndDate(e.target.value)}
               />
             </div>
-        <button className="btn btn-md member" onClick={()=>getApplications()}>Search</button>
+        <button className="btn btn-md btn-primary" onClick={()=>getApplications()}>Search</button>
           </div>
       </>
 

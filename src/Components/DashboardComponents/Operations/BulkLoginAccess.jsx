@@ -67,7 +67,7 @@ fetchBatchNo()
           setData(resp?.data?.data);
         }
       })
-      .catch((error) => console.log(error));
+      .catch((error) => toast(error.response.data.message, {type:'error', autoClose:false}));
   };
 
   const downloadTemplate = async ()=>{

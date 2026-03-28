@@ -98,8 +98,9 @@ const customStyles = {
     transform: "translate(-50%, -50%)",
     borderRadius: "1rem",
     height: details?.activeLoanProducts?.length > 0 ?'70%' : '40%',
-    width: width > 600 ? "800px" : "320px",
+    width: width > 600 ? "700px" : "320px",
     overFlowY: "scroll",
+    zIndex: 999999999999999,
   },
 };
 
@@ -196,13 +197,13 @@ const rejectRequest=()=>{
    <Modal
         isOpen={guarantorOpen}
         onRequestClose={closeGuarantor}
-          overlayClassName="loan-overlay"
+        overlayClassName="loan-overlay"
         ariaHideApp={false}
-        className='loan-modal rounded-3 card p-3'
+        className='loan-modal rounded-3 card p-3 overflow-scroll'
       >
           <h3 style={{fontSize:'18px', fontWeight:'600', textAlign:'center', marginBottom:'1rem'}}>View Guarantors</h3>
-          <div className="table-responsive">
-          <table className='table border request-table' id='customers'>
+          <div className="">
+          <table className='table border' id='customers'>
             <thead>
               <tr>
                 <th></th>
@@ -230,7 +231,7 @@ const rejectRequest=()=>{
           </div>
         {details?.activeLoanProducts?.length >0 && <p className='text-capitalize'>Guarantor's name:{coop?.name}</p>}
           {details?.activeLoanProducts?.length >0 && <>
-          <div className='table-responsive my-3'>
+          <div className='my-3'>
           <table id='customers' className='border request-table'>
             <thead>
             <tr>
@@ -252,7 +253,7 @@ const rejectRequest=()=>{
           </>}
           {details?.activeLoansGuaranteed?.length >0 && <>
             <h3 style={{fontSize:'18px', fontWeight:'500'}}>Active loan guaranteed </h3>
-          <div className='table-responsive'>
+          <div className=''>
               <table id='customers' className='border request-table'>
                 <thead >
                   <tr>
@@ -285,39 +286,35 @@ const rejectRequest=()=>{
       <Modal
         isOpen={isOpen}
         onRequestClose={closeLoan}
-         overlayClassName="loan-overlay"
+        contentLabel="Example Modal"
+          overlayClassName="loan-overlay"
         ariaHideApp={false}
         className='loan-modal rounded-3 card p-3'
       >
-      <h3 style={{fontSize:'18px', fontWeight:'600', textAlign:'center', marginBottom:'1rem'}}>Loan Request  </h3>
-              <div className="d-flex justify-content-between flex-wrap align-items-center">
+      <h3 style={{fontSize:'18px', fontWeight:'600', marginBottom:'1rem'}}>Loan Request  </h3>
+              <div className="d-flex gap-3 flex-wrap align-items-center discourse">
                 <span>Member No: {loan?.employeeId}</span>
                 <span>Member Name: {loan?.fullname}</span>
-                <img src={loan?.profileImage} alt="profile image" width={50} className='img-fluid rounded-2'/>
+                <img src={loan?.profileImage} alt="profile image" className='img-fluid view-img'/>
               </div>
-              <div className="row mt-3">
-              <hr />
-                <div className='d-flex justify-content-between flex-wrap'>
+              <div className="d-flex flex-column gap-3 mt-3">
+              <div className="d-flex justify-content-between discourse align-items-center p-2" style={{backgroundColor:'var(--light-blue)'}} >
                   <span>Loan Product: {loan?.productName}</span>
                   <span>Loan Amount: {new Intl.NumberFormat('en-US', {}).format(loan?.loanAmount)}</span>
                 </div>
-                <hr />
-                <div className='d-flex justify-content-between flex-wrap'>
+                  <div className="d-flex justify-content-between discourse align-items-center p-2" >
                   <span>Loan Duration: {loan?.duration} Month</span>
                   <span>Interest Rate: {loan?.interestRate}%</span>
                 </div>
-                <hr />
-                <div className='d-flex justify-content-between flex-wrap'>
+              <div className="d-flex justify-content-between discourse align-items-center p-2" style={{backgroundColor:'var(--light-blue)'}} >
                   <span>Bank: {loan?.bank}</span>
                   <span>Account Name: {loan?.accountName}</span>
                 </div>
-                <hr />
-                <div className='d-flex justify-content-between flex-wrap'>
+                  <div className="d-flex justify-content-between discourse align-items-center p-2" >
                   <span>Account Number: {loan?.accountNumber}</span>
                   <span>Contribution Amount: {new Intl.NumberFormat('en-US', {}).format(loan?.contributionAmount)}</span>
                 </div>
-                <hr />
-                <div className='d-flex justify-content-between flex-wrap'>
+              <div className="d-flex justify-content-between discourse align-items-center p-2" style={{backgroundColor:'var(--light-blue)'}} >
                   <span>Net Monthly pay: {new Intl.NumberFormat('en-US', {}).format(loan?.netMontlyPay)}</span>
                   <span>Date Joined: {loan?.dateJoined}</span>
                 </div>

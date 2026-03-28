@@ -128,16 +128,16 @@ const ManageAssetCategory = () => {
             {pageIndex + 1} of {pageOptions.length}
           </strong>
         </span>
-        <button onClick={() => gotoPage(0)} disabled={!canPreviousPage} className="btn">
+        <button onClick={() => gotoPage(0)} disabled={!canPreviousPage} className="btn-sm">
           {"<<"}
         </button>
-        <button disabled={!canPreviousPage} className="btn">
+        <button disabled={!canPreviousPage} className="btn-sm">
           <FaAngleLeft onClick={() => previousPage()} />
         </button>
-        <button disabled={!canNextPage} className="btn">
+        <button disabled={!canNextPage} className="btn-sm">
           <FaAngleRight onClick={() => nextPage()} />
         </button>
-        <button onClick={() => gotoPage(pageCount - 1)} disabled={!canNextPage} className="btn">
+        <button onClick={() => gotoPage(pageCount - 1)} disabled={!canNextPage} className="btn-sm">
           {">>"}
         </button>
       </div>: <div className="d-flex justify-content-center">No data yet!!!</div> }

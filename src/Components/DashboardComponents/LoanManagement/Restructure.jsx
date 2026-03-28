@@ -3,6 +3,7 @@ import { ToastContainer, toast} from 'react-toastify';
 import { UserContext } from '../../AuthContext';
 import axios from '../../axios';
 import GeneralLedgerTable from '../ConfigurationsSubComponents/ProductSettingComponent/GeneralLedgerTable'
+import { Combobox } from 'react-widgets/cjs';
 
 
 const Restructure = () => {
@@ -13,8 +14,8 @@ const Restructure = () => {
   const [status, setStatus]= useState({})
   const [settlement, setSettlement]= useState({})
   const [repaymentAccounts, setRepaymentAccounts]= useState([])
+  const [account, setAccount] = useState('')
   const [input, setInput] = useState({
-    account:'', 
     valueDate:'',
     topUpAmount:'',
     duration:''
@@ -49,7 +50,7 @@ const Restructure = () => {
     details?.currentBalance, settlement.settlementAccountNumber])
 
   const getGls = () => {
-    axios(`LoanApplication/loan-top-up-account-number-text-changed?AccountNumber=${input.account}`, {
+    axios(`LoanApplication/loan-top-up-account-number-text-changed?AccountNumber=${account}`, {
       headers: {
         Authorization: `Bearer ${credentials.token}`,
       },
@@ -64,11 +65,11 @@ const Restructure = () => {
 
   useEffect(()=>{
     getGls();
-  },[input.account])
+  },[account])
 
   const TopUpLoan = (e) => {
     const payload = {
-  loanAccountNo: input.account,
+  loanAccountNo: account,
   loanFundingSource: gl,
   valueDate: input.valueDate,
   duration: Number(details?.loanTerm),
@@ -105,14 +106,27 @@ const Restructure = () => {
   }, [gl])
 
   const column=[
-    {Header:'Principal Repayment', accessor:'principalRepayment'},
-    {Header:'Interest Repayment', accessor:'interestRepayment'},
-    {Header:'Total Repayment', accessor:'totalRepayment'},
-    {Header:'Balance', accessor:'balance'},
+    {Header:'Principal Repayment', accessor:'principalRepayment', Cell:(({value})=>{
+    return <span>{new Intl.NumberFormat('en-US', {minimumFractionDigits:2}).format(value)}</span>
+  })},
+    {Header:'Interest Repayment', accessor:'interestRepayment', Cell:(({value})=>{
+    return <span>{new Intl.NumberFormat('en-US', {minimumFractionDigits:2}).format(value)}</span>
+  })},
+    {Header:'Total Repayment', accessor:'totalRepayment',  Cell:(({value})=>{
+    return <span>{new Intl.NumberFormat('en-US', {minimumFractionDigits:2}).format(value)}</span>
+  })},
+    {Header:'Balance', accessor:'balance', Cell:(({value})=>{
+    return <span>{new Intl.NumberFormat('en-US', {minimumFractionDigits:2}).format(value)}</span>
+  })},
     {Header:'Pay Order', accessor: 'payOrder'}
   ]
 
   const columns = useMemo(() => column, []);
+
+   const formattedAccounts = accounts.map((e) => ({
+  ...e,
+  label: `${e.acctName}  >> ${e.accountNumber} >> ${e.product}`,
+}));
   return (
     <div className="mt-4 bg-white px-3 py-3 rounded-4">
       <div className="my-3">
@@ -132,18 +146,14 @@ const Restructure = () => {
                 <label htmlFor="account" style={{ fontWeight: "500" }}>
                   Select Account Number<sup className="text-danger">*</sup>
                 </label>
-                <select
-                  name="account"
-                  required
-                  onChange={handleChange}
-                >
-                  <option value="">Select</option>
-                  {accounts.map((account, i) => (
-                    <option value={account.accountNumber} key={i}>
-                      {`${account.acctName}  >> ${account.accountNumber} >> ${account.product}`}
-                    </option>
-                  ))}
-                </select>
+                 <Combobox
+                      data={formattedAccounts}
+                      value={account}
+                      onChange={(val) => setAccount(val.accountNumber)}
+                      valueField="accountNumber"
+                      textField="label"
+                      filter="contains"
+                       />
               </div>
               <div className="d-flex flex-column gap-2">
                 <label htmlFor="settlementAcct" style={{ fontWeight: "500" }}>
@@ -184,7 +194,7 @@ const Restructure = () => {
                 <label htmlFor="balance" style={{ fontWeight: "500" }}>
                   New Principal Balance<sup className="text-danger">*</sup>
                 </label>
-                <input name='newPrincipalBalance' disabled value={status?.newPrincipalBalance}/>
+                <input name='newPrincipalBalance' disabled value={new Intl.NumberFormat('en-US', {minimumFractionDigits:2}).format(status?.newPrincipalBalance)}/>
               </div>
             </div>
           </div>
@@ -223,14 +233,14 @@ const Restructure = () => {
                   <div className="d-flex gap-3 discourse">
                     <span>Loan Amount:</span>
                     <p>
-                      {new Intl.NumberFormat("en-US", {}).format(
+                      {new Intl.NumberFormat("en-US", {minimumFractionDigits:2}).format(
                         details?.loanAmount
                       )}
                     </p>
                   </div>
                   <div className="d-flex gap-3 discourse">
                     <span>Current Balance:</span>
-                    <p>{new Intl.NumberFormat('en-US', {}).format(details?.currentBalance)}</p>
+                    <p>{new Intl.NumberFormat('en-US', {minimumFractionDigits:2}).format(details?.currentBalance)}</p>
                   </div>
                 
                 </div>
@@ -278,7 +288,7 @@ const Restructure = () => {
             </button>
             <button
               className="btn btn-md text-white rounded-5"
-              style={{ backgroundColor: "var(--custom-color)" }}
+              style={{ backgroundColor: "#0452C8" }}
               type="submit"
             >
               Proceed

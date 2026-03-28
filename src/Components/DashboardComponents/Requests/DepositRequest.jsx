@@ -116,20 +116,6 @@ const DepositRequest = () => {
   }
   const columns = useMemo(() => column, []);
   const { width } = useScreenSize();
-  const customStyles = {
-    content: {
-      top: "50%",
-      left: "50%",
-      right: "auto",
-      height: "65%",
-      bottom: "auto",
-      marginRight: "-50%",
-      transform: "translate(-50%, -50%)",
-      borderRadius: "1rem",
-      width: width > 900 ? "400px" : "320px",
-      overFlowY: "scroll",
-    },
-  };
 
   // Function to Post Withdrawal account
   const postAccount = (e) => {
@@ -215,49 +201,56 @@ const DepositRequest = () => {
         className='loan-modal rounded-3 card p-3'
       >
         <h4
-          className="text-capitalize text-center"
+          className="text-capitalize"
           style={{ fontSize: "18px", fontWeight: "600" }}
         >
           Deposit posting
         </h4>
         <div className="d-flex flex-column gap-2 mt-3">
-          <div className="d-flex gap-3 discourse" style={{ fontSize: "14px" }}>
-            <span>Account Number:</span> <p> {request?.accountNumber}</p>
+          <div className="d-flex gap-3 flex-wrap align-items-center discourse">
+           <div> <span>Member ID: </span> <span>{request?.id}</span></div>
+ <div>
+            <span>Full Name:</span> <span>{request?.fullName}</span>
           </div>
-          <div className="d-flex gap-3 discourse" style={{ fontSize: "14px" }}>
-            <span>Full Name:</span> <p>{request?.fullName}</p>
+          <img src={request?.profileImageUrl} alt="Profile picture" className="view-img img-fluid"/>
           </div>
-          <div className="d-flex gap-3 discourse" style={{ fontSize: "14px" }}>
-            <span>Member ID: </span> <p>{request?.id}</p>
+          <div className="d-flex justify-content-between discourse align-items-center p-2" style={{backgroundColor:'var(--light-blue)'}} >
+           <div> <span>Account Number:</span> <span> {request?.accountNumber}</span></div>
+            <div className="d-flex gap-3 discourse" style={{ fontSize: "14px" }}>
+            <span>Narration: </span> <span>{request?.narration}</span>
           </div>
-          <div className="d-flex gap-3 discourse" style={{ fontSize: "14px" }}>
-            <span>Transaction Date: </span> <p>{request?.submitedDate}</p>
           </div>
-          <div className="d-flex gap-3 discourse" style={{ fontSize: "14px" }}>
-            <span>Amount: </span> <p>{request?.amount}</p>
+          <div className="d-flex justify-content-between discourse align-items-center p-2" >
+           <div className="d-flex gap-3" >
+            <span>Teller NO: </span> <span> {request?.tellerNo}</span>
           </div>
-          <div className="d-flex gap-3 discourse" style={{ fontSize: "14px" }}>
-            <span>Bank Account: </span> <p>{request?.bankAccount}</p>
+            <div className="d-flex gap-2 discourse align-items-center">
+            <span>Transaction Date: </span> <span>{request?.submitedDate}</span>
           </div>
-          <div className="d-flex gap-3 discourse" style={{ fontSize: "14px" }}>
-            <span>Status: </span> <p>{request?.status}</p>
           </div>
-          <div className="d-flex gap-3 discourse" style={{ fontSize: "14px" }}>
-            <span>Payment Mode: </span> <p>{request?.paymentMode}</p>
+         
+          <div className="d-flex justify-content-between discourse align-items-center p-2" style={{backgroundColor:'var(--light-blue)'}} >
+            <div><span>Amount: </span> <span>{new Intl.NumberFormat('en-US', {minimumFractionDigits:2}).format(request?.amount)}</span>
           </div>
+           <div className="d-flex gap-2 discourse align-items-center p-2" >
+            <span>Bank Account: </span> <span>{request?.bankAccount}</span>
+          </div>
+          </div>
+          
+           <div className="d-flex justify-content-between discourse align-items-center p-2" >
+           <div> <span>Status: </span> <span>{request?.status}</span></div>
+          <div className="d-flex gap-2 discourse align-items-center p-2" >
+            <span>Payment Mode: </span> <span>{request?.paymentMode}</span>
+          </div>
+          </div>
+
           {request?.paymentMode === "Paid At Bank" && (
             <img
               src={request?.tellerUploadLink}
               alt=""
               style={{ height: "200px" }}
             />
-          )}
-          <div className="d-flex gap-3 discourse" style={{ fontSize: "14px" }}>
-            <span>Narration: </span> <p>{request?.narration}</p>
-          </div>
-          <div className="d-flex gap-3 discourse" style={{ fontSize: "14px" }}>
-            <span>Teller NO: </span> <p> {request?.tellerNo}</p>
-          </div>
+          )} 
         </div>
         <div className="d-flex flex-column gap-3 mt-3">
           <select

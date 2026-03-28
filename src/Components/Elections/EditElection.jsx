@@ -239,7 +239,7 @@ const EditElection = () => {
             </button>
             <button
               className="btn btn-md text-white rounded-5"
-              style={{ backgroundColor: "var(--custom-color)" }}
+              style={{ backgroundColor: "#0452C8" }}
               type="submit"
             >
               Update

@@ -13,6 +13,7 @@ const CooperativeSettings = () => {
     const [modalOpen, setModalOpen]= useState(false)
      const [logo, setLogo] = useState("");
       const [byLaw, setByLaw] = useState("");
+      const [preview, setPreview] = useState(null)
     const [activated, setActivated] = useState("cooperative-information");
     const [details, setDetails] =useState({
       acctOpenSms:0,
@@ -190,18 +191,34 @@ const getSettings=()=>{
         <Modal 
         isOpen={isOpen}
         onRequestClose={closeModal}
-        className='setting-modal'>
+           overlayClassName="loan-overlay"
+        ariaHideApp={false}
+        className='rounded-3 card p-3 w-25 my-auto setting-modal overflow-hidden'
+        >
           <div className="p-3">
+              <p className="fw-semibold text-center">Upload Logo</p>
+
         <form onSubmit={submitLogo}>
                   <input
                     type="file"
                     name="LogoFile"
                     onChange={(e) => {
-                      setLogo(e.target.files[0]);
-                      console.log(logo);
+                      const file =e.target.files[0]
+                      setLogo(file);
+                       setPreview(URL.createObjectURL(file));
                     }}
                   />
-                  <div className="d-flex justify-content-center mt-2">
+
+      {preview && (
+        <div style={{ marginTop: "16px", textAlign:'center', }}>
+          <img
+            src={preview}
+            alt="preview"
+            style={{ width: "100px", borderRadius: "8px",  height:'100px' }}
+          />
+        </div>
+      )}
+                  <div className="d-flex justify-content-center mt-3">
                     <button className="border-0 w-100 btn-md member" type="submit">
                       Upload
                     </button>
@@ -213,8 +230,12 @@ const getSettings=()=>{
           <Modal 
           isOpen={modalOpen}
           onRequestClose={handleCloseModal}
-          className='setting-modal'>
+            overlayClassName="loan-overlay"
+        ariaHideApp={false}
+        className='rounded-3 card p-3 w-25 my-auto setting-modal overflow-hidden'
+          >
             <div className="p-3">
+              <p className="fw-semibold text-center">Upload By-Law</p>
           <form onSubmit={submitByLaw}>
                   <input
                     type="file"
@@ -224,7 +245,7 @@ const getSettings=()=>{
                       console.log(logo);
                     }}
                   />
-                  <div className="d-flex justify-content-center mt-2">
+                  <div className="d-flex justify-content-center mt-3">
                     <button className="border-0 w-100 btn-md member">Upload</button>
                   </div>
                 </form>

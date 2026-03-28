@@ -147,7 +147,7 @@ console.log(resultDate)
             onClick={() => handleOpenModal()}
             className="btn btn-sm p-2"
             style={{
-              backgroundColor: "var(--custom-color)",
+              backgroundColor: "#0452c8",
               color: "#fff",
               borderRadius: "1.2rem",
               fontSize: "12px",
@@ -351,7 +351,7 @@ console.log(resultDate)
           <button
             className="btn btn-md"
             style={{
-              backgroundColor: "var(--custom-color)",
+              backgroundColor: "#0452c8",
               color: "#fff",
               padding: "8px 10px",
               borderRadius: "1.5rem",

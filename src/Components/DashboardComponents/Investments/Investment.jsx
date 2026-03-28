@@ -146,7 +146,7 @@ useEffect(() => {
           <h6>Investment</h6>
           <Link to='add-investment'
             className="btn btn-md text-white px-3"
-            style={{ backgroundColor: "var(--custom-color)", borderRadius: "2rem" , fontSize:'14px'}}
+            style={{ backgroundColor: "#0452C8", borderRadius: "2rem" , fontSize:'14px'}}
           >
            + Add new investment
           </Link>

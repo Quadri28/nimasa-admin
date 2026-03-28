@@ -184,44 +184,50 @@ const RescheduleSaving = () => {
       <Modal
         isOpen={isOpen}
         onRequestClose={closeView}
-           overlayClassName="loan-overlay"
+          overlayClassName="loan-overlay"
         ariaHideApp={false}
         className='loan-modal rounded-3 card p-3'
       >
         <h4
-          className="text-uppercase mt-3 text-center"
+          className="text-capitalize mt-3"
           style={{ fontSize: "16px", fontWeight: "600" }}
         >
           Reschedule Saving{" "}
         </h4>
-        <div className="d-flex flex-column mx-auto gap-2 mt-3">
-          <div className="d-flex gap-3" style={{ fontSize: "16px" }}>
-            <strong>Account Number:</strong>{" "}
+        <div className="d-flex flex-column gap-3 mt-3">
+          <div className="d-flex gap-3 align-items-center flex-wrap discourse">
+           <div> <span>Member ID: </span> <span>{request?.employeeNo}</span></div>
+          <div className="d-flex gap-2" >
+            <span>Full Name:</span> <span>{request?.fullName}</span>
+          </div>
+          <img src={request?.profileImage} alt="" className="img-fluid view-img" />
+          </div>
+         <div className="d-flex justify-content-between discourse align-items-center p-2" style={{backgroundColor:'var(--light-blue)'}} >
+           <div> <span>Account Number:</span>
             <span> {request?.accountNumber}</span>
+            </div>
+              <div className="d-flex gap-2 align-items-center p-2" >
+            <span>Status: </span> <span>{request?.status}</span>
           </div>
-          <div className="d-flex gap-3" style={{ fontSize: "16px" }}>
-            <strong>Full Name:</strong> <span>{request?.fullName}</span>
           </div>
-          <div className="d-flex gap-3" style={{ fontSize: "16px" }}>
-            <strong>Member ID: </strong> <span>{request?.employeeNo}</span>
-          </div>
-          <div className="d-flex gap-3" style={{ fontSize: "16px" }}>
-            <strong>Old Amount: </strong>{" "}
+         <div className="d-flex discourse justify-content-between align-items-center p-2" >
+            <div className="d-flex gap-2 align-items-center" >
+            <span>Old Amount: </span>{" "}
             <span>{request?.monthlyContribution?.toLocaleString("en-US")}</span>
           </div>
-          <div className="d-flex gap-3" style={{ fontSize: "16px" }}>
-            <strong>New Amount: </strong>{" "}
+          <div>
+            <span>New Amount: </span>{" "}
             <span>
               {new Intl.NumberFormat("en-US", {
                 minimumFractionDigits: 2,
               }).format(request?.newAmount)}
             </span>
           </div>
-          <div className="d-flex gap-3" style={{ fontSize: "16px" }}>
-            <strong>Status: </strong> <span>{request?.status}</span>
           </div>
-          <div className="d-flex gap-3" style={{ fontSize: "16px" }}>
-            <strong>Email: </strong> <span>{request?.email}</span>
+         <div className="d-flex justify-content-between discourse align-items-center p-2" style={{backgroundColor:'var(--light-blue)'}} >
+            <div className="d-flex gap-2 align-items-center p-2" >
+            <span>Email: </span> <span>{request?.email}</span>
+          </div>
           </div>
         </div>
         {isReject ? (
@@ -247,20 +253,19 @@ const RescheduleSaving = () => {
               <button
                 className="btn btn-md rounded-5"
                 onClick={() => setIsReject(true)}
-                style={{ backgroundColor: "#ddd", fontSize: "16px" }}
+                style={{ backgroundColor: "#ddd", }}
               >
                 Reject
               </button>
             ) : (
               <button
-                className="btn btn-md rounded-5"
+                className="second-btn"
                 onClick={rejectAccount}
-                style={{ backgroundColor: "#ddd", fontSize: "16px" }}
               >
                 Reject
               </button>
             )}
-            <button className="border-0 btn-md member" onClick={postAccount}>
+            <button className="border-0  member" onClick={postAccount}>
               Post
             </button>
           </div>

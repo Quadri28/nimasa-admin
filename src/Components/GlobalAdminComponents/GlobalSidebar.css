@@ -19,7 +19,7 @@
     a.active{
         padding: 8px 10px;
         border-radius: 20px;
-        background-color:  var(--custom-color);
+        background-color:  #0452C8;
         color: #fff !important;
     }
 }

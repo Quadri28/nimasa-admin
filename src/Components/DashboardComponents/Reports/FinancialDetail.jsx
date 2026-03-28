@@ -20,11 +20,16 @@ const FinancialDetail = () => {
 
     const column=[
         {Header: 'Branch Name', accessor:'branchName'},
+        {Header: 'Member ID', accessor:'memberId'},
         {Header: 'Account Number', accessor:'accountNumber'},
         {Header: 'Account Title', accessor:'accountTitle'},
         {Header: 'Date Opened', accessor: 'dateOpened'},
-        {Header: 'Book Balance', accessor: 'bookBalance'},
-        {Header: 'Available Balance', accessor:'availableBalance'},
+        {Header: 'Book Balance', accessor: 'bookBalance', Cell:(({value})=>{
+            return <span>{new Intl.NumberFormat('en-Us', {minimumFractionDigits:2}).format(value)}</span>
+        })},
+        {Header: 'Available Balance', accessor:'availableBalance', Cell:(({value})=>{
+            return <span>{new Intl.NumberFormat('en-Us', {minimumFractionDigits:2}).format(value)}</span>
+        })},
         {Header: 'Last Movt.', accessor:'lastMovt'},
         {Header: 'Uncleared Bal.', accessor:'unclearedBalance'},
         {Header: 'Pending Charges', accessor:'pendingCharge'},

@@ -88,15 +88,9 @@ const ManageBankAccount = () => {
             <select
               type="text"
               name="cooperativeBankCode"
+              style={{paddingBlock:'1.2rem'}}
               onChange={handleChange}
               value={account?.cooperativeBankCode}
-              style={{
-                    backgroundColor: "#f2f2f2",
-                    borderRadius: "10px",
-                    padding: "10px 12px",
-                    paddingBlock:'1.2rem',
-                    border:'solid 1px #f5f7fa'
-                  }}
             >
               <option value="" disabled>Select</option>
             {
@@ -114,13 +108,6 @@ const ManageBankAccount = () => {
               className="py-3"
               onChange={handleChange}
               value={account?.cooperativeAccontNumber}
-               style={{
-                    backgroundColor: "#f2f2f2",
-                    borderRadius: "10px",
-                    padding: "10px 12px",
-                    paddingBlock:'1.2rem',
-                    border:'solid 1px #f5f7fa'
-                  }}
             />
           </div>
           <div className="inputs-container row g-1 gap-1">
@@ -131,13 +118,6 @@ const ManageBankAccount = () => {
               className="py-3"
               onChange={handleChange}
               value={account?.cooprativeAccountName}
-               style={{
-                    backgroundColor: "#f2f2f2",
-                    borderRadius: "16px",
-                    padding: "10px 12px",
-                    paddingBlock:'1.2rem',
-                    border:'solid 1px #f5f7fa'
-                  }}
             />
           </div>
           <div className="d-flex mt-2 gap-3 justify-content-center">

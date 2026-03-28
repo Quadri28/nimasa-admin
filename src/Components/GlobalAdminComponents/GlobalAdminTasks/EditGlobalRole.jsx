@@ -113,7 +113,7 @@ const EditGlobalRole = () => {
           </div>
 
           <div className='px-3 mb-3'>
-            <div className="d-flex justify-content-between align-items-center my-3">
+            <div className="d-flex justify-content-between align-items-center">
               <h4 style={{ fontSize: '16px' }}>
                 Global data capture privileges
               </h4>

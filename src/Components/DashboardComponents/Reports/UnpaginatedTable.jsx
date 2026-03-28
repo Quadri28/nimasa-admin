@@ -54,7 +54,8 @@ const UnpaginatedTable = ({ data, columns, filename }) => {
             <CSVLink data={data} filename={filename}>
             <button
               className="btn btn-md text-white fz-6 px-4 rounded-4"
-              style={{ backgroundColor: "var(--custom-color)" }}
+              style={{ backgroundColor: "#033E96" }}
+              type="button"
             >
               Export
             </button>

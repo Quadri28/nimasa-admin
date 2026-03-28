@@ -216,9 +216,8 @@ fetchAccounts()
       <Modal
         isOpen={isOpen}
         onRequestClose={handleClose}
-         overlayClassName="loan-overlay"
         ariaHideApp={false}
-        className='loan-modal rounded-3 card p-3'
+        style={customStyles}
       >
         <h5 className="text-center">Approve Share Request</h5>
 <div className="discourse d-flex gap-2 align-items-center">
@@ -247,9 +246,8 @@ fetchAccounts()
       <Modal
         isOpen={modalOpen}
         onRequestClose={handleModalClose}
-           overlayClassName="loan-overlay"
         ariaHideApp={false}
-        className='loan-modal rounded-3 card p-3'
+        style={customStyles}
       >
         <h5 className="text-center">Decline Share Request</h5>
         <form onSubmit={DeclineRequest}>

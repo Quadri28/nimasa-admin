@@ -88,7 +88,7 @@ const MemberReport = () => {
         <CSVLink data={reports} filename={"memberReports.csv"}>
           <button
             className="btn btn-md rounded-4 text-white px-4 fs-6"
-            style={{ backgroundColor: "var(--custom-color)" }}
+            style={{ backgroundColor: "#033E96" }}
           >
             Export
           </button>

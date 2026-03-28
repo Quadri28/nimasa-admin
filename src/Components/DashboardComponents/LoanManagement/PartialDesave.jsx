@@ -3,6 +3,8 @@ import { ToastContainer, toast } from "react-toastify";
 import { UserContext } from "../../AuthContext";
 import axios from "../../axios";
 import GeneralLedgerTable from '../ConfigurationsSubComponents/ProductSettingComponent/GeneralLedgerTable'
+import { Combobox } from "react-widgets/cjs";
+import UnpaginatedTable from "../Reports/UnpaginatedTable";
 
 const PartialDesave = () => {
   const [accounts, setAccounts] = useState([]);
@@ -10,8 +12,8 @@ const PartialDesave = () => {
   const [details, setDetails] = useState({});
   const [balance, setBalance] = useState({})
   const [schedules, setSchedules]= useState([])
+  const [account, setAccount] = useState('')
   const [input, setInput] = useState({
-    account:'', 
     settlementAcct:'',
     valueDate:'',
     payOffAmount:'',
@@ -31,9 +33,7 @@ const PartialDesave = () => {
   const { credentials } = useContext(UserContext);
 
   const getBalance=()=>{
-    axios(`LoanApplication/loan-de-save-partial-pay-off-amount-text-changed?CurrentBalance=
-      ${details?.currentBalance}&PayOffAmount=${input.payOffAmount}&Duration=${details?.remainingTerm}
-      &LoanRate=${details?.loanRate}&ProductCode=${details?.productCode}&AccountNumber=${input.account}`, {headers:{
+    axios(`LoanApplication/loan-de-save-partial-pay-off-amount-text-changed?CurrentBalance=${details?.currentBalance}&PayOffAmount=${input.payOffAmount}&Duration=${details?.remainingTerm}&LoanRate=${details?.loanRate}&ProductCode=${details?.productCode}&AccountNumber=${account}`, {headers:{
         Authorization: `Bearer ${credentials.token}`
       }})
       .then(resp=>{
@@ -46,7 +46,7 @@ const PartialDesave = () => {
 
   useEffect(()=>{
 getBalance()
-  },[input.payOffAmount, details?.currentBalance, details?.remainingTerm, details?.loanRate, input.account])
+  },[input.payOffAmount, details?.currentBalance, details?.remainingTerm, details?.loanRate, account])
   const getAccounts = () => {
     axios("Acounting/general-ledger-customer-enquiry?SearchOption=3", {
       headers: {
@@ -55,7 +55,7 @@ getBalance()
     }).then((resp) => setAccounts(resp.data.data));
   };
   const getGls = () => {
-    axios(`LoanApplication/loan-de-save-partial-account-number-text-changed?AccountNumber=${input.account}`, {
+    axios(`LoanApplication/loan-de-save-partial-account-number-text-changed?AccountNumber=${account}`, {
       headers: {
         Authorization: `Bearer ${credentials.token}`,
       },
@@ -70,11 +70,11 @@ getBalance()
 
   useEffect(()=>{
     getGls();
-  },[input.account])
+  },[account])
 
   const postPartialDesave = (e) => {
     const payload = {
-  accountNumber: input.account,
+  accountNumber: account,
   accountToRepayFrom: input.settlementAcct,
   valueDate: input.valueDate,
   duration: Number(details?.remainingTerm),
@@ -101,16 +101,29 @@ getBalance()
   };
 
 const column =[
-  {Header:'Principal Repayment', accessor:'principalRepayment'},
-  {Header:'Interest Repayment', accessor:'interestRepayment'},
-  {Header:'Total Repayment', accessor:'totalRepayment'},
-  {Header:'Balance', accessor:'balance'},
+  {Header:'Principal Repayment', accessor:'principalRepayment', Cell:(({value})=>{
+    return <span>{new Intl.NumberFormat('en-US', {minimumFractionDigits:2}).format(value)}</span>
+  })},
+  {Header:'Interest Repayment', accessor:'interestRepayment',  Cell:(({value})=>{
+    return <span>{new Intl.NumberFormat('en-US', {minimumFractionDigits:2}).format(value)}</span>
+  })},
+  {Header:'Total Repayment', accessor:'totalRepayment', Cell:(({value})=>{
+    return <span>{new Intl.NumberFormat('en-US', {minimumFractionDigits:2}).format(value)}</span>
+  })},
+  {Header:'Balance', accessor:'balance', Cell:(({value})=>{
+    return <span>{new Intl.NumberFormat('en-US', {minimumFractionDigits:2}).format(value)}</span>
+  })},
   {Header:'Pay Order', accessor:'payOrder'},
-  {Header:'Due Date', accessor:'dueDate'},
+  {Header:'Due Date', accessor:'dueDate', Cell:(({value})=>{
+    return <span>{new Date(value).toLocaleDateString('en-US')}</span>
+  })},
 ]
 const columns = useMemo(() => column, []);
 
-
+ const formattedAccounts = accounts.map((e) => ({
+  ...e,
+  label: `${e.acctName}  >> ${e.accountNumber} >> ${e.product}`,
+}));
   return (
     <div className="mt-4 bg-white px-3 py-3 rounded-4">
       <div className="mb-4 mt-2">
@@ -130,18 +143,14 @@ const columns = useMemo(() => column, []);
                 <label htmlFor="account" style={{ fontWeight: "500" }}>
                   Select Account Number<sup className="text-danger">*</sup>
                 </label>
-                <select
-                  name="account"
-                  required
-                  onChange={handleChange}
-                >
-                  <option value="">Select</option>
-                  {accounts.map((account, i) => (
-                    <option value={account.accountNumber} key={i}>
-                      {`${account.acctName}  >> ${account.accountNumber} >> ${account.product}`}
-                    </option>
-                  ))}
-                </select>
+               <Combobox
+                      data={formattedAccounts}
+                      value={account}
+                      onChange={(val) => setAccount(val.accountNumber)}
+                      valueField="accountNumber"
+                      textField="label"
+                      filter="contains"
+                       />
               </div>
               <div className="d-flex flex-column gap-1 ">
                 <label htmlFor="settlementAcct" style={{ fontWeight: "500" }}>
@@ -182,7 +191,7 @@ const columns = useMemo(() => column, []);
                 <label htmlFor="balance" style={{ fontWeight: "500" }}>
                   New Principal Balance <sup className="text-danger">*</sup>
                 </label>
-                <input name='balance' disabled value={balance.newPrincipalBalance}/>
+                <input name='balance' disabled value={new Intl.NumberFormat('en-US', {minimumFractionDigits:2}).format(balance.newPrincipalBalance)}/>
               </div>
             </div>
           </div>
@@ -222,14 +231,14 @@ const columns = useMemo(() => column, []);
                   <div className="d-flex gap-3 discourse">
                     <span>Loan Amount:</span>
                     <p>
-                      {new Intl.NumberFormat("en-US", {}).format(
+                      {new Intl.NumberFormat("en-US", {minimumFractionDigits:2}).format(
                         details?.loanAmount
                       )}
                     </p>
                   </div>
                   <div className="d-flex gap-3 discourse">
                     <span>Current Balance:</span>
-                    <p>{details?.currentBalance}</p>
+                    <p>{new Intl.NumberFormat('en-US', {minimumFractionDigits:2}).format(details?.currentBalance)}</p>
                   </div>
                   <div className="d-flex gap-3 discourse">
                     <span>Loan Term:</span>
@@ -250,7 +259,7 @@ const columns = useMemo(() => column, []);
                 </div>
               </>
             </div>
-            <GeneralLedgerTable data={schedules} columns={columns}/>
+            <UnpaginatedTable data={schedules} columns={columns} filename={'Amortization schedule'}/>
           </div>
           <div
             className="d-flex justify-content-end gap-3 py-4 px-2"
@@ -268,7 +277,7 @@ const columns = useMemo(() => column, []);
             </button>
             <button
               className="btn btn-md text-white rounded-5"
-              style={{ backgroundColor: "var(--custom-color)" }}
+              style={{ backgroundColor: "#0452C8" }}
               type="submit"
             >
               Proceed
