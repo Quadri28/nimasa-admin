@@ -1,0 +1,27 @@
+.footer{
+    padding-top: 3%;
+    font-size: 14px;
+    background-color: #0452C8;
+    color: #f2f2f2;
+}
+.footer h3{
+    font-size: 15px;
+    font-weight: 700;
+    font-family: Aeonik, serif;
+}
+.menus ul li{
+    margin-bottom: .8rem;
+}
+.menus ul a, .sign-in a{
+    text-decoration: none;
+    color: #f2f2f2;
+    font-size: 14px !important;
+}
+.footer-contact a{
+    text-decoration: none;
+    color: #f2f2f2;
+    font-size: 14px !important;
+}
+.footer h3{
+    font-family: Aeonik, serif;
+}

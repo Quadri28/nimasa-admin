@@ -1,13 +1,11 @@
-import React, { useContext, useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import Table from "./Table";
 import axios from "../../axios";
-import { UserContext } from "../../AuthContext";
 
 const SMSReports = () => {
 
   const [reports, setReports] = useState([])
   const [loading, setLoading]= useState('')
-  const {credentials} = useContext(UserContext)
 
 
   const column = [
@@ -44,13 +42,7 @@ const SMSReports = () => {
     setTimeout(() => {
       if (fetchId === fetchIdRef.current) {
         axios(
-          `Communication/members-sms-report?PageSize=${pageSize}&PageNumber=${pageNumber+1}`,
-          {
-            headers: {
-              Authorization: `Bearer ${credentials.token}`,
-            },
-          }
-        ).then((resp) => {
+          `Communication/members-sms-report?PageSize=${pageSize}&PageNumber=${pageNumber+1}`).then((resp) => {
           if (resp.data.data.modelResult) {
             setReports(resp.data.data.modelResult);
         setPageCount(Math.ceil(resp.data.data.totalCount / pageSize));

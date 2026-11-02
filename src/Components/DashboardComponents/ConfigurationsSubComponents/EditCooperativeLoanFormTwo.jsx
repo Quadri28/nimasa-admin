@@ -1,4 +1,4 @@
-import React,{useState, useEffect, useContext, useMemo} from "react";
+import React,{useState, useEffect, useMemo} from "react";
 import axios from "../../axios";
 import { Multiselect } from "react-widgets";
 import { CiSearch } from "react-icons/ci";
@@ -7,11 +7,9 @@ import useScreenSize from "../../ScreenSizeHook";
 import { BsArrowLeft } from "react-icons/bs";
 import { LiaTimesCircle } from "react-icons/lia";
 import GeneralLedgerTable from "./ProductSettingComponent/GeneralLedgerTable";
-import { UserContext } from "../../AuthContext";
 
 
 const EditCooperativeLoanFormTwo = ({ handleChange, details, setDetails }) => {
-  const {credentials}= useContext(UserContext)
   const [loanClasses, setLoanClasses] = useState([])
   const [repaymentTypes, setRepaymentTypes] = useState([])
   const [loanRepayments, setLoanRepayments]=useState([])
@@ -104,7 +102,7 @@ const EditCooperativeLoanFormTwo = ({ handleChange, details, setDetails }) => {
     { name: "interestAccrual", label: "Interest Accrual", value:'' },
     { name: "interBranchGL", label: "InterBranch GL", value:'' },
     { name: "suspPrincipal", label: "Suspended Principal", value:'' },
-    { name: "unearnedIncomeGL", label: "Unearned Income", value:'' },
+    { name: "incomeUnearned", label: "Unearned Income", value:'' },
     { name: "miscIncome", label: "Miscellaneous Income", value:'' },
   ];
  
@@ -118,26 +116,17 @@ const EditCooperativeLoanFormTwo = ({ handleChange, details, setDetails }) => {
   }
 
    const fetchGlTypes = async () => {
-    await axios.get("GlAccount/gl-type", {
-          headers: { Authorization: `Bearer ${credentials.token}` },
-        }).then(resp=>setGlTypes(resp.data));
+    await axios.get("GlAccount/gl-type").then(resp=>setGlTypes(resp.data));
     }
   
     const fetchGlNodes = async () => {
    await axios.get(
-          `GlAccount/gl-type-node?prodTypeCode=${input.glType}`,
-          {
-            headers: { Authorization: `Bearer ${credentials.token}` },
-          }
-        ).then(resp=>setGlNodes(resp.data.data))
+          `GlAccount/gl-type-node?prodTypeCode=${input.glType}`).then(resp=>setGlNodes(resp.data.data))
     };
   
     const fetchNodeClasses = () => {
       axios(
-        `GlAccount/gl-type-class?glTypeNodeCode=${input.glNode}`,
-        {
-          headers: { Authorization: `Bearer ${credentials.token}` },
-        }
+        `GlAccount/gl-type-class?glTypeNodeCode=${input.glNode}`
       ).then((resp) => {
         setGlClasses(resp.data.data)
       });
@@ -145,10 +134,7 @@ const EditCooperativeLoanFormTwo = ({ handleChange, details, setDetails }) => {
   
     const fetchGlAccounts = () => {
       axios(
-        `LoanProduct/gl-account-number?glClass=${input.glClass}`,
-        {
-          headers: { Authorization: `Bearer ${credentials.token}` },
-        }
+        `LoanProduct/gl-account-number?glClass=${input.glClass}`
       ).then((resp) => {
         setAccounts(resp.data.data)
     })
@@ -237,7 +223,7 @@ const EditCooperativeLoanFormTwo = ({ handleChange, details, setDetails }) => {
       <label htmlFor="calcmethod" style={{ fontWeight: "500" }}>
         Calculation Method :
       </label>
-      <select name="calcmethod" value={details?.calcmethod}
+      <select name="calculationMeth" value={details?.calculationMeth}
        onChange={handleChange} > 
       <option value="">Select</option>
       {
@@ -340,9 +326,10 @@ const EditCooperativeLoanFormTwo = ({ handleChange, details, setDetails }) => {
             <Modal
             isOpen={modalShow}
             onRequestClose={handleClose}
-            style={customStyles}
             contentLabel="Example Modal"
-            ariaHideApp={false}
+        overlayClassName="loan-overlay"
+        ariaHideApp={false}
+        className="loan-modal rounded-3 card p-3"
             >
              <div style={{backgroundColor:'#F5F9FF', borderRadius:'15px  15px 0 0',
                padding:'15px 20px'}} >

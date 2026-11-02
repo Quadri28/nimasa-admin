@@ -1,7 +1,6 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import axios from "../../axios";
-import { UserContext } from "../../AuthContext";
 import * as Yup from "yup";
 import { Combobox, Multiselect } from "react-widgets";
 import { toast, ToastContainer } from "react-toastify";
@@ -29,17 +28,10 @@ const LoanApplication = () => {
   const [collateralValue, setCollateralValue] = useState(0);
   const [firstPaymentDate, setFirstPaymentDate] = useState("");
   const [member, setMember] = useState("");
-  const { credentials } = useContext(UserContext);
 
   const getMaturityDate = () => {
     axios(
-      `Common/calculate-maturity-date-by-first-payment-date?Value=${term}&FreqCode=${frequency}&FirstPaymentDate=${firstPaymentDate}`,
-      {
-        headers: {
-          Authorization: `Bearer ${credentials.token}`,
-        },
-      },
-    ).then((resp) => {
+      `Common/calculate-maturity-date-by-first-payment-date?Value=${term}&FreqCode=${frequency}&FirstPaymentDate=${firstPaymentDate}`).then((resp) => {
       setMaturityDate(resp.data.data.maturityDate);
     });
   };
@@ -48,75 +40,35 @@ const LoanApplication = () => {
   }, [term, frequency, firstPaymentDate]);
 
   const getMembers = () => {
-    axios("Acounting/general-ledger-customer-enquiry?SearchOption=2", {
-      headers: {
-        Authorization: `Bearer ${credentials.token}`,
-      },
-    }).then((resp) => setMembers(resp.data.data));
+    axios("Acounting/general-ledger-customer-enquiry?SearchOption=2").then((resp) => setMembers(resp.data.data));
   };
   const getRepaymentTypes = () => {
-    axios("LoanApplication/loan-repayment-type", {
-      headers: {
-        Authorization: `Bearer ${credentials.token}`,
-      },
-    }).then((resp) => setRepayTypes(resp.data.data));
+    axios("LoanApplication/loan-repayment-type").then((resp) => setRepayTypes(resp.data.data));
   };
   const getCollateralTypes = () => {
-    axios("LoanApplication/get-collateral-type", {
-      headers: {
-        Authorization: `Bearer ${credentials.token}`,
-      },
-    }).then((resp) => setColTypes(resp.data.data));
+    axios("LoanApplication/get-collateral-type").then((resp) => setColTypes(resp.data.data));
   };
   const getGuarantors = () => {
-    axios("LoanApplication/get-loan-gaurators", {
-      headers: {
-        Authorization: `Bearer ${credentials.token}`,
-      },
-    }).then((resp) => setGuarantors(resp.data.data));
+    axios("LoanApplication/get-loan-gaurators").then((resp) => setGuarantors(resp.data.data));
   };
   const getLoanSources = () => {
-    axios("LoanApplication/get-loan-source-type", {
-      headers: {
-        Authorization: `Bearer ${credentials.token}`,
-      },
-    }).then((resp) => setLoanSources(resp.data.data));
+    axios("LoanApplication/get-loan-source-type").then((resp) => setLoanSources(resp.data.data));
   };
   const getFrequencies = () => {
-    axios("LoanApplication/loan-frequency-type", {
-      headers: {
-        Authorization: `Bearer ${credentials.token}`,
-      },
-    }).then((resp) => setFrequencies(resp.data.data));
+    axios("LoanApplication/loan-frequency-type").then((resp) => setFrequencies(resp.data.data));
   };
   const getCalculationMethods = () => {
-    axios("Common/calculation-method", {
-      headers: {
-        Authorization: `Bearer ${credentials.token}`,
-      },
-    }).then((resp) => setCalcMethods(resp.data));
+    axios("Common/calculation-method").then((resp) => setCalcMethods(resp.data));
   };
   const getGroups = () => {
-    axios("LoanApplication/get-loan-group", {
-      headers: {
-        Authorization: `Bearer ${credentials.token}`,
-      },
-    }).then((resp) => setGroups(resp.data.data));
+    axios("LoanApplication/get-loan-group").then((resp) => setGroups(resp.data.data));
   };
 
   const getSources = () => {
-    axios("LoanApplication/get-loan-funding-source", {
-      headers: {
-        Authorization: `Bearer ${credentials.token}`,
-      },
-    }).then((resp) => setSources(resp.data.data));
+    axios("LoanApplication/get-loan-funding-source").then((resp) => setSources(resp.data.data));
   };
   const getLoans = () => {
-    axios("LoanApplication/get-loan-product", {
-      headers: {
-        Authorization: `Bearer ${credentials.token}`,
-      },
-    }).then((resp) => setLoans(resp.data.data));
+    axios("LoanApplication/get-loan-product").then((resp) => setLoans(resp.data.data));
   };
 
   const getNoOfDays = () => {
@@ -209,11 +161,7 @@ const LoanApplication = () => {
     };
     setLoading(true);
     axios
-      .post("LoanApplication/loan-application", payload, {
-        headers: {
-          Authorization: `Bearer ${credentials.token}`,
-        },
-      })
+      .post("LoanApplication/loan-application", payload)
       .then((resp) => {
         toast(resp.data.message, {
           type: "success",
@@ -247,7 +195,7 @@ const LoanApplication = () => {
           <div
             className="py-3 px-4 justify-content-between align-items-center d-flex"
             style={{
-              backgroundColor: "#f4fAfd",
+              backgroundColor: "var(--memcos-blue)",
               borderRadius: "15px 15px 0 0",
             }}
           >

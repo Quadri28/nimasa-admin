@@ -1,6 +1,5 @@
-import React,{useMemo, useState, useContext, useEffect} from 'react'
+import React,{useMemo, useState, useEffect} from 'react'
 import '../ConfigurationsSubComponents/Table.css'
-import { UserContext } from '../../AuthContext';
 import axios from '../../axios';
 import GrowthComponent from './GrowthComponent';
 import PositionComponent from './PositionComponent';
@@ -11,12 +10,9 @@ const MemberGrowth = () => {
    const [reportType, setReportType] = useState('')
    const [year, setYear] = useState(new Date().getFullYear())
 
-    const {credentials} = useContext(UserContext)
 
     const getPositionReports=()=>{
-      axios(`Reports/member-growth-report?ReportType=${reportType}&year=${new Date(year).getFullYear()}`, {headers:{
-        Authorization: `Bearer ${credentials.token}`
-      }}).then(resp=>{
+      axios(`Reports/member-growth-report?ReportType=${reportType}&year=${new Date(year).getFullYear()}`).then(resp=>{
         if(resp.data.data.memberGrowthPositionReport ){
           setPositions(resp.data.data.memberGrowthPositionReport)
     }else{

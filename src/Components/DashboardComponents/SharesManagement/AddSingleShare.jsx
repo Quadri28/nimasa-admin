@@ -1,9 +1,7 @@
-import React, { useContext, useEffect, useState } from "react";
-import { Form, Formik, ErrorMessage, Field } from "formik";
-import ErrorText from "../ErrorText";
+import React, { useEffect, useState } from "react";
+import { Form, Formik, Field } from "formik";
 import "./SharesManagement.css";
 import axios from "../../axios";
-import { UserContext } from "../../AuthContext";
 import * as Yup from "yup";
 import { toast, ToastContainer } from "react-toastify";
 import { Combobox } from "react-widgets";
@@ -12,7 +10,6 @@ import { useNavigate } from "react-router-dom";
 
 const AddSingleShare = () => {
   const [shareTypes, setShareTypes] = useState([]);
-  const { credentials } = useContext(UserContext);
   const [members, setMembers] = useState([]);
   const [accounts, setAccounts] = useState([]);
   const [account, setAccount] = useState("");
@@ -24,11 +21,7 @@ const AddSingleShare = () => {
   const [type, setType] = useState("");
   const [shareType, setShareType] = useState({});
   const getMembers = () => {
-    axios("MemberManagement/get-member-detail-slim", {
-      headers: {
-        Authorization: `Bearer ${credentials.token}`,
-      },
-    }).then((resp) => setMembers(resp.data.data));
+    axios("MemberManagement/get-member-detail-slim").then((resp) => setMembers(resp.data.data));
   };
 
   const handleChange = (e) => {
@@ -39,13 +32,7 @@ const AddSingleShare = () => {
 
   const fetchMemberAccounts = async () => {
     await axios(
-      `ShareManagement/get-member-savings-account-numbers?customerId=${value}`,
-      {
-        headers: {
-          Authorization: `Bearer ${credentials.token}`,
-        },
-      }
-    ).then((resp) => setAccounts(resp.data.data));
+      `ShareManagement/get-member-savings-account-numbers?customerId=${value}`).then((resp) => setAccounts(resp.data.data));
   };
 
   useEffect(() => {
@@ -53,11 +40,7 @@ const AddSingleShare = () => {
   }, [value]);
 
   const getSharesTypes = () => {
-    axios("ShareManagement/share-types-slim", {
-      headers: {
-        Authorization: `Bearer ${credentials.token}`,
-      },
-    }).then((resp) => setShareTypes(resp.data.data));
+    axios("ShareManagement/share-types-slim").then((resp) => setShareTypes(resp.data.data));
   };
   useEffect(() => {
     getSharesTypes();
@@ -65,11 +48,7 @@ const AddSingleShare = () => {
   }, []);
 
   const fetchShareType = async () => {
-    await axios(`ShareManagement/share-type?id=${type}`, {
-      headers: {
-        Authorization: `Bearer ${credentials.token}`,
-      },
-    }).then((resp) => setShareType(resp.data.data));
+    await axios(`ShareManagement/share-type?id=${type}`).then((resp) => setShareType(resp.data.data));
   };
 
   useEffect(() => {
@@ -98,11 +77,7 @@ const AddSingleShare = () => {
       shareDebitAccountType: Number(input.accountType),
     };
     axios
-      .post("ShareManagement/create-share", payload, {
-        headers: {
-          Authorization: `Bearer ${credentials.token}`,
-        },
-      })
+      .post("ShareManagement/create-share", payload)
       .then((resp) => {
         toast(resp.data.message, {
           type: "success",
@@ -119,11 +94,7 @@ const AddSingleShare = () => {
   };
 
   const fetchGLAccounts = () => {
-    axios(`Acounting/general-ledger-customer-enquiry?SearchOption=${1}`, {
-      headers: {
-        Authorization: `Bearer ${credentials.token}`,
-      },
-    }).then((resp) => setGLs(resp.data.data));
+    axios(`Acounting/general-ledger-customer-enquiry?SearchOption=${1}`).then((resp) => setGLs(resp.data.data));
   };
   useEffect(() => {
     fetchGLAccounts();

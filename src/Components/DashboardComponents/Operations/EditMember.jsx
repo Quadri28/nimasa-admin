@@ -252,7 +252,7 @@ const EditMember = () => {
   return (
     <div className="card rounded-4" style={{border:'solid .2px #F2F2F2'}}>
        <div className="d-flex gap-2 p-3  align-items-center" 
-       style={{backgroundColor:'#f4fAfd', borderRadius:'15px 15px 0 0', cursor:'pointer'}}>
+       style={{backgroundColor:'var(--memcos-blue)', borderRadius:'15px 15px 0 0', cursor:'pointer'}}>
        <BsArrowLeft onClick={()=>navigate(-1)}/>
         <span>Edit Member Details:</span>
         </div>
@@ -264,7 +264,7 @@ const EditMember = () => {
           <label htmlFor="memberId">
             Member ID<sup className="text-danger">*</sup>
           </label>
-          <input name="memberId" value={details?.memberId} onChange={handleChange} required/>
+          <input name="memberId" value={details?.memberId} onChange={handleChange} />
         </div>
         <div className="custom-input-wrapper ">
           <label htmlFor="firstName">
@@ -523,7 +523,7 @@ const EditMember = () => {
            name="monthlyContribution" value={details?.monthlyContribution} onChange={handleChange} />
         </div>
         </div>
-        <div className="admin-task-forms">
+        {/* <div className="admin-task-forms">
         <h6>Reg. Fee Details:</h6> <div></div>
         <div className="custom-input-wrapper ">
           <label htmlFor="accountNumber">Account Number</label>
@@ -542,7 +542,7 @@ const EditMember = () => {
           <label htmlFor="tellerNumber">Teller No:</label>
           <input name="tellerNumber" value={details?.tellerNumber} onChange={handleChange}/>
         </div>
-        </div>
+        </div> */}
         <div className="admin-task-forms">
         <h6>Referral Details:</h6> <div></div>
         <div className="custom-input-wrapper">

@@ -11,6 +11,7 @@ import {
   usePagination,
 } from "react-table";
 import { toast, ToastContainer } from "react-toastify";
+import UnpaginatedTable from "../../Reports/UnpaginatedTable";
 
 const BulkUpload = () => {
   const { credentials } = useContext(UserContext);
@@ -28,13 +29,7 @@ const BulkUpload = () => {
     axios
       .post(
         `Acounting/bulk-upload?batchNo=${batchNumber.batchNumber}&currencyCode=001`,
-        payload,
-        {
-          headers: {
-            Authorization: `Bearer ${credentials.token}`,
-          },
-        }
-      )
+        payload)
       .then((resp) => {
         setAmount(resp?.data?.data.totalAmount);
         if (resp.data.data.bulkPostDetails) {
@@ -44,14 +39,10 @@ const BulkUpload = () => {
       .catch((error) => console.log(error));
   };
 
-  const getTemplate = () => {
-    setLoading(true);
-    axios("Acounting/bulk-upload-template", {
-      responseType: "blob",
-      headers: {
-        Authorization: `Bearer ${credentials.token}`,
-      },
-    }).then((blob) => {
+  const getTemplate = async() => {
+    try {
+       setLoading(true);
+    await axios("Acounting/bulk-upload-template", {responseType: 'blob'}).then((blob) => {
       const url = window.URL.createObjectURL(new Blob([blob.data]));
       const link = document.createElement("a");
       link.href = url;
@@ -61,6 +52,11 @@ const BulkUpload = () => {
       setLoading(false);
       toast("Download was successful", { type: "success", autoClose: 2000 });
     });
+    } catch (error) {
+      setLoading(false)
+      toast(error.response.data.message, { type: "error", autoClose: 5000 });
+    }
+   
   };
 const resetForm = () => {
   setFile(null);
@@ -71,11 +67,7 @@ const resetForm = () => {
 };
 
   const fetchBatchNo = () => {
-    axios("Acounting/fetch-batch-no", {
-      headers: {
-        Authorization: `Bearer ${credentials.token}`,
-      },
-    }).then((resp) => setBatchNumber(resp.data.data));
+    axios("Acounting/fetch-batch-no").then((resp) => setBatchNumber(resp.data.data));
   };
 
   useEffect(() => {
@@ -90,11 +82,7 @@ const resetForm = () => {
       trackingId: String(batchNumber.batchNumber),
     };
     axios
-      .post("Acounting/upload-bulk", payload, {
-        headers: {
-          Authorization: `Bearer ${credentials.token}`,
-        },
-      })
+      .post("Acounting/upload-bulk", payload)
       .then((resp) =>{
         toast(resp.data.message, {
           type: "success",
@@ -173,7 +161,7 @@ const resetForm = () => {
         >
           <div
             style={{
-              backgroundColor: "#f4fAfd",
+              backgroundColor: "var(--memcos-blue)",
               borderRadius: "15px 15px 0 0",
             }}
             className="p-3"
@@ -221,41 +209,44 @@ const resetForm = () => {
             </div>
             <div className="table-responsive px-3">
               {data.length > 0 ? (
-                <table {...getTableProps()} id="customers" className="table">
-                  <thead>
-                    {headerGroups.map((headerGroup) => (
-                      <tr {...headerGroup.getHeaderGroupProps()}>
-                        <th>S/N</th>
-                        {headerGroup.headers.map((column) => (
-                          <th
-                            {...column.getHeaderProps(
-                              column.getSortByToggleProps()
-                            )}
-                          >
-                            {column.render("Header")}
-                          </th>
-                        ))}
-                      </tr>
-                    ))}
-                  </thead>
-                  <tbody {...getTableBodyProps()}>
-                    {page.map((row, index) => {
-                      prepareRow(row);
-                      return (
-                        <tr {...row.getRowProps()}>
-                          <td>{index + 1}</td>
-                          {row.cells.map((cell) => {
-                            return (
-                              <td {...cell.getCellProps()}>
-                                {cell.render("Cell")}
-                              </td>
-                            );
-                          })}
-                        </tr>
-                      );
-                    })}
-                  </tbody>
-                </table>
+                // <table {...getTableProps()} id="customers" className="table">
+                //   <thead>
+                //     {headerGroups.map((headerGroup) => (
+                //       <tr {...headerGroup.getHeaderGroupProps()}>
+                //         <th>S/N</th>
+                //         {headerGroup.headers.map((column) => (
+                //           <th
+                //             {...column.getHeaderProps(
+                //               column.getSortByToggleProps()
+                //             )}
+                //           >
+                //             {column.render("Header")}
+                //           </th>
+                //         ))}
+                //       </tr>
+                //     ))}
+                //   </thead>
+                //   <tbody {...getTableBodyProps()}>
+                //     {page.map((row, index) => {
+                //       prepareRow(row);
+                //       return (
+                //         <tr {...row.getRowProps()}>
+                //           <td>{index + 1}</td>
+                //           {row.cells.map((cell) => {
+                //             return (
+                //               <td {...cell.getCellProps()}>
+                //                 {cell.render("Cell")}
+                //               </td>
+                //             );
+                //           })}
+                //         </tr>
+                //       );
+                //     })}
+                //   </tbody>
+                // </table>
+                <div className="mb-3">
+                <UnpaginatedTable data={data} columns={columns} isExport={false}/>
+                </div>
               ) : null}
             </div>
             <div

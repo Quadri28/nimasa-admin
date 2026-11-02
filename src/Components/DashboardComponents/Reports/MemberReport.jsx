@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useMemo, useState } from "react";
+import React, {  useEffect, useMemo, useState } from "react";
 import {
   useTable,
   useSortBy,
@@ -7,20 +7,14 @@ import {
 } from "react-table";
 import { FaAngleRight, FaAngleLeft } from "react-icons/fa";
 import axios from "../../axios";
-import { UserContext } from "../../AuthContext";
 import { CSVLink } from "react-csv";
 import { LiaTimesCircle } from "react-icons/lia";
 
 const MemberReport = () => {
   const [reports, setReports] = useState([]);
-  const { credentials } = useContext(UserContext);
 
   const getReports = () => {
-    axios("Reports/member-details-report", {
-      headers: {
-        Authorization: `Bearer ${credentials.token}`,
-      },
-    }).then((resp) => {
+    axios("Reports/member-details-report").then((resp) => {
       if (resp.data.data.memberDetails) {
         setReports(resp.data.data.memberDetails);
       }

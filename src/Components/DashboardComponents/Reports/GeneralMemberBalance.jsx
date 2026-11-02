@@ -1,21 +1,15 @@
-import { UserContext } from '../../AuthContext';
 import axios from '../../axios';
-import React, { useContext, useEffect, useState } from 'react';
+import React, {  useEffect, useState } from 'react';
 import * as XLSX from "xlsx";
 import { saveAs } from "file-saver";
 
 const GeneralMemberBalance = () => {
   const [reports, setReports] = useState([]);
   const [date, setDate] = useState('');
-  const { credentials } = useContext(UserContext);
 
   const getGeneralMemberBalance = () => {
     if (!date) return;
-    axios(`Reports/General-member-balance?GeneralMemberBalanceReportAsAtDate=${date}`, {
-      headers: {
-        Authorization: `Bearer ${credentials.token}`,
-      },
-    }).then((resp) =>
+    axios(`Reports/General-member-balance?GeneralMemberBalanceReportAsAtDate=${date}`).then((resp) =>
       setReports(resp.data.data.generalMemberBalances || [])
     );
   };

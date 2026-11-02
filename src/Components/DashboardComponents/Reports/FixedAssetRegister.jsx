@@ -1,6 +1,5 @@
-import React, { useContext, useEffect, useMemo, useState } from 'react'
+import React, {  useEffect, useMemo, useState } from 'react'
 import axios from '../../axios';
-import { UserContext } from '../../AuthContext';
 import UnpaginatedTable from './UnpaginatedTable';
 
 const FixedAssetRegister = () => {
@@ -8,7 +7,6 @@ const FixedAssetRegister = () => {
   const[input, setInput]= useState({})
   const [statuses, setStatuses] = useState([])
   const [reports, setReports] = useState([])
-  const {credentials} = useContext(UserContext)
 
 
   const handleChange=(e)=>{
@@ -18,14 +16,10 @@ const FixedAssetRegister = () => {
   }
 
   const getStatuses= async()=>{
-    await axios('Reports/fixed-asset-register-report-status', {headers:{
-      Authorization: `Bearer ${credentials.token}`
-    }}).then(resp=>setStatuses(resp.data))
+    await axios('Reports/fixed-asset-register-report-status').then(resp=>setStatuses(resp.data))
   }
   const getBranches = () => {
-      axios("MemberManagement/get-branch",{headers:{
-        Authorization:`Bearer ${credentials.token}`
-      }}).then((resp) => {
+      axios("MemberManagement/get-branch").then((resp) => {
         setBranches(resp.data.data);
       });
     };
@@ -34,11 +28,7 @@ const FixedAssetRegister = () => {
       getStatuses()
     }, []);
     const getReports =async()=>{
-      await axios(`Reports/fixed-asset-register?BranchCode=${input.branch}&AssetStatus=${input.status}`, {
-        headers:{
-          Authorization:`Bearer ${credentials.token}`
-        }
-      })
+      await axios(`Reports/fixed-asset-register?BranchCode=${input.branch}&AssetStatus=${input.status}`)
     .then(resp=>{
       if (resp.data.data.fixedAssetRegisterReports) {
       setReports(resp.data.data.fixedAssetRegisterReports)

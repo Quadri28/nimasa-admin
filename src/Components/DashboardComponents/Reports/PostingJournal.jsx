@@ -1,6 +1,5 @@
-import React, { useContext, useEffect, useMemo, useState } from "react";
+import React, { useEffect,  useState } from "react";
 import axios from "../../axios";
-import { UserContext } from "../../AuthContext";
 import { CSVLink } from "react-csv";
 import { LiaTimesCircle } from "react-icons/lia";
 
@@ -14,38 +13,23 @@ const PostingJournal = () => {
   const [type, setType] = useState("");
   const [types, setTypes] = useState([]);
   const [enquiries, setEnquiries] = useState([]);
-  const { credentials } = useContext(UserContext);
 
   const getPostingJournal = () => {
     axios(
-      `Reports/get-posting-journal-report?AccountNumber=${account}&AccountTitle=${accountTitle}&TransactionDateFrom=${startDate}&TransactionDateTo=${endDate}&PostingDateType=${option}`,
-      {
-        headers: {
-          Authorization: `Bearer ${credentials.token}`,
-        },
-      }
-    ).then((resp) => {
+      `Reports/get-posting-journal-report?AccountNumber=${account}&AccountTitle=${accountTitle}&TransactionDateFrom=${startDate}&TransactionDateTo=${endDate}&PostingDateType=${option}`).then((resp) => {
       if (resp.data.data.postingJournalReport) {
         setReports(resp.data.data.postingJournalReport);
       }
     });
   };
   const fetchTypes = () => {
-    axios("Acounting/general-Ledger-search-option", {
-      headers: {
-        Authorization: `Bearer ${credentials.token}`,
-      },
-    }).then((resp) => setTypes(resp.data));
+    axios("Acounting/general-Ledger-search-option").then((resp) => setTypes(resp.data));
   };
   useEffect(() => {
     fetchTypes();
   }, []);
   const fetchCustomerEnquiries = () => {
-    axios(`Acounting/general-ledger-customer-enquiry?SearchOption=${type}`, {
-      headers: {
-        Authorization: `Bearer ${credentials.token}`,
-      },
-    }).then((resp) => setEnquiries(resp.data.data));
+    axios(`Acounting/general-ledger-customer-enquiry?SearchOption=${type}`).then((resp) => setEnquiries(resp.data.data));
   };
   useEffect(() => {
     fetchCustomerEnquiries();
@@ -56,12 +40,7 @@ const PostingJournal = () => {
 
   const fetchAccountTitle = () => {
     axios(
-      `Reports/posting-journal-account-number-text-changed?AccountNumber=${account}`,
-      {
-        headers: {
-          Authorization: `Bearer ${credentials.token}`,
-        },
-      }
+      `Reports/posting-journal-account-number-text-changed?AccountNumber=${account}`
     ).then((resp) => setAccountTitle(resp.data.data.accountTitle));
   };
   useEffect(() => {

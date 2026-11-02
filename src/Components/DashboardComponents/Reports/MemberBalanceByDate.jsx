@@ -1,5 +1,4 @@
-import React,{useState, useEffect, useContext, useMemo} from 'react'
-import { UserContext } from '../../AuthContext'
+import React,{useState, useEffect} from 'react'
 import axios from '../../axios'
 import { FaAngleDown, FaAngleUp } from 'react-icons/fa'
 import { CSVLink } from 'react-csv'
@@ -11,12 +10,9 @@ const MemberBalanceByDate = () => {
     const [startDate, setStartDate]= useState('')
    const [endDate, setEndDate]= useState('')
  const [clicked, setClicked]= useState('')
-const {credentials} = useContext(UserContext)
 
 const getReports=()=>{
-   axios(`Reports/member-balance?SelectDateType=${product}&TransactionDateFrom=${startDate}&TransactionDateTo=${endDate}`, {headers:{
-       Authorization: `Bearer ${credentials.token}`
-   }})
+   axios(`Reports/member-balance?SelectDateType=${product}&TransactionDateFrom=${startDate}&TransactionDateTo=${endDate}`)
    .then(resp=>{
        if (resp.data.data.memberBalance) {
        setReports(resp.data.data.memberBalance)

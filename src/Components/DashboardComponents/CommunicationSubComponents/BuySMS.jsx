@@ -1,16 +1,10 @@
-import React, { useContext, useEffect, useMemo, useState } from "react";
+import React, {useEffect, useMemo, useState } from "react";
 
-import { FaAngleRight, FaAngleLeft } from "react-icons/fa";
-import { Link } from "react-router-dom";
-import { GoArrowUp } from "react-icons/go";
-import { Field, Formik, Form } from "formik";
 import axios from "../../axios";
-import { UserContext } from "../../AuthContext";
 import Table from "./Table";
 import { toast, ToastContainer } from "react-toastify";
 
 const BuySMS = () => {
-  const { credentials } = useContext(UserContext);
   const [histories, setHistories] = useState([]);
 const [loading, setLoading] = useState('')
   const [pageCount, setPageCount] = useState(0);
@@ -26,43 +20,26 @@ const [loading, setLoading] = useState('')
   const buySMS = (e) => {
     e.preventDefault();
     axios(
-      `Communication/buy-sms-unit?UnitQuantity=${unit}&UnitAmount=${price.price}`,
-      {
-        headers: {
-          Authorization: `Bearer ${credentials.token}`,
-        },
-      }
-    ).then(resp=>{
+      `Communication/buy-sms-unit?UnitQuantity=${unit}&UnitAmount=${price.price}`).then(resp=>{
       toast(resp.data.message, {type:'success', autoClose:5000})
       fetchData({pageSize:10, pageNumber:1})
     }).catch(error=>toast(error.response.data.message, {type:'error', autoClose:false}));
   };
  //Fetching units
  const getUnitPrices = () => {
-  axios("Communication/list-sms-unit-price", {
-    headers: {
-      Authorization: `Bearer ${credentials.token}`,
-    },
-  }).then((resp) => setUnits(resp.data.data));
+  axios("Communication/list-sms-unit-price").then((resp) => setUnits(resp.data.data));
 };
 
 // Fetching SMS statistics
 
 const FetchStatistics=()=>{
-  axios('Communication/sms-unit-statistics', {headers:{
-    Authorization: `Bearer ${credentials.token}`
-  }}).then(resp=>setStatistic(resp.data.data))
+  axios('Communication/sms-unit-statistics').then(resp=>setStatistic(resp.data.data))
 }
 
 // Fetching Price
 const fetchPrice = () => {
   axios(
-    `Communication/sms-unit-detail-by-sms-unit-priceId?smsUnitPriceId=${unit}`,
-    {
-      headers: {
-        Authorization: `Bearer ${credentials.token}`,
-      },
-    }
+    `Communication/sms-unit-detail-by-sms-unit-priceId?smsUnitPriceId=${unit}`
   ).then((resp) => setPrice(resp.data.data));
 };
 useEffect(() => {
@@ -82,13 +59,7 @@ useEffect(() => {
     setTimeout(() => {
       if (fetchId === fetchIdRef.current) {
         axios(
-          `Communication/sms-purchase-histories?PageSize=${pageSize}&PageNumber=${pageNumber+1}`,
-          {
-            headers: {
-              Authorization: `Bearer ${credentials.token}`,
-            },
-          }
-        ).then((resp) => {
+          `Communication/sms-purchase-histories?PageSize=${pageSize}&PageNumber=${pageNumber+1}`).then((resp) => {
           if (resp.data.data.modelResult) {
             setHistories(resp.data.data.modelResult);
             setPageCount(Math.ceil(resp.data.data.totalCount / pageSize));

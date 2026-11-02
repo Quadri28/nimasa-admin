@@ -23,7 +23,7 @@ const NavBar = () => {
     <nav className="navbar navbar-light" style={{fontFamily:'General Sans'}}>
       <div className="container">
         <Link to="/">
-          <img src={Logo} alt="Logo" className="img-fluid" />
+          <img src={Logo} alt="Logo" className="img-fluid logo-img" />
         </Link>
         <div className="menu-icon" onClick={handleShowNavbar}>
           {!showNavbar ? <FaBars /> : <FaTimes />}

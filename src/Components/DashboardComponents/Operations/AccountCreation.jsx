@@ -142,7 +142,7 @@ await axios (`MemberManagement/get-product-information?productCode=${accountProd
   return (
     <div style={{ border: "solid 1px #f7f4fa", borderRadius: "10px", marginTop:'1.5rem' }}>
       <div
-        style={{ backgroundColor: "#F5F9FF", borderRadius: "10px 10px 0 0" }}
+        style={{ backgroundColor: "var(--memcos-blue)", borderRadius: "10px 10px 0 0" }}
         className="p-3"
       >
         <h5 style={{fontSize:'16px'}}>Account Creation</h5>
@@ -342,14 +342,15 @@ await axios (`MemberManagement/get-product-information?productCode=${accountProd
           >
             <button
               type="reset"
-              className="btn btn-md rounded-5"
+              className="btn btn-md rounded-4"
               style={{ backgroundColor: "#FAFAFA" }}
             >
               Reset
             </button>
             <button
               type="submit"
-              className="btn px-3  member text-white"
+              className="btn btn-md rounded-4 text-white"
+              style={{ backgroundColor: "var(--custom-color)"}}
             >
               Submit
             </button>

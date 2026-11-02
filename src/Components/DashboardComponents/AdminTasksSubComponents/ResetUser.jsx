@@ -51,7 +51,7 @@ const ResetUser = () => {
      
       <form onSubmit={resetUser}>
       <div className='p-3' 
-      style={{backgroundColor:'#F5F9FF', borderRadius:'15px 15px 0 0'}}>
+      style={{backgroundColor:'var(--memcos-blue)', borderRadius:'15px 15px 0 0'}}>
         <div className=' d-flex align-items-center gap-2 title-link' onClick={()=>navigate(-1)}>
       <BsArrowLeft/> <span style={{fontSize:'14px'}}> Reset user </span>
       </div>
@@ -86,7 +86,7 @@ const ResetUser = () => {
             </span>
             </div>
             </div>
-           {password ? <div className="d-flex flex-column">
+           {password ? <div className="d-flex flex-column admin-task-forms">
                     <label htmlFor="newPassword">Enter password</label>
                     <input type="password" name='input' onChange={(e)=>setInput(e.target.value)} />
             </div>: ''}

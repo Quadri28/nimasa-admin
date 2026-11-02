@@ -35,9 +35,8 @@ const Restructure = () => {
     }).then((resp) => setAccounts(resp.data.data));
   };
   const getStatus=()=>{
-    axios(`LoanApplication/loan-top-up-pay-amount-text-changed?CurrentBalance=${details?.currentBalance}&TopUpAmount=${input.topUpAmount}&Duration=${details?.loanTerm}&LoanRate=${details?.loanRate}&ProductCode=${details?.productCode}&AccountNumber=${settlement.settlementAccountNumber}`, {headers:{
-        Authorization: `Bearer ${credentials.token}`
-      }}).then(resp=>{
+    axios(`LoanApplication/loan-top-up-pay-amount-text-changed?CurrentBalance=${details?.currentBalance}&TopUpAmount=${input.topUpAmount}&Duration=${details?.loanTerm}&LoanRate=${details?.loanRate}&ProductCode=${details?.productCode}&AccountNumber=${settlement.settlementAccountNumber}`
+      ).then(resp=>{
         setStatus(resp.data.data)
         if (resp.data.data.repaymentAccounts) {
           setRepaymentAccounts(resp.data.data.repaymentAccounts)
@@ -50,11 +49,7 @@ const Restructure = () => {
     details?.currentBalance, settlement.settlementAccountNumber])
 
   const getGls = () => {
-    axios(`LoanApplication/loan-top-up-account-number-text-changed?AccountNumber=${account}`, {
-      headers: {
-        Authorization: `Bearer ${credentials.token}`,
-      },
-    }).then((resp) => {
+    axios(`LoanApplication/loan-top-up-account-number-text-changed?AccountNumber=${account}`).then((resp) => {
       setGls(resp.data.data.repaymentAccounts)
       setDetails(resp.data.data.loanAccountDetails)
     });
@@ -78,11 +73,7 @@ const Restructure = () => {
     };
     e.preventDefault();
     axios
-      .post("LoanApplication/loan-top-up", payload, {
-        headers: {
-          Authorization: `Bearer ${credentials.token}`,
-        },
-      })
+      .post("LoanApplication/loan-top-up", payload)
       .then((resp) =>
         toast(resp.data.data, {
           type: "success",
@@ -96,10 +87,7 @@ const Restructure = () => {
   };
 
   const getSettlementAccountDetails=()=>{
-    axios(`LoanApplication/loan-de-save-account-to-repay-from-selected-changed?AccountToRepayFrom=${gl}`,
-       {headers:{
-      Authorization: `Bearer ${credentials.token}`
-    }}).then(resp=>setSettlement(resp.data.data.loanFundingSourceAccountNoDetails))
+    axios(`LoanApplication/loan-de-save-account-to-repay-from-selected-changed?AccountToRepayFrom=${gl}`).then(resp=>setSettlement(resp.data.data.loanFundingSourceAccountNoDetails))
   }
   useEffect(()=>{
   getSettlementAccountDetails()
@@ -135,7 +123,7 @@ const Restructure = () => {
       <div style={{ border: "solid 1px #fafafa" }} className="rounded-4">
         <div
           className="p-3 justify-content-between align-items-center d-flex"
-          style={{ backgroundColor: "#f4fAfd", borderRadius: "15px 15px 0 0" }}
+          style={{ backgroundColor: "var(--memcos-blue)", borderRadius: "15px 15px 0 0" }}
         >
           <span style={{ fontWeight: "500", fontSize: "16px" }}>Loan Top up:</span>
         </div>

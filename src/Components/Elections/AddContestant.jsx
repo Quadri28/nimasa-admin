@@ -1,9 +1,9 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { BsArrowLeft } from 'react-icons/bs'
 import { useNavigate, useParams } from 'react-router-dom'
 import axios from '../axios'
-import { UserContext } from '../AuthContext'
 import { ToastContainer, toast } from 'react-toastify'
+import {Combobox} from 'react-widgets'
 
 const AddContestant = () => {
     const {id}= useParams()
@@ -13,12 +13,9 @@ const AddContestant = () => {
     const [manifesto, setManifesto]= useState('')
     const [input, setInput]= useState({})
     const [loading, setLoading]= useState(false)
-    const {credentials}= useContext(UserContext)
 
     const getMembers=()=>{
-        axios('MemberManagement/get-member-detail-slim', {headers:{
-            Authorization: `Bearer ${credentials.token}`
-        }}).then(resp=>setMembers(resp.data.data))
+        axios('MemberManagement/get-member-detail-slim').then(resp=>setMembers(resp.data.data))
     }
     const handleChange=(e)=>{
         const name = e.target.name;
@@ -27,9 +24,7 @@ const AddContestant = () => {
     }
 
     const getPositions=()=>{
-        axios('Election/election-positions', {headers:{
-            Authorization: `Bearer ${credentials.token}`
-        }}).then(resp=>setPositions(resp.data.data.positions))
+        axios('Election/election-positions').then(resp=>setPositions(resp.data.data.positions))
     }
     useEffect(()=>{
         getMembers()
@@ -45,9 +40,7 @@ const AddContestant = () => {
         payload.append('MemberID', input.name)
         payload.append('ManifestoDocumentFile', manifesto)
         payload.append('ProfileImage', ProfileImage)
-        axios.post('Election/add-contestant', payload, {headers:{
-            Authorization: `Bearer ${credentials.token}`
-        }}).then(resp=>{
+        axios.post('Election/add-contestant', payload).then(resp=>{
           setLoading(false)
             toast(resp.data.message, {type:'success', autoClose:5000, pauseOnHover:true})
             setTimeout(()=>{
@@ -86,16 +79,24 @@ const AddContestant = () => {
             </select>
         </div>
         <div className="d-flex flex-column gap-1">
-            <label htmlFor="name">Select contestant name</label>
-            <select type="text" name='name' onChange={handleChange}>
-            <option value="">Select</option>
-            {
-                members.map(member=>(
-                    <option value={member.customerId} key={member.customerId}>{member.fullname}</option>
-                ))
-            }
-            </select>
-        </div>
+  <label>Select contestant name</label>
+
+  <Combobox
+    data={members}
+    dataKey="customerId"
+    textField="fullname"
+    placeholder="Search and select contestant"
+    value={members.find(
+      (member) => member.customerId === input.name
+    )}
+    onChange={(selectedMember) =>
+      setInput({
+        ...input,
+        name: selectedMember?.customerId || "",
+      })
+    }
+  />
+</div>
         <div className="d-flex flex-column gap-1">
             <label htmlFor="profileImage">Profile image</label>
             <input type="file" name='profileImage' accept='image/png, image/jpeg, image/gif' 

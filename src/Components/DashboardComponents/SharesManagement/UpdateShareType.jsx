@@ -12,19 +12,13 @@ const UpdateShareType = () => {
 const {credentials}= useContext(UserContext)
 
 const fetchLedgerAccounts = () => {
-      axios("Acounting/general-ledger-customer-enquiry?SearchOption=1", {
-        headers: {
-          Authorization: `Bearer ${credentials.token}`,
-        },
-      }).then((resp) => setLedgers(resp.data.data));
+      axios("Acounting/general-ledger-customer-enquiry?SearchOption=1").then((resp) => setLedgers(resp.data.data));
     };
 useEffect(()=>{
 fetchLedgerAccounts()
 },[])
   const getSingleType=()=>{
-    axios(`ShareManagement/share-type?id=${id}`, {headers:{
-      Authorization: `Bearer ${credentials.token}`
-    }}).then(resp=>setInput(resp.data.data))
+    axios(`ShareManagement/share-type?id=${id}`).then(resp=>setInput(resp.data.data))
   }
   useEffect(()=>{
 getSingleType()
@@ -48,9 +42,7 @@ getSingleType()
             lockShareWithdrawal: input.lockShareWithdrawal
         }
         e.preventDefault()
-        axios.post(`ShareManagement/update-share-type?id=${id}`, payload, {headers:{
-          Authorization: `Bearer ${credentials.token}`
-        }}).then(resp=>{
+        axios.post(`ShareManagement/update-share-type?id=${id}`, payload).then(resp=>{
           toast(resp.data.message, {type:'success', autoClose:5000, pauseOnHover:true})
           setTimeout(() => {
             navigate(-1)

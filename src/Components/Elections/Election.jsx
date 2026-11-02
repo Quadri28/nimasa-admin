@@ -6,7 +6,7 @@ import { UserContext } from '../AuthContext';
 import { toast } from 'react-toastify';
 import {GrEdit} from 'react-icons/gr'
 import {MdOutlineRemoveRedEye, MdPersonAddAlt1} from 'react-icons/md'
-
+import {RiDeleteBinLine} from 'react-icons/ri'
 
 const Election = () => {
   const [data, setData]= useState([])
@@ -18,16 +18,13 @@ const Election = () => {
   const [loading, setLoading]= useState(false)
   const [searchQuery, setSearchQuery]= useState('')
 
+
  // Function to fetch the data from the API
  const fetchData = useCallback(async ({ pageSize, pageNumber, search })=>{
   const fetchId = ++fetchIdRef.current;
   setLoading(true);
   axios
-    .get(`Election/get-elections?PageSize=${pageSize}&PageNumber=${pageNumber+1}&Filter=${encodeURIComponent(search)}`, {
-      headers: {
-        Authorization: `Bearer ${credentials.token}`,
-      },
-    })
+    .get(`Election/get-elections?PageSize=${pageSize}&PageNumber=${pageNumber+1}&Filter=${encodeURIComponent(search)}`)
     .then((resp) => {
       if (fetchId === fetchIdRef.current) {
         if (resp.data.data.modelResult) {
@@ -46,6 +43,27 @@ const Election = () => {
 
   return () => clearTimeout(delayDebounce);
 }, [searchQuery, pageNumber, pageSize, fetchData]);
+
+const deleteElection = async(id)=>{
+const result =window.confirm('Are you sure to delete this election')
+if (result) {
+  try {
+  const resp =await axios(`Election/delete-election?Id=${id}`)
+    toast(resp.data.message, {type:'success', autoClose:5000, pauseOnHover:true})
+    setTimeout(() => {
+     fetchData({
+    pageSize: 10,
+    pageNumber: 0,
+    search: searchQuery,
+  });
+      
+    }, 3000);
+  } catch (error) {
+    toast(error.response.data.message, {type:'error', autoClose:false, pauseOnHover:true})
+  }
+  
+}
+}
 
     const column=[
       {Header: 'Election Name', accessor: 'title'},
@@ -97,6 +115,10 @@ const Election = () => {
               <span className="stat">Add contestant</span>
               <Link to={`add-contestant/${id}`} className='text-dark'><MdPersonAddAlt1 size={16}/></Link>
               </div>
+              <div style={{ position: "relative", cursor:'pointer' }} className="status-icon">
+              <span className="stat" >Delete election</span>
+              <RiDeleteBinLine size={16} onClick={()=>deleteElection(id)}/>
+              </div>
             </div>
         })},
     ]
@@ -111,7 +133,7 @@ const Election = () => {
         </p>
       <div className='d-flex gap-3 export-btn-container my-2 flex-wrap '>
         <Link className='btn btn-md text-white rounded-4' to={'create-election'}
-        style={{backgroundColor:'var(--custom-color)', fontSize:'14px'}}>
+        style={{backgroundColor:'#0452C8', fontSize:'14px'}}>
           Create new election</Link>
       </div>
     </div>

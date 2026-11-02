@@ -1,15 +1,14 @@
-import React, { useContext, useEffect, useMemo, useState } from 'react'
-import { UserContext } from '../../AuthContext'
+import React, { useEffect, useMemo, useState } from 'react'
 import axios from '../../axios'
 import UnpaginatedTable from '../Reports/UnpaginatedTable'
 import Modal from 'react-modal'
 import useScreenSize from '../../ScreenSizeHook'
 import { toast, ToastContainer } from 'react-toastify'
 import { Link, useNavigate } from 'react-router-dom'
+import ImagePreview from './ImagePreview'
 
 const LoanRequest = () => {
   const [requests, setRequests]= useState([])
-  const {credentials}= useContext(UserContext)
   const [guarantors, setGuarantors]= useState([])
   const [loan, setLoan]= useState({})
   const [id, setId]= useState('')
@@ -25,17 +24,13 @@ const LoanRequest = () => {
   const [loading, setLoading]= useState(false)
   
   const getLoans=()=>{
-    axios(`RequestVerification/loan-request?applicationNo=${id}`, {headers:{
-      Authorization: `Bearer ${credentials.token}`
-    }}).then(resp=>{ if (resp.data.data) {
+    axios(`RequestVerification/loan-request?applicationNo=${id}`).then(resp=>{ if (resp.data.data) {
       setLoan(resp.data.data)
     }})
   }
 
   const getRequests=()=>{
-axios('RequestVerification/loan-requests',{headers:{
-  Authorization: `Bearer ${credentials.token}`
-}}).then(resp=>{
+axios('RequestVerification/loan-requests').then(resp=>{
   if (resp.data.data.loans) {
   setRequests(resp.data.data.loans)
   }})}
@@ -45,9 +40,7 @@ axios('RequestVerification/loan-requests',{headers:{
   },[])
 
   const getGuarantors= async()=>{
-    await axios(`RequestVerification/get-loan-guarantors?applicationNo=${id}`, {headers:{
-      Authorization: `Bearer ${credentials.token}`
-    }}).then(resp=>{
+    await axios(`RequestVerification/get-loan-guarantors?applicationNo=${id}`).then(resp=>{
       if (resp.data.data.loanGuarantors) {
         setGuarantors(resp.data.data.loanGuarantors)
       }else{
@@ -62,9 +55,7 @@ getLoans()
   }, [id, isOpen, guarantorOpen])
 
   const getDetails=()=>{
-    axios(`RequestVerification/get-loan-guarantor-details?coopNo=${coop?.id}`, {headers:{
-      Authorization: `Bearer ${credentials.token}`
-    }}).then(resp=>setDetails(resp.data.data))
+    axios(`RequestVerification/get-loan-guarantor-details?coopNo=${coop?.id}`).then(resp=>setDetails(resp.data.data))
   }
 
   useEffect(()=>{
@@ -105,8 +96,8 @@ const customStyles = {
 };
 
   const column =[
-    {Header:'Loan No', accessor:'loanNo' },
-    {Header:'Full Name', accessor:'fullName' },
+    {Header:'Loan No', accessor:'loanNo'},
+    {Header:'Full Name', accessor:'fullName'},
     {Header:'Amount', accessor:'amount', Cell:(({value})=>{
       return <span>{new Intl.NumberFormat('en-US', {minimumFractionDigits:2}).format(value)}</span>
     }) },
@@ -160,9 +151,7 @@ const approveRequest=()=>{
   interest: loan.interestRate
   }
   setLoading(true)
-  axios.post('RequestVerification/loan-request-approval', payload, {headers:{
-    Authorization: `Bearer ${credentials.token}`
-  }}).then(resp=>{toast(resp.data.message, {type:'success', autoClose:5000, pauseOnHover:true})
+  axios.post('RequestVerification/loan-request-approval', payload).then(resp=>{toast(resp.data.message, {type:'success', autoClose:5000, pauseOnHover:true})
   setLoading(false)
   setTimeout(() => {
   getRequests()
@@ -181,9 +170,7 @@ const rejectRequest=()=>{
     narration: reason,
     applicationNo: id
   }
-  axios.post('RequestVerification/loan-request-reject', payload, {headers:{
-    Authorization: `Bearer ${credentials.token}`
-  }}).then(resp=>{
+  axios.post('RequestVerification/loan-request-reject', payload).then(resp=>{
     toast(resp.data.message, {type:'success', autoClose:5000, pauseOnHover:true})
     setTimeout(() => {
       setIsOpen(false)
@@ -292,10 +279,14 @@ const rejectRequest=()=>{
         className='loan-modal rounded-3 card p-3'
       >
       <h3 style={{fontSize:'18px', fontWeight:'600', marginBottom:'1rem'}}>Loan Request  </h3>
-              <div className="d-flex gap-3 flex-wrap align-items-center discourse">
+              <div className="d-flex gap-3 justify-content-between flex-wrap align-items-center discourse">
+                <div className="d-flex gap-3">
                 <span>Member No: {loan?.employeeId}</span>
+                </div>
+                <div>
                 <span>Member Name: {loan?.fullname}</span>
-                <img src={loan?.profileImage} alt="profile image" className='img-fluid view-img'/>
+                </div>
+                <ImagePreview src={loan?.profileImage} alt="profile image" className='img-fluid view-img'/>
               </div>
               <div className="d-flex flex-column gap-3 mt-3">
               <div className="d-flex justify-content-between discourse align-items-center p-2" style={{backgroundColor:'var(--light-blue)'}} >

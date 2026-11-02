@@ -1,27 +1,22 @@
-import React, { useContext, useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import UnpaginatedTable from "../Reports/UnpaginatedTable";
 import { FaUsersViewfinder } from "react-icons/fa6";
-import { UserContext } from "../../AuthContext";
 import axios from "../../axios";
 import useScreenSize from "../../ScreenSizeHook";
 import Modal from "react-modal";
 import { ToastContainer, toast } from "react-toastify";
+import ImagePreview from "./ImagePreview";
 
 const RescheduleSaving = () => {
   const [reports, setReports] = useState([]);
   const [id, setId] = useState("");
-  const { credentials } = useContext(UserContext);
   const [request, setRequest] = useState({});
   const [isOpen, setIsOpen] = useState(false);
   const [reason, setReason] = useState("");
   const [isReject, setIsReject] = useState(false);
 
   const getReports = () => {
-    axios("RequestVerification/reschedule-saving-requests", {
-      headers: {
-        Authorization: `Bearer ${credentials.token}`,
-      },
-    }).then((resp) => {
+    axios("RequestVerification/reschedule-saving-requests").then((resp) => {
       if (resp.data.data.userRegistrations) {
         setReports(resp.data.data.userRegistrations);
       }
@@ -31,11 +26,7 @@ const RescheduleSaving = () => {
     getReports();
   }, []);
   const getRequest = () => {
-    axios(`RequestVerification/reschedule-saving-request?id=${id}`, {
-      headers: {
-        Authorization: `Bearer ${credentials.token}`,
-      },
-    }).then((resp) => setRequest(resp.data.data));
+    axios(`RequestVerification/reschedule-saving-request?id=${id}`).then((resp) => setRequest(resp.data.data));
   };
   useEffect(() => {
     getRequest();
@@ -130,11 +121,7 @@ const RescheduleSaving = () => {
       id: Number(request.id),
     };
     axios
-      .post("RequestVerification/reschedule-saving-request-approved", payload, {
-        headers: {
-          Authorization: `Bearer ${credentials.token}`,
-        },
-      })
+      .post("RequestVerification/reschedule-saving-request-approved", payload)
       .then((resp) =>
         toast(resp.data.message, {
           type: "success",
@@ -156,11 +143,7 @@ const RescheduleSaving = () => {
       fullName: request.fullName,
     };
     axios
-      .post("RequestVerification/reschedule-saving-request-reject", payload, {
-        headers: {
-          Authorization: `Bearer ${credentials.token}`,
-        },
-      })
+      .post("RequestVerification/reschedule-saving-request-reject", payload)
       .then((resp) => {
         toast(resp.data.message, {
           type: "success",
@@ -195,12 +178,10 @@ const RescheduleSaving = () => {
           Reschedule Saving{" "}
         </h4>
         <div className="d-flex flex-column gap-3 mt-3">
-          <div className="d-flex gap-3 align-items-center flex-wrap discourse">
-           <div> <span>Member ID: </span> <span>{request?.employeeNo}</span></div>
-          <div className="d-flex gap-2" >
-            <span>Full Name:</span> <span>{request?.fullName}</span>
-          </div>
-          <img src={request?.profileImage} alt="" className="img-fluid view-img" />
+          <div className="d-flex gap-3 justify-content-between align-items-center flex-wrap discourse">
+            <div><span>Member ID: </span> <span>{request?.employeeNo}</span></div>
+            <div><span>Full Name:</span> <span>{request?.fullName}</span></div>
+          <ImagePreview src={request?.profileImage} alt="profile image" className="img-fluid view-img" />
           </div>
          <div className="d-flex justify-content-between discourse align-items-center p-2" style={{backgroundColor:'var(--light-blue)'}} >
            <div> <span>Account Number:</span>

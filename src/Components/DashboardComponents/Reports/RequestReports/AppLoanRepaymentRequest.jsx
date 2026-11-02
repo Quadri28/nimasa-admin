@@ -1,11 +1,9 @@
-import React, { useContext, useEffect, useMemo, useState } from 'react'
-import { UserContext } from '../../../AuthContext'
+import React, {  useEffect, useMemo, useState } from 'react'
 import Table from '../../CommunicationSubComponents/Table'
 import axios from '../../../axios'
 
 const AppLoanRepaymentRequest = () => {
   const [data, setData]= useState([])
-     const {credentials}=useContext(UserContext)
      const [loading, setLoading]= useState(false)
      const [pageCount, setPageCount]= useState(0)
      const [pageNumber, setPageNumber]= useState(0)
@@ -19,13 +17,7 @@ const AppLoanRepaymentRequest = () => {
           if (fetchId === fetchIdRef.current) {
             axios
               .get(
-                `RequestApproved/approved-loan-repayment?PageSize=${pageSize}&PageNumber=${pageNumber + 1}`,
-                {
-                  headers: {
-                    Authorization: `Bearer ${credentials.token}`,
-                  },
-                }
-              )
+                `RequestApproved/approved-loan-repayment?PageSize=${pageSize}&PageNumber=${pageNumber + 1}`,)
               .then((resp) => {
                 if (resp.data.data.modelResult) {
                   setData(resp.data.data.modelResult);

@@ -12,10 +12,7 @@ const navigate = useNavigate()
 const {credentials}= useContext(UserContext)
 const getTemplate = () => {
   axios("ShareManagement/share-bulk-upload-template", {
-    responseType: "blob",
-    headers: {
-      Authorization: `Bearer ${credentials.token}`,
-    },
+    responseType: "blob"
   }).then((blob) => {
     const url = window.URL.createObjectURL(new Blob([blob.data]));
     const link = document.createElement("a");

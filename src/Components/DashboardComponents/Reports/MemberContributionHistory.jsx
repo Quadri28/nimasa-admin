@@ -1,5 +1,4 @@
-import React, { useState, useContext, useEffect, useMemo } from "react";
-import { UserContext } from "../../AuthContext";
+import React, { useState,  useEffect, useMemo } from "react";
 import Table from "../CommunicationSubComponents/Table";
 import axios from "../../axios";
 import { FiEye } from "react-icons/fi";
@@ -9,7 +8,6 @@ const MemberContributionHistory = () => {
     const [searchQuery, setSearchQuery] = useState('')
   const [data, setData] = useState([]);
   const fetchIdRef = React.useRef(0);
-  const { credentials } = useContext(UserContext);
   const [pageCount, setPageCount] = useState(0);
   const [pageNumber, setPageNumber] = useState(0);
   const [pageSize, setPageSize] = useState(10);
@@ -24,13 +22,7 @@ const MemberContributionHistory = () => {
           .get(
             `Reports/get-member-contribution-report-history?PageSize=${pageSize}&PageNumber=${
               pageNumber + 1
-            }&Filter=${encodeURIComponent(search)}`,
-            {
-              headers: {
-                Authorization: `Bearer ${credentials.token}`,
-              },
-            }
-          )
+            }&Filter=${encodeURIComponent(search)}`)
           .then((resp) => {
             if (resp.data.data.modelResult) {
               setData(resp.data.data.modelResult);

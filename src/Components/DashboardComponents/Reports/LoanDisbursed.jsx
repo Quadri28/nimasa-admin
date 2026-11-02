@@ -1,7 +1,6 @@
-import React, { useContext, useEffect, useMemo, useState } from "react";
+import React, {  useEffect, useMemo, useState } from "react";
 import UnpaginatedTable from "./UnpaginatedTable";
 import axios from "../../axios";
-import { UserContext } from "../../AuthContext";
 
 const LoanDisbursed = () => {
   const [reports, setReports] = useState([]);
@@ -10,17 +9,10 @@ const LoanDisbursed = () => {
   const [status, setStatus] = useState("");
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
-  const { credentials } = useContext(UserContext);
 
   const getReports = () => {
     axios(
-      `Reports/loan-disbursed-report?Branch=${branch}&LoanDisbursedStatus=${status}&LoanStartDate=${startDate}&LoanEndDate=${endDate}`,
-      {
-        headers: {
-          Authorization: `Bearer ${credentials.token}`,
-        },
-      }
-    ).then((resp) => {
+      `Reports/loan-disbursed-report?Branch=${branch}&LoanDisbursedStatus=${status}&LoanStartDate=${startDate}&LoanEndDate=${endDate}`).then((resp) => {
       if (resp.data.data.loanDisbursedReport) {
       setReports(resp.data.data.loanDisbursedReport)
       }
@@ -28,9 +20,7 @@ const LoanDisbursed = () => {
   };
  
   const getBranches = () => {
-    axios("MemberManagement/get-branch",{headers:{
-      Authorization:`Bearer ${credentials.token}`
-    }}).then((resp) => {
+    axios("MemberManagement/get-branch").then((resp) => {
       setBranches(resp.data.data);
     });
   };

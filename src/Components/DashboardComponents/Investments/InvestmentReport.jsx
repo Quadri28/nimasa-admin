@@ -1,7 +1,5 @@
-import React, { useContext, useEffect, useState } from 'react'
-import { UserContext } from '../../AuthContext'
+import React, { useEffect, useState } from 'react'
 import axios from '../../axios'
-import { BsArrowLeft } from 'react-icons/bs'
 import { useNavigate } from 'react-router-dom'
 import { FaAngleDown, FaAngleUp } from 'react-icons/fa'
 import { CSVLink } from 'react-csv'
@@ -10,13 +8,10 @@ const InvestmentReport = () => {
     const [statuses, setStatuses]= useState([])
     const [status, setStatus]=useState({})
   const [clicked, setClicked]= useState('')
-    const{credentials}= useContext(UserContext)
   
     const getStatuses= async()=>{
         try {
-            await axios(`Investment/get-placement-report?PlacementStatus=${status}`, {headers:{
-                Authorization: `Bearer ${credentials.token}`
-            }}).then(resp=>setStatuses(resp.data.data.placementReports)) 
+            await axios(`Investment/get-placement-report?PlacementStatus=${status}`).then(resp=>setStatuses(resp.data.data.placementReports)) 
         } catch (error) {
             console.log(error)
         }
@@ -40,7 +35,7 @@ const InvestmentReport = () => {
     <form onSubmit={onSubmit}>
     <div
       className="p-3"
-      style={{ backgroundColor: "#F5F9FF", borderRadius: "15px 15px 0 0" }}
+      style={{ backgroundColor: "var(--memcos-blue)", borderRadius: "15px 15px 0 0" }}
     >
       <div
         className=" d-flex align-items-center gap-2"

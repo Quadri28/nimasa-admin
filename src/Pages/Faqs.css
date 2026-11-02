@@ -1,0 +1,81 @@
+.faq h2{
+    font-weight: 700;
+    font-size: 35px;
+    line-height: 50px;
+    font-family: Aeonik, serif;
+}
+.faq p{
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 28px;
+    width: 38%;
+    margin: 1.5rem auto;
+}
+.faqs{
+    width: 50%;
+    margin: 0 auto;
+    display: grid;
+    gap: 8px;
+}
+.faqs h4{
+    font-size: 20px;
+    font-family: Aeonik, serif;
+    font-weight: 500;
+    line-height: 24px;
+    color: #002b69;
+}
+.Clicked{
+    display: block;
+}
+
+.notClicked{
+    display: none;
+}
+.more-faq{
+    background-color: #FEF3E6;
+    padding: 3rem 1rem;
+    margin-top: 3rem ;
+}
+.more-faq h2{
+    font-weight: 700;
+    font-size: 34px;
+    font-family: Aeonik, serif;
+    line-height: 40.8px;
+    margin-top: 10px;
+}
+.more-faq button{
+    background-color: #0452C8;
+    border-radius: 8px;
+    color: #fff;
+    margin-top: 1rem;
+}
+.more-faq button:hover{
+    background-color: #0452C8;
+    border-radius: 8px;
+    color: #fff;
+}
+
+@media screen and (max-width:789px) {
+    .faq p{
+        width: 65%;
+    }
+    .faqs{
+        width: 70%;
+    }
+    .faq h2{
+        font-size: 28px;
+        line-height: 33px;
+    }
+}
+@media screen and (max-width:600px) {
+    .faq p{
+        width:100%
+    }
+    .faqs{
+        width: 95%;
+    }
+    .more-faq h2{
+        font-size: 25px;
+        line-height: 30px;
+    }
+}

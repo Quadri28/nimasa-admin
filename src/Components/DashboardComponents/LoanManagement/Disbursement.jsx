@@ -1,7 +1,6 @@
-import React, { useContext, useEffect, useMemo, useState } from "react";
+import React, {useEffect, useMemo, useState } from "react";
 import { toast, ToastContainer } from "react-toastify";
 import axios from "../../axios";
-import { UserContext } from "../../AuthContext";
 import { Combobox } from "react-widgets/cjs";
 import Table from "../CommunicationSubComponents/Table";
 import Modal from "react-modal";
@@ -19,13 +18,8 @@ const Disbursement = () => {
     disbursedDate: "",
     disbursementMode: "",
   });
-  const { credentials } = useContext(UserContext);
   const getMembers = () => {
-    axios("Acounting/general-ledger-customer-enquiry?SearchOption=2", {
-      headers: {
-        Authorization: `Bearer ${credentials.token}`,
-      },
-    }).then((resp) => setMembers(resp.data.data));
+    axios("Acounting/general-ledger-customer-enquiry?SearchOption=2").then((resp) => setMembers(resp.data.data));
   };
   useEffect(() => {
     getMembers();
@@ -38,12 +32,7 @@ const Disbursement = () => {
   };
   const getAccountDetails = () => {
     axios(
-      `LoanApplication/get-loan-accounts-by-customerId?CustomerId=${customerId}`,
-      {
-        headers: {
-          Authorization: `Bearer ${credentials.token}`,
-        },
-      },
+      `LoanApplication/get-loan-accounts-by-customerId?CustomerId=${customerId}`
     ).then((resp) => setAccount(resp.data.data));
   };
   useEffect(() => {
@@ -52,12 +41,7 @@ const Disbursement = () => {
 
   const getData = () => {
     axios(
-      `LoanApplication/validate-selected-loan-account-for-loan-disbursement?LoanAccountNo=${input.loanAcct}&CustomerId=${customerId}`,
-      {
-        headers: {
-          Authorization: `Bearer ${credentials.token}`,
-        },
-      },
+      `LoanApplication/validate-selected-loan-account-for-loan-disbursement?LoanAccountNo=${input.loanAcct}&CustomerId=${customerId}`
     ).then((resp) => setData(resp.data.data));
   };
   useEffect(() => {
@@ -79,11 +63,7 @@ const Disbursement = () => {
       applicationNo: data.applicationNo,
     };
     axios
-      .post("LoanApplication/loan-disbursement", payload, {
-        headers: {
-          Authorization: `Bearer ${credentials.token}`,
-        },
-      })
+      .post("LoanApplication/loan-disbursement", payload)
       .then((resp) =>
         toast(resp.data.message, {
           type: "success",
@@ -119,7 +99,7 @@ const Disbursement = () => {
           <div
             className="py-3 px-4 justify-content-between align-items-center d-flex"
             style={{
-              backgroundColor: "#f4fAfd",
+              backgroundColor: "var(--memcos-blue)",
               borderRadius: "10px 10px 0 0",
             }}
           >
@@ -357,7 +337,6 @@ const BulkLoanDisbursement = () => {
     setInput({ ...input, [name]: value });
   };
 
-  const { credentials } = useContext(UserContext);
 
   const fetchData = React.useCallback(({ pageSize, pageNumber, search }) => {
     const fetchId = ++fetchIdRef.current;
@@ -368,13 +347,7 @@ const BulkLoanDisbursement = () => {
           .get(
             `LoanApplication/get-loan-applications-for-disbursment?PageNumber=${
               pageNumber + 1
-            }&PageSize=${pageSize}&Filter=${encodeURIComponent(search)}`,
-            {
-              headers: {
-                Authorization: `Bearer ${credentials.token}`,
-              },
-            },
-          )
+            }&PageSize=${pageSize}&Filter=${encodeURIComponent(search)}`)
           .then((resp) => {
             if (resp.data.data.modelResult) {
               setData(resp.data.data.modelResult);
@@ -440,7 +413,7 @@ const BulkLoanDisbursement = () => {
     { Header: "Loan Type", accessor: "productName" },
     { Header: "Loan Account", accessor: "accountNumber" },
     {
-      Header: "View",
+      Header: "Action",
       accessor: "",
       Cell: ({ cell }) => {
         const id = cell.row.original.customerId
@@ -458,13 +431,7 @@ const BulkLoanDisbursement = () => {
 
   const getData = () => {
     axios(
-      `LoanApplication/validate-selected-loan-account-for-loan-disbursement?LoanAccountNo=${accountNumber}&CustomerId=${customerId}`,
-      {
-        headers: {
-          Authorization: `Bearer ${credentials.token}`,
-        },
-      },
-    ).then((resp) =>{
+      `LoanApplication/validate-selected-loan-account-for-loan-disbursement?LoanAccountNo=${accountNumber}&CustomerId=${customerId}`).then((resp) =>{
       setDetail(resp.data.data)
       setScheduless(resp?.data?.data?.loanSchedultAccounts)
 
@@ -485,13 +452,7 @@ const disburseBulkLoan = async () => {
 
   try {
     const resp = await axios.post(
-      "LoanApplication/bulk-loan-disbursement",
-      payload,
-      {
-        headers: {
-          Authorization: `Bearer ${credentials.token}`,
-        },
-      }
+      "LoanApplication/bulk-loan-disbursement", payload,
     );
 
     //Show success message
@@ -546,7 +507,7 @@ const disburseBulkLoan = async () => {
       <div style={{ border: "solid 1px #fafafa" }} className="rounded-4">
         <div
           className="py-3 px-4 justify-content-between align-items-center d-flex"
-          style={{ backgroundColor: "#f4fAfd", borderRadius: "10px 10px 0 0" }}
+          style={{ backgroundColor: "var(--memcos-blue)", borderRadius: "10px 10px 0 0" }}
         >
           <span style={{ fontWeight: "500", fontSize: "16px", color: "#333" }}>
             Bulk Loan Disbursement

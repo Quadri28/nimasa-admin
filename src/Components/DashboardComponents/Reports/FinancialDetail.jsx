@@ -1,6 +1,5 @@
-import React, { useContext, useEffect, useMemo, useState } from 'react'
+import React, {  useEffect, useMemo, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
-import { UserContext } from '../../AuthContext'
 import axios from '../../axios'
 import UnpaginatedTable from './UnpaginatedTable'
 import { GoArrowLeft } from 'react-icons/go'
@@ -8,11 +7,8 @@ import { GoArrowLeft } from 'react-icons/go'
 const FinancialDetail = () => {
     const {id} = useParams()
     const [details, setDetails]= useState([])
-    const{credentials} = useContext(UserContext)
     const getDetails=()=>{
-        axios(`Reports/product-summary-analysis-details?ProductCode=${id}`, {headers:{
-            Authorization: `Bearer ${credentials.token}`
-        }}).then(resp=>setDetails(resp.data.data.productSummaryAnalysisDetailReports))
+        axios(`Reports/product-summary-analysis-details?ProductCode=${id}`).then(resp=>setDetails(resp.data.data.productSummaryAnalysisDetailReports))
     }
     useEffect(()=>{
         getDetails()

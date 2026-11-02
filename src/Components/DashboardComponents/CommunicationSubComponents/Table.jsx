@@ -37,8 +37,8 @@ const Table = ({
     {
       columns,
       data,
-      manualPagination: true, // ✅ Enable manual pagination
-      pageCount: controlledPageCount, // ✅ Ensure pageCount comes from API
+      manualPagination: true, // Enable manual pagination
+      pageCount: controlledPageCount, //  Ensure pageCount comes from API
     },
     // useGlobalFilter,
     useSortBy,
@@ -77,8 +77,8 @@ const Table = ({
               <tr {...headerGroup.getHeaderGroupProps()}>
                 {headerGroup.headers.map((column) => (
                   <th
-                    {...column.getHeaderProps(column.getSortByToggleProps())} // 🔥 Enable sorting on click
-                    style={{ cursor: "pointer", border:'solid 1px #e6e6e6', borderRadius:'5px 5px 0 0'}}
+                    {...column.getHeaderProps(column.getSortByToggleProps())} //Enable sorting on click
+                    style={{ cursor: "pointer", border:'solid 1px #e6e6e6'}}
                   >
                     {column.render("Header")}
                     <span>

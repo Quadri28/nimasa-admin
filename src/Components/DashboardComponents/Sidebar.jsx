@@ -1,5 +1,4 @@
 import React, { useContext, useState } from "react";
-import "./Style.css";
 import { Link, useLocation } from "react-router-dom";
 import { HiOutlineSupport, HiSupport } from "react-icons/hi";
 import { RiDashboardFill, RiDashboardLine } from "react-icons/ri";
@@ -26,6 +25,8 @@ import {
   HiInboxStack,
   HiOutlineInboxStack,
 } from "react-icons/hi2";
+import {IoIosGitCompare, IoMdGitCompare} from 'react-icons/io'
+
 import "./Sidebar.css";
 import { AiFillSetting, AiOutlineSetting } from "react-icons/ai";
 import { PiChartLineUpFill, PiChartLineUpLight } from "react-icons/pi";
@@ -101,6 +102,14 @@ function Sidebar() {
       icon1: <HiInboxStack />,
       icon2: <HiOutlineInboxStack />,
     },
+     {
+      menuName: "E-bidding",
+      menuId: "163",
+      category: "Assets Management And Inventory",
+      url: "/admin-dashboard/e-bidding",
+      icon1: <IoIosGitCompare />,
+      icon2: <IoMdGitCompare />,
+    },
     {
       menuName: "Inventory Management",
       category: "Assets Management And Inventory",
@@ -125,6 +134,7 @@ function Sidebar() {
       icon1: <PiChartLineUpFill />,
       icon2: <PiChartLineUpLight />,
     },
+    
     {
       menuName: "Shares Management",
       category: "Assets Management And Inventory",

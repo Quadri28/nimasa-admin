@@ -22,8 +22,8 @@ const MemberIndex = () => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [pageCount, setPageCount] = useState(0);
-  const [pageNumber, setPageNumber] = useState(0); // ✅ Start from 0 (zero-based)
-  const [pageSize, setPageSize] = useState(10); // ✅ Default page size
+  const [pageNumber, setPageNumber] = useState(0); // Start from 0 (zero-based)
+  const [pageSize, setPageSize] = useState(10); //Default page size
   const [searchQuery, setSearchQuery]= useState('')
   const { credentials } = useContext(UserContext);
 
@@ -91,7 +91,7 @@ const resendAccess=(id)=>{
     setLoading(false);
   }, [credentials.token]);
 
-  // ✅ Trigger data fetch when pageNumber or pageSize changes
+  //Trigger data fetch when pageNumber or pageSize changes
  useEffect(() => {
   const delayDebounce = setTimeout(() => {
     fetchData({ pageSize, pageNumber, search: searchQuery });
@@ -141,7 +141,7 @@ const resendAccess=(id)=>{
             <div className="d-flex justify-content-around gap-2 align-items-center px-3">
               <div className="status-icon position-relative">
                 <span className="stat">Edit member</span>
-                <Link className="fs-6" to={type === "INDIVIDUAL" ? `edit-member/${id}` : `edit-corporate-member/${id}`}>
+                <Link className="fs-6 text-dark" to={type === "INDIVIDUAL" ? `edit-member/${id}` : `edit-corporate-member/${id}`}>
                   <GrEdit />
                 </Link>
               </div>

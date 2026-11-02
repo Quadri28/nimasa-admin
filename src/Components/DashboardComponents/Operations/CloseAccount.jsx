@@ -68,7 +68,7 @@ const CloseAccount = () => {
   const onSubmit = (values) => {
     const payload = {
       accountNumber: accountNumber,
-      totalCharge: Number(closeAccountNumbers.totalCharge),
+      totalCharge: Number(closeAccountNumbers?.totalCharge),
       valueDate: values.valueDate,
       narration: closeAccountNumbers.narration,
       accountNumberBalanceMovedTo: values.accountNumberBalanceMovedTo,
@@ -112,7 +112,7 @@ const CloseAccount = () => {
       }}
     >
       <div
-        style={{ backgroundColor: "#F5F9FF", borderRadius: "15px 15px 0 0" }}
+        style={{ backgroundColor: "var(--memcos-blue)", borderRadius: "15px 15px 0 0" }}
         className="p-3"
       >
         <h6>Close Account</h6>
@@ -145,7 +145,7 @@ const CloseAccount = () => {
               <label htmlFor="totalCharge">Total Charge:</label>
               <NumericFormat
                 name="totalCharge"
-                value={closeAccountNumbers.totalCharge}
+                value={closeAccountNumbers?.totalCharge}
                 decimalScale={2}
                 fixedDecimalScale
               />
@@ -257,7 +257,7 @@ const CloseAccount = () => {
               <label htmlFor="narration">Narration:</label>
               <Field
                 name="narration"
-                value={closeAccountNumbers.narration}
+                value={closeAccountNumbers?.narration}
                 as="textarea"
                 style={{
                   outlineColor: "#69A4FC",
@@ -289,7 +289,8 @@ const CloseAccount = () => {
             </button>
             <button
               type="submit"
-              className="border-0 member btn-md px-3"
+              className="border-0 member btn-md"
+              style={{ backgroundColor: "var(--custom-color)" }}
             >
               Submit
             </button>

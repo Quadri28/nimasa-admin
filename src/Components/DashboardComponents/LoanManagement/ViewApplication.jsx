@@ -1,9 +1,7 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import './ViewApplication.css'
 import axios from '../../axios'
-import { UserContext } from '../../AuthContext'
-import { BsArrowLeft } from 'react-icons/bs'
 import { toast, ToastContainer } from 'react-toastify'
 
 const ViewApplication = () => {
@@ -19,66 +17,43 @@ const ViewApplication = () => {
     const [sources, setSources]= useState([])
     const [frequencies, setFrequencies]= useState([])
     const [sourceDetail, setSourceDetail]= useState({})
-    const {credentials} = useContext(UserContext)
     const navigate= useNavigate()
 
     const getSourceDetail=()=>{
-        axios(`LoanApplication/loan-funding-source-detail?accountNumber=${detail.loanFundingSource}`, {headers:{
-            Authorization: `Bearer ${credentials.token}`
-        }}).then(resp=>setSourceDetail(resp.data.data))
+        axios(`LoanApplication/loan-funding-source-detail?accountNumber=${detail.loanFundingSource}`).then(resp=>setSourceDetail(resp.data.data))
     }
     useEffect(()=>{
 getSourceDetail()
     },[detail.loanFundingSource])
     const getLoanSources=()=>{
-        axios('LoanApplication/get-loan-source-type', {headers:{
-            Authorization: `Bearer ${credentials.token}`
-        }}).then(resp=>setSources(resp.data.data))
+        axios('LoanApplication/get-loan-source-type').then(resp=>setSources(resp.data.data))
     }
     const getRepaymentTypes=()=>{
-        axios('Common/getloanrepayments', {headers:{
-            Authorization: `Bearer ${credentials.token}`
-        }}).then(resp=>setTypes(resp.data))
+        axios('Common/getloanrepayments').then(resp=>setTypes(resp.data))
     }
     const getCalcMethods=()=>{
-        axios('Common/calculation-method', {headers:{
-            Authorization: `Bearer ${credentials.token}`
-        }}).then(resp=>setMethods(resp.data))
+        axios('Common/calculation-method').then(resp=>setMethods(resp.data))
     }
     const getModels=()=>{
-        axios('LoanApplication/get-lending-model', {headers:{
-            Authorization: `Bearer ${credentials.token}`
-        }}).then(resp=>setModels(resp.data.data))
+        axios('LoanApplication/get-lending-model').then(resp=>setModels(resp.data.data))
     }
     const getBranches=()=>{
-        axios('Common/get-branches', {headers:{
-            Authorization: `Bearer ${credentials.token}`
-        }}).then(resp=>setBranches(resp.data))
+        axios('Common/get-branches').then(resp=>setBranches(resp.data))
     }
     const getLoanProducts=()=>{
-        axios('LoanApplication/get-loan-product', {headers:{
-            Authorization: `Bearer ${credentials.token}`
-        }}).then(resp=>setProducts(resp.data.data))
+        axios('LoanApplication/get-loan-product').then(resp=>setProducts(resp.data.data))
     }
     const getFrequencies=()=>{
-        axios('Common/getloanfrequencies', {headers:{
-            Authorization: `Bearer ${credentials.token}`
-        }}).then(resp=>setFrequencies(resp.data))
+        axios('Common/getloanfrequencies').then(resp=>setFrequencies(resp.data))
     }
     const getGroups=()=>{
-        axios('LoanApplication/get-loan-group', {headers:{
-            Authorization: `Bearer ${credentials.token}`
-        }}).then(resp=>setGroups(resp.data.data))
+        axios('LoanApplication/get-loan-group').then(resp=>setGroups(resp.data.data))
     }
     const getProductDetails=()=>{
-        axios(`LoanApplication/loan-product-detail?loanProductCode=${detail?.loanProduct}`, {headers:{
-            Authorization: `Bearer ${credentials.token}`
-        }}).then(resp=>setProduct(resp.data.data))
+        axios(`LoanApplication/loan-product-detail?loanProductCode=${detail?.loanProduct}`).then(resp=>setProduct(resp.data.data))
     }
     const getDetail=()=>{
-        axios(`LoanApplication/get-loan-application?LoanApplicationNo=${id}`, {headers:{
-            Authorization: `Bearer ${credentials.token}`
-        }}).then(resp=>setDetail(resp.data.data))
+        axios(`LoanApplication/get-loan-application?LoanApplicationNo=${id}`).then(resp=>setDetail(resp.data.data))
     }
     useEffect(()=>{
         getGroups()
@@ -134,9 +109,7 @@ const disburseLoan=(e)=>{
               detail.guarantors
             ]         
     }
-    axios.post('LoanApplication/loan-application', payload, {headers:{
-        Authorization:`Bearer ${credentials.token}`
-    }}).then(resp=>toast(resp.data.message, {type:'success', autoClose:5000, pauseOnHover:true}))
+    axios.post('LoanApplication/loan-application', payload).then(resp=>toast(resp.data.message, {type:'success', autoClose:5000, pauseOnHover:true}))
     .catch(error=>toast(error.response.data.message, {type:'error', autoClose:false}))
 }
 

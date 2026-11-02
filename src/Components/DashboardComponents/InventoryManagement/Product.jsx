@@ -14,11 +14,13 @@ import ErrorText from "../ErrorText";
 import *as Yup from 'yup'
 import { ToastContainer, toast } from "react-toastify";
 import {LiaTimesCircle} from 'react-icons/lia'
+import Modal from 'react-modal'
 
 const Product = () => {
     const [data, setData] = useState([])
     const [accounts, setAccounts]= useState([])
     const [id, setId] = useState('')
+    const [isOpen, setIsOpen] = useState(false)
     const [input, setInput] = useState({
       inventoryCategoryId: null,
         inventoryCategoryName: '',
@@ -27,23 +29,17 @@ const Product = () => {
     })
     const {credentials} = useContext(UserContext)
 const getCategory =()=>{
-  axios(`InventoryManagement/inventory-category?inventoryCategoryId=${id}`, {headers:{
-    Authorization: `Bearer ${credentials.token}`
-  }}).then(resp=>setInput(resp.data.data))
+  axios(`InventoryManagement/inventory-category?inventoryCategoryId=${id}`).then(resp=>setInput(resp.data.data))
 }
     const getCategories=()=>{
-      axios('InventoryManagement/inventory-categories', {headers:{
-        Authorization: `Bearer ${credentials.token}`
-      }}).then(resp=>{
+      axios('InventoryManagement/inventory-categories').then(resp=>{
         if (resp.data.data.inventoryCategories) {
           setData(resp.data.data.inventoryCategories)
         }}
         )
     }
     const getSalesAccounts=()=>{
-      axios('InventoryManagement/inventory-category-account-select', {headers:{
-        Authorization: `Bearer ${credentials.token}`
-      }}).then(resp=>{
+      axios('InventoryManagement/inventory-category-account-select').then(resp=>{
         setAccounts(resp.data.data)
       })
     }
@@ -51,6 +47,13 @@ const getCategory =()=>{
       getCategories()
       getSalesAccounts()
     },[])
+
+     function openModal() {
+    setIsOpen(true);
+  }
+  function closeModal() {
+    setIsOpen(false);
+  }
 
     useEffect(()=>{
 getCategory()
@@ -68,9 +71,7 @@ getCategory()
         purchaseAccount: input.purchaseAccount,
         salesAccount: input.salesAccount
       }
-      axios.post('InventoryManagement/update-inventory-category', payload, {headers:{
-        Authorization: `Bearer ${credentials.token}`
-      }}).then(resp=>{
+      axios.post('InventoryManagement/update-inventory-category', payload).then(resp=>{
         toast(resp.data.message, {type:'success', autoClose:5000, pauseOnHover: true})
         getCategories()
       }).catch(error=>{
@@ -93,11 +94,12 @@ sales: Yup.string().required().label('Sales Account')
         purchaseAccount: values.purchase,
         salesAccount: values.sales
       }
-      axios.post('InventoryManagement/add-inventory-category', payload, {headers:{
-        Authorization: `Bearer ${credentials.token}`
-      }}).then(resp=>{
+      axios.post('InventoryManagement/add-inventory-category', payload).then(resp=>{
         toast(resp.data.message,{type:'success', autoClose: 5000, pauseOnHover:true})
         getCategories()
+        setTimeout(() => {
+          se
+        }, 3000);
       })
       .catch(error=>toast(error.response.data.message, {type:'error', autoClose: false}))
     }
@@ -145,27 +147,23 @@ sales: Yup.string().required().label('Sales Account')
       } = tableInstance;
       const { globalFilter, pageIndex } = state;
   return (
-    <div className="card p-3 border-0 rounded-4">
+    <>
       <div className="d-flex justify-content-between">
         <p className="active-selector">Item Category</p>
-        <div data-bs-toggle="modal" data-bs-target="#product">
-        <button className="btn btn-md text-white rounded-5" 
-        style={{backgroundColor:'#0452C8', fontSize:'14px'}}>
+        <button className="btn btn-md text-white rounded-5" onClick={()=>setIsOpen(true)}
+        style={{backgroundColor:'var(--custom-color)', fontSize:'14px'}}>
             Add new category
         </button>
-         </div>
          
          {/* Add product modal */}
-         <div
-            className="modal fade"
-            id="product"
-            tabIndex="-1"
-            role="dialog"
-            aria-labelledby="exampleModalLabel"
-            aria-hidden="true"
-          >
-            <div className="modal-dialog mt-4 py-4" role="document">
-              <div className="modal-content card py-3 px-2 mx-auto">
+         <Modal
+                isOpen={isOpen}
+                onRequestClose={closeModal}
+                  overlayClassName="loan-overlay"
+                ariaHideApp={false}
+                className='loan-modal rounded-3 card p-3'
+              >
+              <div>
                 <Formik
                  onSubmit={onSubmit}
                 initialValues={initialValues}
@@ -206,17 +204,17 @@ sales: Yup.string().required().label('Sales Account')
                     <ErrorMessage name="sale" component={ErrorText}/>
                   </div>
                   </div>
-                  <div className="d-flex justify-content-between mb-2 mt-4">
-                    <button type="reset" className="btn btn-md" style={{fontSize:'14px', backgroundColor:'#e5e5e5', color:'#666'}}>Discard</button>
-                    <button className="btn btn-md btn-primary" type="submit" style={{fontSize:'14px', }}>
+                  <div className="d-flex justify-content-end gap-3 mb-2 mt-4">
+                    <button type="reset" className="btn btn-md second-btn"
+                     style={{fontSize:'14px', backgroundColor:'#e5e5e5', color:'#666'}}>Discard</button>
+                    <button className="btn btn-md member" type="submit" style={{fontSize:'14px', }}>
                       Add Category
                     </button>
                   </div>
                   </Form>
                 </Formik>
-              </div>
-            </div>
           </div>
+          </Modal>
        {/* End of modal to post product */}
 
        {/* Modal to update category */}
@@ -353,7 +351,7 @@ sales: Yup.string().required().label('Sales Account')
 
       </div>
       <ToastContainer/>
-    </div>
+    </>
     
   );
 };

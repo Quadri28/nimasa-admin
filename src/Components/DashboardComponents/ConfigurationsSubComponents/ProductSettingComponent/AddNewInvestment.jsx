@@ -78,9 +78,7 @@ const AddNewInvestment = () => {
 
 
     const fetchRepaymentKinds=()=>{
-      axios('Common/get-repayment-kind', {headers:{
-        Authorization: `Bearer ${credentials.token}`
-      }}).then(resp=>setKinds(resp.data))
+      axios('Common/get-repayment-kind').then(resp=>setKinds(resp.data))
     }
     useEffect(()=>{
       fetchRepaymentKinds()
@@ -88,26 +86,18 @@ const AddNewInvestment = () => {
 
 
     const fetchGlTypes = async () => {
-    await axios.get("GlAccount/gl-type", {
-          headers: { Authorization: `Bearer ${credentials.token}` },
-        }).then(resp=>setGlTypes(resp.data));
+    await axios.get("GlAccount/gl-type").then(resp=>setGlTypes(resp.data));
     }
   
     const fetchGlNodes = async (category) => {
    await axios.get(
-          `GlAccount/gl-type-node?prodTypeCode=${input.glType}`,
-          {
-            headers: { Authorization: `Bearer ${credentials.token}` },
-          }
+          `GlAccount/gl-type-node?prodTypeCode=${input.glType}`
         ).then(resp=>setGlNodes(resp.data.data))
     };
   
     const fetchNodeClasses = (category) => {
       axios(
-        `GlAccount/gl-type-class?glTypeNodeCode=${input.glNode}`,
-        {
-          headers: { Authorization: `Bearer ${credentials.token}` },
-        }
+        `GlAccount/gl-type-class?glTypeNodeCode=${input.glNode}`
       ).then((resp) => {
         setGlClasses(resp.data.data)
       });
@@ -115,10 +105,7 @@ const AddNewInvestment = () => {
   
     const fetchGlAccounts = (category) => {
       axios(
-        `LoanProduct/gl-account-number?glClass=${input.glClass}`,
-        {
-          headers: { Authorization: `Bearer ${credentials.token}` },
-        }
+        `LoanProduct/gl-account-number?glClass=${input.glClass}`
       ).then((resp) => {
         setAccounts(resp.data.data)
     })
@@ -155,27 +142,15 @@ const AddNewInvestment = () => {
     );
   };
   const getInvestType = () => {
-    axios("InvestmentProduct/get-investment-product-type", {
-      headers: {
-        Authorization: `Bearer ${credentials.token}`,
-      },
-    }).then((resp) => setInvtTypes(resp.data.data));
+    axios("InvestmentProduct/get-investment-product-type").then((resp) => setInvtTypes(resp.data.data));
   };
 
   const getProductClass = () => {
-    axios("InvestmentProduct/get-investment-product-class", {
-      headers: {
-        Authorization: `Bearer ${credentials.token}`,
-      },
-    }).then((resp) => setProductClasses(resp.data.data));
+    axios("InvestmentProduct/get-investment-product-class").then((resp) => setProductClasses(resp.data.data));
   };
 
   const getProductCode = () => {
-    axios("InvestmentProduct/get-investment-product-code", {
-      headers: {
-        Authorization: `Bearer ${credentials.token}`,
-      },
-    }).then((resp) => setProductCode(resp.data.data));
+    axios("InvestmentProduct/get-investment-product-code").then((resp) => setProductCode(resp.data.data));
   };
 
   useEffect(() => {
@@ -281,9 +256,7 @@ const AddNewInvestment = () => {
   term: values.term,
   shortName: values.shortName,
     }
-    axios.post('InvestmentProduct/create-investment-product', {...payload, ...result}, {headers:{
-      Authorization: `Bearer ${credentials.token}`
-    }}).then(resp=>{
+    axios.post('InvestmentProduct/create-investment-product', {...payload, ...result}).then(resp=>{
       toast(resp.data.message, {type:'success', autoClose:5000, pauseOnHover:true})
       setTimeout(() => {
       navigate(-1)
@@ -302,7 +275,7 @@ const AddNewInvestment = () => {
             <div
               className="p-3"
               style={{
-                backgroundColor: "#F5F9FF",
+                backgroundColor: "var(--memcos-blue)",
                 borderRadius: "15px 15px 0 0",
               }}
             >
@@ -514,9 +487,10 @@ const AddNewInvestment = () => {
             <Modal
             isOpen={modalShow}
             onRequestClose={handleClose}
-            style={customStyles}
-            contentLabel="Example Modal"
-            ariaHideApp={false}
+           contentLabel="Example Modal"
+        overlayClassName="loan-overlay"
+        ariaHideApp={false}
+        className="loan-modal rounded-3 card p-3"
             >
              <div style={{backgroundColor:'#F5F9FF', borderRadius:'15px  15px 0 0',
                padding:'15px 20px'}} >

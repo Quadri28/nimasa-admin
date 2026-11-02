@@ -1,6 +1,5 @@
-import React, { useContext, useEffect, useMemo, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import axios from '../../axios'
-import { UserContext } from '../../AuthContext'
 import UnpaginatedTable from './UnpaginatedTable'
 import { BsArrowLeft } from 'react-icons/bs'
 import { useNavigate } from 'react-router-dom'
@@ -8,11 +7,8 @@ import { useNavigate } from 'react-router-dom'
 const UserReports = () => {
   const [status, setStatus]= useState(null)
   const [reports, setReports]= useState([])
-  const {credentials} = useContext(UserContext)
   const getReport=()=>{
-    axios(`Reports/user-details-report?LoginStatus=${status}`, {headers:{
-      Authorization: `Bearer ${credentials.token}`
-    }}).then(resp=>{
+    axios(`Reports/user-details-report?LoginStatus=${status}`).then(resp=>{
             setReports(resp.data.data.userDetailReports || []) 
     }).catch(()=>setReports([]))
   }
@@ -43,7 +39,7 @@ const navigate = useNavigate()
        <div className="rounded-4 mt-3" style={{border:'solid 1px #f7f4f7'}}>
       <div
       className="py-3 px-4 form-header "
-      style={{ backgroundColor: '#f4fAfd', borderRadius:'15px 15px 0 0' }}
+      style={{ backgroundColor: 'var(--memcos-blue)', borderRadius:'15px 15px 0 0' }}
     >
       <div style={{fontSize:'16px', fontWeight:'500', color:'#4D4D4D'}}>
         <BsArrowLeft onClick={()=>navigate(-1)} style={{cursor:'pointer'}}/> User details report

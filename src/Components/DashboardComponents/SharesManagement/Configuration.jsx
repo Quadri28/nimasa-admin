@@ -22,12 +22,7 @@ const Configuration = () => {
       if (fetchId === fetchIdRef.current) {
         axios
           .get(
-            `ShareManagement/share-types?PageSize=${pageSize}&PageNumber=${pageNumber +1}&Filter=${encodeURIComponent(search)}`,
-            {
-              headers: {
-                Authorization: `Bearer ${credentials.token}`,
-              },}
-          )
+            `ShareManagement/share-types?PageSize=${pageSize}&PageNumber=${pageNumber +1}&Filter=${encodeURIComponent(search)}`)
           .then((resp) => {
             if (resp.data.data.modelResult) {
               setData(resp.data.data.modelResult);
@@ -54,6 +49,7 @@ const Configuration = () => {
   const column = [
     { Header: "Share Code", accessor: "shareCode" },
     {Header:'Share Product Name', accessor:'shareProductName'},
+    {Header:'Total Shares', accessor:'numberOfShares'},
     {Header:'Shares Available', accessor:'numberOfSharesAvailable'},
     { Header: "Date created", accessor: "createdOn", Cell:(({value})=>{
       return <span>{new Date(value).toLocaleDateString('en-US')}</span>

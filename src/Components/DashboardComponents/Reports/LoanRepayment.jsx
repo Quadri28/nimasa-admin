@@ -1,21 +1,17 @@
 
-import React, { useEffect, useState, useMemo, useContext } from 'react'
+import React, { useEffect, useState, useMemo } from 'react'
 import UnpaginatedTable from './UnpaginatedTable'
 import axios from '../../axios'
-import { UserContext } from '../../AuthContext'
 
 const LoanRepayment = () => {
-    const [products, setProducts] = useState([])
+    const [products, setProducts] = useState([]) 
     const [reports, setReports] = useState([])
      const [product, setProduct]= useState('')
      const [startDate, setStartDate]= useState('')
     const [endDate, setEndDate]= useState('')
-const {credentials} = useContext(UserContext)
 
 const getReports=()=>{
-    axios(`Reports/loan-repayment-paid-report?ProductCode=${product}&TransactionDateFrom=${startDate}&TransactionDateTo=${endDate}`, {headers:{
-        Authorization: `Bearer ${credentials.token}`
-    }})
+    axios(`Reports/loan-repayment-paid-report?ProductCode=${product}&TransactionDateFrom=${startDate}&TransactionDateTo=${endDate}`)
     .then(resp=>{
         if (resp.data.data.loanRepaymentPaidReport) {
         setReports(resp.data.data.loanRepaymentPaidReport)
@@ -23,9 +19,7 @@ const getReports=()=>{
     })
 }
     const getProducts=()=>{
-        axios('LoanProduct/loan-products',{headers:{
-          Authorization: `Bearer ${credentials.token}`
-        }}).then(resp=>setProducts(resp.data.data))
+        axios('LoanProduct/loan-products').then(resp=>setProducts(resp.data.data))
       }
     useEffect(()=>{
         getProducts()

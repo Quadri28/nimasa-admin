@@ -1,20 +1,14 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "../../axios";
-import { UserContext } from "../../AuthContext";
 import { Combobox } from "react-widgets/cjs";
 
 const Status = () => {
   const [accounts, setAccounts] = useState([]);
   const [details, setDetails] = useState([]);
   const [account, setAccount] = useState("");
-  const { credentials } = useContext(UserContext);
 
   const getAccounts = () => {
-    axios("Acounting/general-ledger-customer-enquiry?SearchOption=3", {
-      headers: {
-        Authorization: `Bearer ${credentials.token}`,
-      },
-    }).then((resp) => setAccounts(resp.data.data));
+    axios("Acounting/general-ledger-customer-enquiry?SearchOption=3").then((resp) => setAccounts(resp.data.data));
   };
 
   useEffect(() => {
@@ -22,11 +16,7 @@ const Status = () => {
   }, []);
 
   const getDetails = () => {
-    axios(`LoanApplication/get-loan-status?AccountNumber=${account}`, {
-      headers: {
-        Authorization: `Bearer ${credentials.token}`,
-      },
-    }).then((resp) => setDetails(resp.data.data));
+    axios(`LoanApplication/get-loan-status?AccountNumber=${account}`).then((resp) => setDetails(resp.data.data));
   };
 
   useEffect(() => {
@@ -47,7 +37,7 @@ const Status = () => {
       <div style={{ border: "solid 1px #fafafa" }} className="rounded-4">
         <div
           className="py-3 px-4 justify-content-between align-items-center d-flex"
-          style={{ backgroundColor: "#f4fAfd", borderRadius: "10px 10px 0 0" }}
+          style={{ backgroundColor: "var(--memcos-blue)", borderRadius: "10px 10px 0 0" }}
         >
           <span style={{ fontWeight: "500", fontSize: "16px" }}>Loan Status</span>
         </div>

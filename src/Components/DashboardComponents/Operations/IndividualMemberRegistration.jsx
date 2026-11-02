@@ -400,7 +400,7 @@ const IndividualMemberRegistration = ({
            fixedDecimalScale={true} decimalScale={2} onChange={inputHandler}/>
         </div>
         </div>
-        <h6 style={{fontSize:'18px', marginTop:'15px', paddingInline:'20px'}}>Reg. Fee Details</h6>
+        {/* <h6 style={{fontSize:'18px', marginTop:'15px', paddingInline:'20px'}}>Reg. Fee Details</h6>
         <div className="admin-task-forms px-3">
         <div className='d-flex flex-column gap-1'>
           <label htmlFor="acctNo">Account Number</label>
@@ -422,7 +422,7 @@ const IndividualMemberRegistration = ({
           <Field name='tellerNo' />
           <ErrorMessage name='tellerNo' component={ErrorText}/>
         </div>
-        </div>
+        </div> */}
         <h6 style={{fontSize:'18px', marginTop:'15px', paddingInline:'20px'}}>Referral Details</h6>
         <div className="admin-task-forms px-3">
         <div className='d-flex flex-column gap-1'>

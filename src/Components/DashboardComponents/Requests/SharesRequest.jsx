@@ -1,11 +1,10 @@
 import React, { useState, useEffect, useMemo, useContext } from "react";
 import Table from "../CommunicationSubComponents/Table";
 import axios from "../../axios";
-import { UserContext } from "../../AuthContext";
 import { FaCheck, FaRegTimesCircle } from "react-icons/fa";
 import Modal from "react-modal";
 import { toast, ToastContainer } from "react-toastify";
-import { useNavigate } from "react-router-dom";
+import ScrollContainer from 'react-indiana-drag-scroll'
 
 const SharesRequest = () => {
   const [data, setData] = useState([]);
@@ -21,8 +20,7 @@ const SharesRequest = () => {
   const [accounts, setAccounts]= useState([])
   const [loading, setLoading] = useState(false);
   const [narration, setNarration]= useState('')
-  const { credentials } = useContext(UserContext);
-
+const [active, setActive] = useState(1)
   // Functions to open and close modal
   function handleOpen() {
     setIsOpen(true);
@@ -38,15 +36,13 @@ const SharesRequest = () => {
     setModalOpen(false);
   }
   const fetchAccounts=()=>{
-      axios(`Acounting/general-ledger-customer-enquiry?SearchOption=${1}`, {headers:{
-        Authorization: `Bearer ${credentials.token}`
-      }}).then(resp=>setAccounts(resp.data.data))
+      axios(`Acounting/general-ledger-customer-enquiry?SearchOption=${1}`).then(resp=>setAccounts(resp.data.data))
     }
     useEffect(()=>{
 fetchAccounts()
     }, [])
 
-  const fetchData = React.useCallback(({ pageSize, pageNumber }) => {
+  const fetchData = React.useCallback(({ pageSize, pageNumber, active }) => {
     const fetchId = ++fetchIdRef.current;
     setLoading(true);
     setTimeout(() => {
@@ -55,13 +51,7 @@ fetchAccounts()
           .get(
             `RequestVerification/get-shares-request-verification?PageSize=${pageSize}&PageNumber=${
               pageNumber + 1
-            }`,
-            {
-              headers: {
-                Authorization: `Bearer ${credentials.token}`,
-              },
-            }
-          )
+            }&requestType=${active}`)
           .then((resp) => {
             if (resp.data.data.modelResult) {
               setData(resp.data.data.modelResult);
@@ -74,12 +64,12 @@ fetchAccounts()
   }, []);
 
   useEffect(() => {
-    fetchData({ pageSize, pageNumber });
-  }, [fetchData, pageNumber, pageSize]);
+    fetchData({ pageSize, pageNumber, active });
+  }, [fetchData, pageNumber, pageSize, active]);
 
   const column = [
-    { Header: "Member Name", accessor: "memberName" },
     { Header: "Member ID", accessor: "memberId" },
+    { Header: "Member Name", accessor: "memberName" },
     {
       Header: "Purchasing Amt.",
       accessor: "purchasingAmount",
@@ -168,6 +158,8 @@ fetchAccounts()
       overFlowY: "scroll",
     },
   };
+
+
   const approveRequest=(e)=>{
     e.preventDefault()
     const payload={
@@ -175,9 +167,9 @@ fetchAccounts()
         debitAccountNumber: debitAccount
     }
     setLoading(true)
-    axios.post('RequestVerification/share-purchase-request-approval', payload, {headers:{
-        Authorization: `Bearer ${credentials.token}`
-    }}).then(resp=>{
+    const endpoint = active === 1? 'RequestVerification/share-purchase-request-approval' : 'RequestVerification/share-withdrawal-request-approval'
+
+    axios.post(endpoint, payload).then(resp=>{
       setLoading(false)
         toast(resp.data.message, {type:'success', autoClose:5000, pauseOnHover:true})
         setTimeout(() => {
@@ -197,9 +189,7 @@ fetchAccounts()
         narration:narration
     }
     setLoading(true)
-    axios.post('RequestVerification/share-withdrawal-and-purchase-request-reject', payload, {headers:{
-        Authorization: `Bearer ${credentials.token}`
-    }}).then(resp=>{
+    axios.post('RequestVerification/share-withdrawal-and-purchase-request-reject', payload).then(resp=>{
       setLoading(false)
         toast(resp.data.message, {type:'success', autoClose:5000, pauseOnHover:true})
         setTimeout(() => {
@@ -213,6 +203,10 @@ fetchAccounts()
   }
   return (
     <div>
+        <ScrollContainer vertical={false} className="header-links mb-3 scroller" style={{overflow:'scroll'}}>
+       <span className={active === 1 ? 'active-selector' : ''} onClick={()=>setActive(1)}> Purchase request</span>
+       <span className={active === 2 ? 'active-selector' : ''} onClick={()=>setActive(2)}> Withdrawal request</span>
+       </ScrollContainer>
       <Modal
         isOpen={isOpen}
         onRequestClose={handleClose}

@@ -1,7 +1,6 @@
 import React,{useContext, useEffect, useState} from 'react'
 import {FaAngleDown, FaAngleUp } from 'react-icons/fa';
 import axios from '../../../Components/axios'
-import {UserContext} from '../../AuthContext'
 import { CSVLink } from 'react-csv'
 import { LiaTimesCircle } from 'react-icons/lia';
 
@@ -9,13 +8,10 @@ const LoanReport = () => {
   const [statuses, setStatuses] = useState([])
   const [reports, setReports] = useState([])
   const [status, setStatus] = useState('')
-  const {credentials} = useContext(UserContext)
   const [clicked, setClicked]= useState('')
 
   const getReports =()=>{
-    axios(`Reports/loan-report?SelectLoanStatus=${status}`, {headers:{
-      Authorization: `Bearer ${credentials.token}`}
-    }).then(resp=>{
+    axios(`Reports/loan-report?SelectLoanStatus=${status}`).then(resp=>{
       if (resp.data.data.loanReport) {
         setReports(resp.data.data.loanReport)
       }
@@ -23,9 +19,7 @@ const LoanReport = () => {
   }
 
   const getStatuses = ()=>{
-     axios('Reports/loan-status', {headers:{
-      Authorization: `Bearer ${credentials.token}`
-    }}).then(resp=>  setStatuses(resp.data))
+     axios('Reports/loan-status').then(resp=>  setStatuses(resp.data))
   }
   
   useEffect(()=>{

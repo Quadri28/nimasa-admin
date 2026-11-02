@@ -1,5 +1,4 @@
-import React, { useContext, useEffect, useMemo, useState } from 'react'
-import { UserContext } from '../../../AuthContext'
+import React, {  useEffect, useMemo, useState } from 'react'
 import Table from '../../CommunicationSubComponents/Table'
 import axios from '../../../axios'
 
@@ -22,13 +21,7 @@ const [data, setData]= useState([])
                 .get(
                   `RequestApproved/get-app-withdrawals?PageNumber=${
                     pageNumber + 1
-                  }&PageSize=${pageSize}`,
-                  {
-                    headers: {
-                      Authorization: `Bearer ${credentials.token}`,
-                    },
-                  }
-                )
+                  }&PageSize=${pageSize}`)
                 .then((resp) => {
                   if (resp.data.data.modelResult) {
                     setData(resp.data.data.modelResult);

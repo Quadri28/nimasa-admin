@@ -1,6 +1,5 @@
-import React, { useContext, useEffect, useMemo, useState } from "react";
+import React, {  useEffect, useMemo, useState } from "react";
 import axios from "../../axios";
-import { UserContext } from "../../AuthContext";
 import Pagination from "./Pagination";
 import { exportToExcel } from "./ExportMemberLedgerToExcel";
 import MemberLedgerPDF from "./ExportMemberLedgerToPDF";
@@ -15,7 +14,6 @@ const GLAccountStatement = () => {
    const [account, setAccount] = useState("");
    const [enquiries, setEnquiries] = useState([]);
    const [details, setDetails] = useState({});
-   const { credentials } = useContext(UserContext);
  
  
    // Manual Pagination handling
@@ -27,11 +25,7 @@ const GLAccountStatement = () => {
    const currentRecord = reports.slice(indexOfFirstRecord, indexOfLastRecord);
  
    const fetchCustomerEnquiries = () => {
-     axios(`Acounting/general-ledger-customer-enquiry?SearchOption=1`, {
-       headers: {
-         Authorization: `Bearer ${credentials.token}`,
-       },
-     }).then((resp) => setEnquiries(resp.data.data));
+     axios(`Acounting/general-ledger-customer-enquiry?SearchOption=1`).then((resp) => setEnquiries(resp.data.data));
    };
  
    useEffect(() => {
@@ -41,13 +35,7 @@ const GLAccountStatement = () => {
    const getReports = async () => {
      try {
        const resp = await axios.get(
-         `Reports/member-ledger-report?AccountNumber=${account}&StartDate=${startDate}&EndDate=${endDate}&ReportOption=${option}`,
-         {
-           headers: {
-             Authorization: `Bearer ${credentials.token}`,
-           },
-         }
-       );
+         `Reports/member-ledger-report?AccountNumber=${account}&StartDate=${startDate}&EndDate=${endDate}&ReportOption=${option}`);
  
        if (resp.data.data.memberLedgerReport) {
          const fetchedReports = resp.data.data.memberLedgerReport;

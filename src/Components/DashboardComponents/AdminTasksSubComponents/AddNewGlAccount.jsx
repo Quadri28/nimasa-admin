@@ -106,7 +106,7 @@ const AddNewGlAccount = () => {
         <form onSubmit={onSubmit}>
       <div className='bg-white mt-4' style={{border:'solid 1px #fafafa', borderRadius:'15px'}}>
         <div className='p-3 d-flex align-items-center gap-2' 
-        style={{backgroundColor:'#F5F9FF', borderRadius:'15px 15px 0 0', cursor:'pointer'}} onClick={()=>navigate(-1)}>
+        style={{backgroundColor:'var(--memcos-blue)', borderRadius:'15px 15px 0 0', cursor:'pointer'}} onClick={()=>navigate(-1)}>
         <BsArrowLeft/> <span style={{fontSize:'14px', color:'#4D4D4D'}} > Add new GL account </span>
         </div>
         <div className="admin-task-forms px-3">
@@ -174,9 +174,10 @@ const AddNewGlAccount = () => {
         </div>
         <div className="d-flex flex-column gap-1">
           <label htmlFor="pointingType">Pointing Type <sup className="text-danger">*</sup></label> 
-          <select type="text" name='pointingType' required onChange={changeHandler} disabled={input?.pointing}>
+          {console.log(input.pointing)}
+          <select type="text" name='pointingType' required onChange={changeHandler} disabled={input?.pointing ==0}>
             <option value="">Select</option>
-            <option value="D">Dr</option>
+            <option value="D">Dr</option> 
             <option value="C">Cr</option>
             </select>
         </div>

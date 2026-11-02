@@ -1,45 +1,37 @@
-import React, { useContext, useEffect, useMemo, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import UnpaginatedTable from '../Reports/UnpaginatedTable'
 import { FaUsersViewfinder } from 'react-icons/fa6'
-import { UserContext } from '../../AuthContext'
 import axios from '../../axios'
-import useScreenSize from '../../ScreenSizeHook'
 import Modal from 'react-modal'
 import { ToastContainer, toast } from 'react-toastify'
+import ImagePreview from './ImagePreview'
 
 const RetirementRequestPosting = () => {
   const [reports, setReports]= useState([])
   const [accounts, setAccounts]= useState([])
   const [account, setAccount]= useState('')
   const [id, setId] = useState('')
-  const {credentials} = useContext(UserContext)
   const [request, setRequest]= useState({})
   const [isOpen, setIsOpen] = useState(false);
   const [isReject, setIsReject] = useState(false);
   const [reason, setReason]= useState(null)
 
   const getReports =()=>{
-    axios('RequestVerification/retirement-request-postings', {headers:{
-      Authorization: `Bearer ${credentials.token}`
-    }}).then(resp=>{
+    axios('RequestVerification/retirement-request-postings').then(resp=>{
       if (resp.data.data.retirementRequestPostings) {
         setReports(resp.data.data.retirementRequestPostings)
       }}
      )
   }
   const getAccounts=()=>{
-    axios('RequestVerification/gl-account-select', {headers:{
-      Authorization: `Bearer ${credentials.token}`
-    }}).then(resp=>setAccounts(resp.data.data.glAccounts))
+    axios('RequestVerification/gl-account-select').then(resp=>setAccounts(resp.data.data.glAccounts))
   }
   useEffect(()=>{
     getReports()
     getAccounts()
   },[])
   const getRequest=()=>{
-    axios(`RequestVerification/retirement-request-posting?id=${id}`, {headers:{
-      Authorization:`Bearer ${credentials.token}`
-    }}).then(resp=>setRequest(resp.data.data))
+    axios(`RequestVerification/retirement-request-posting?id=${id}`).then(resp=>setRequest(resp.data.data))
   }
   useEffect(()=>{
     getRequest()
@@ -81,9 +73,7 @@ const postPosting=(e)=>{
     narration: 'Retirement posting approval',
     creditAccount: account,
   }
-  axios.post('RequestVerification/retirement-request-posting-approval', payload,{headers:{
-    Authorization: `Bearer ${credentials.token}`
-  }}).then((resp)=>toast(resp.data.message, {type:'success', autoClose:5000, pauseOnHover: true}))
+  axios.post('RequestVerification/retirement-request-posting-approval', payload).then((resp)=>toast(resp.data.message, {type:'success', autoClose:5000, pauseOnHover: true}))
   .catch(error=>toast(error.response.data.message, {type:'error', autoClose: false}))
 }
 const rejectPosting=(e)=>{
@@ -92,9 +82,7 @@ const rejectPosting=(e)=>{
     id: request.id,
     narration: reason
   }
-  axios.post('RequestVerification/retirement-request-posting-reject', payload,{headers:{
-    Authorization: `Bearer ${credentials.token}`
-  }}).then((resp)=>{
+  axios.post('RequestVerification/retirement-request-posting-reject', payload).then((resp)=>{
     toast(resp.data.message, {type:'success', autoClose:5000, pauseOnHover: true})
     setTimeout(() => {
       setIsOpen(false)
@@ -114,14 +102,14 @@ const rejectPosting=(e)=>{
       >
        <h4 className="text-capitalize" style={{fontSize:'18px', fontWeight:'600'}}>Retirement posting </h4> 
       <div className='d-flex flex-column gap-3 mt-3'>
-        <div className="d-flex gap-3 align-items-center discourse">
+        <div className="d-flex gap-3 justify-content-between align-items-center discourse">
         <div className="d-flex gap-3" style={{fontSize:'14px'}}>
         <span>Member ID: </span> <span>{request?.memberId}</span>
         </div>
-         <div className="d-flex gap-3" style={{fontSize:'14px'}}>
+        <div>
         <span>Full Name:</span> <span>{request?.fullName}</span>
         </div>
-        <img src={request?.profileImageUrl} alt="Profile image" className='view-img img-fluid' />
+        <ImagePreview src={request?.profileImageUrl} alt="Profile image" className='view-img img-fluid' />
         </div>
         <div className="d-flex justify-content-between discourse flex-wrap align-items-center p-2" style={{backgroundColor:'var(--light-blue)'}} >
         <div>

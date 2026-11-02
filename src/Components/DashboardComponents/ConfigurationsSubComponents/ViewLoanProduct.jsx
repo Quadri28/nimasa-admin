@@ -64,9 +64,7 @@ const ViewLoanProduct = () => {
   const {credentials} = useContext(UserContext)
 
   const getProductDetails =()=>{
-    axios(`LoanProduct/loan-product?productCode=${productCode}`, {headers:{
-      Authorization: `Bearer ${credentials.token}`
-    }})
+    axios(`LoanProduct/loan-product?productCode=${productCode}`)
     .then((resp)=>{
       setDetails(resp.data.data)
     }).catch(error=>setError(error.message))

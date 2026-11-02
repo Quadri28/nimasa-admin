@@ -24,87 +24,39 @@ const DisburseLoanRequest = () => {
   const navigate = useNavigate();
 
   const getLoanFundingSources = () => {
-    axios("RequestVerification/loan-funding-source-slim", {
-      headers: {
-        Authorization: `Bearer ${credentials.token}`,
-      },
-    }).then((resp) => setLoanFundingSources(resp.data.data));
+    axios("RequestVerification/loan-funding-source-slim").then((resp) => setLoanFundingSources(resp.data.data));
   };
   const getLoanSources = () => {
-    axios("LoanApplication/get-loan-source-type", {
-      headers: {
-        Authorization: `Bearer ${credentials.token}`,
-      },
-    }).then((resp) => setSources(resp.data.data));
+    axios("LoanApplication/get-loan-source-type").then((resp) => setSources(resp.data.data));
   };
   const getRepaymentTypes = () => {
-    axios("Common/getloanrepayments", {
-      headers: {
-        Authorization: `Bearer ${credentials.token}`,
-      },
-    }).then((resp) => setTypes(resp.data));
+    axios("Common/getloanrepayments").then((resp) => setTypes(resp.data));
   };
   const getCalcMethods = () => {
-    axios("Common/calculation-method", {
-      headers: {
-        Authorization: `Bearer ${credentials.token}`,
-      },
-    }).then((resp) => setMethods(resp.data));
+    axios("Common/calculation-method").then((resp) => setMethods(resp.data));
   };
   const getModels = () => {
-    axios("LoanApplication/get-lending-model", {
-      headers: {
-        Authorization: `Bearer ${credentials.token}`,
-      },
-    }).then((resp) => setModels(resp.data.data));
+    axios("LoanApplication/get-lending-model").then((resp) => setModels(resp.data.data));
   };
   const getBranches = () => {
-    axios("Common/get-branches", {
-      headers: {
-        Authorization: `Bearer ${credentials.token}`,
-      },
-    }).then((resp) => setBranches(resp.data));
+    axios("Common/get-branches").then((resp) => setBranches(resp.data));
   };
   const getLoanProducts = () => {
-    axios("LoanApplication/get-loan-product", {
-      headers: {
-        Authorization: `Bearer ${credentials.token}`,
-      },
-    }).then((resp) => setProducts(resp.data.data));
+    axios("LoanApplication/get-loan-product").then((resp) => setProducts(resp.data.data));
   };
   const getFrequencies = () => {
-    axios("Common/getloanfrequencies", {
-      headers: {
-        Authorization: `Bearer ${credentials.token}`,
-      },
-    }).then((resp) => setFrequencies(resp.data));
+    axios("Common/getloanfrequencies").then((resp) => setFrequencies(resp.data));
   };
   const getGroups = () => {
-    axios("LoanApplication/get-loan-group", {
-      headers: {
-        Authorization: `Bearer ${credentials.token}`,
-      },
-    }).then((resp) => setGroups(resp.data.data));
+    axios("LoanApplication/get-loan-group").then((resp) => setGroups(resp.data.data));
   };
   const getProductDetails = () => {
     axios(
-      `LoanApplication/loan-product-detail?loanProductCode=${detail?.loanProduct}`,
-      {
-        headers: {
-          Authorization: `Bearer ${credentials.token}`,
-        },
-      },
-    ).then((resp) => setProduct(resp.data.data));
+      `LoanApplication/loan-product-detail?loanProductCode=${detail?.loanProduct}`).then((resp) => setProduct(resp.data.data));
   };
   const getDetail = () => {
     axios(
-      `RequestVerification/get-loan-disbursement-detail?LoanApplicationNo=${id}`,
-      {
-        headers: {
-          Authorization: `Bearer ${credentials.token}`,
-        },
-      },
-    ).then((resp) => setDetail(resp.data.data));
+      `RequestVerification/get-loan-disbursement-detail?LoanApplicationNo=${id}`).then((resp) => setDetail(resp.data.data));
   };
   useEffect(() => {
     getGroups();
@@ -184,11 +136,7 @@ const DisburseLoanRequest = () => {
       gaurators: [detail.guarantors],
     };
     axios
-      .post("RequestVerification/loan-application", payload, {
-        headers: {
-          Authorization: `Bearer ${credentials.token}`,
-        },
-      })
+      .post("RequestVerification/loan-application", payload)
       .then((resp) => {
         setTimeout(() => {
           navigate(-1);

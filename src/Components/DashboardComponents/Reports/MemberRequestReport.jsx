@@ -1,6 +1,5 @@
-import React, { useContext, useEffect, useMemo, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import axios from '../../axios'
-import { UserContext } from '../../AuthContext'
 import UnpaginatedTable from './UnpaginatedTable'
 
 const MemberRequestReport = () => {
@@ -10,23 +9,17 @@ const MemberRequestReport = () => {
     const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
   const [reports, setReports] = useState([])
-    const {credentials} = useContext(UserContext)
     const getStatuses=()=>{
-        axios(`Reports/get-member-request-type-status?MemberRequestReportType=${type}`, {headers:{
-            Authorization: `Bearer ${credentials.token}`
-        }}).then(resp=>setStatuses(resp.data.data))
+        axios(`Reports/get-member-request-type-status?MemberRequestReportType=${type}`).then(resp=>setStatuses(resp.data.data))
     }
     useEffect(()=>{
         getStatuses()
     },[type])
 
 const getReports=()=>{
-    axios(`Reports/member-request-report?MemberRequestReportType=${type}&Status=${status}&TransactionDateFrom=${startDate}&TransactionDateTo=${endDate}`, {headers:{
-        Authorization: `Bearer ${credentials.token}`
-    }}).then(resp=>{
+    axios(`Reports/member-request-report?MemberRequestReportType=${type}&Status=${status}&TransactionDateFrom=${startDate}&TransactionDateTo=${endDate}`).then(resp=>{
       if (resp.data.data.requestReport) {
       setReports(resp.data.data.requestReport)
-        
       }
     })
 }

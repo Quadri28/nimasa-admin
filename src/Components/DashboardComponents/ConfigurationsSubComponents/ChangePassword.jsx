@@ -24,19 +24,13 @@ const {credentials} = useContext(UserContext)
 
 
 const getRoles=async ()=>{
-  await axios('Common/get-roles', {headers:{
-    Authorization: `Bearer ${credentials.token}`
-  }}).then((resp)=>setRoles(resp.data))
+  await axios('Common/get-roles').then((resp)=>setRoles(resp.data))
 }
 const getBranches=async ()=>{
-  await axios('Common/get-branches', {headers:{
-    Authorization: `Bearer ${credentials.token}`
-  }}).then((resp)=>setBranches(resp.data))
+  await axios('Common/get-branches').then((resp)=>setBranches(resp.data))
 }
 const getDepartments=async ()=>{
-  await axios('Common/get-departments', {headers:{
-    Authorization: `Bearer ${credentials.token}`
-  }}).then((resp)=>setDepartments(resp.data))
+  await axios('Common/get-departments').then((resp)=>setDepartments(resp.data))
 }
 
 useEffect(()=>{
@@ -60,9 +54,7 @@ const validationSchema =Yup.object({
 })
 
 const getPasswordData=()=>{
-  axios('/Account/get-change-password', {headers:{
-    Authorization: `Bearer ${credentials?.token}`
-  }})
+  axios('/Account/get-change-password')
   .then((resp)=>setData(resp.data))
 }
 
@@ -86,9 +78,7 @@ const submitHandler=(values)=>{
     pauseOnHover:true,
     type: 'success'
   }
-  axios.post('Account/change-password', payload, {headers:{
-    Authorization: `Bearer ${credentials?.token}`
-  }})
+  axios.post('Account/change-password', payload)
   .then(()=>toast('Account password updated successfully', toastOptions))
   .catch((error)=>{
     toast(error.message, {autoClose:5000, pauseOnHover:true, type:'error'})
@@ -105,7 +95,7 @@ const submitHandler=(values)=>{
     <div className="rounded-4" style={{border:'solid 1px #f7f4f7'}}>
     <div
       className="py-3 px-3 form-header"
-      style={{ backgroundColor: '#f4fAfd', borderRadius:'15px 15px 0 0' }}
+      style={{ backgroundColor: 'var(--memcos-blue)', borderRadius:'15px 15px 0 0' }}
     >
       <div style={{fontSize:'16px', fontWeight:'500', color:'#4D4D4D'}}>
         Change password

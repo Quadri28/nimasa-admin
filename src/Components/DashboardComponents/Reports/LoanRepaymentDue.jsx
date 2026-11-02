@@ -13,9 +13,7 @@ const {credentials} = useContext(UserContext)
 const nodeId= credentials.logInfo.nodeId
 
 const getReports=()=>{
-  axios(`Reports/loan-repayment-due-report?NodeId=${nodeId}&ProductCode=${product}&TransactionDateFrom=${startDate}&TransactionDateTo=${endDate}`, {headers:{
-      Authorization: `Bearer ${credentials.token}`
-  }})
+  axios(`Reports/loan-repayment-due-report?NodeId=${nodeId}&ProductCode=${product}&TransactionDateFrom=${startDate}&TransactionDateTo=${endDate}`)
   .then(resp=>{
       if (resp.data.data.loanRepaymentDues) {
       setReports(resp.data.data.loanRepaymentDues)
@@ -23,9 +21,7 @@ const getReports=()=>{
   })
 }
   const getProducts=()=>{
-      axios('LoanProduct/loan-products',{headers:{
-        Authorization: `Bearer ${credentials.token}`
-      }}).then(resp=>setProducts(resp.data.data))
+      axios('LoanProduct/loan-products').then(resp=>setProducts(resp.data.data))
     }
   useEffect(()=>{
       getProducts()

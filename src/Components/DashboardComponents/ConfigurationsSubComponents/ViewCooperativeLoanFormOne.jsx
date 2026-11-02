@@ -26,9 +26,7 @@ const ViewCooperativeLoanFormOne = ({details}) => {
   }
 
   const getClasses=()=>{
-    axios('LoanProduct/list-product-class', {headers:{
-      Authorization: `Bearer ${credentials.token}`
-    }})
+    axios('LoanProduct/list-product-class')
     .then((resp)=>{
       setClasses(resp.data.data)
     })

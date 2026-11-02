@@ -3,18 +3,14 @@ import {useTable,useSortBy,useGlobalFilter,usePagination,
   } from "react-table";
 import { FaAngleRight, FaAngleLeft } from 'react-icons/fa';
 import '../ConfigurationsSubComponents/Table.css'
-import { UserContext } from '../../AuthContext';
 import axios from '../../axios';
 import { CSVLink } from 'react-csv';
 import { LiaTimesCircle } from 'react-icons/lia';
 
 const LoanSkipping = () => {
-    const {credentials} = useContext(UserContext)
 const [reports, setReports] = useState([])
 const getReports =()=>{
-    axios('Reports/loan-skipping-details', {headers:{
-        Authorization: `Bearer ${credentials.token}`
-    }}).then(resp=>{
+    axios('Reports/loan-skipping-details').then(resp=>{
       if (resp.data.data.loanSkippingReports) {
         setReports(resp.data.data.loanSkippingReports)
       }

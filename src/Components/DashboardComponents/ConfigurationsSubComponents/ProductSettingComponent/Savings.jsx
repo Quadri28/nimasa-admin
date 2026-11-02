@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import {
   useTable,
   useSortBy,
@@ -13,16 +13,12 @@ import {FaAngleRight, FaAngleLeft} from 'react-icons/fa'
 import {LiaTimesCircle} from 'react-icons/lia'
 import { Link } from "react-router-dom";
 import axios from "../../../axios";
-import { UserContext } from "../../../AuthContext";
 
 
 const Savings = () => {
   const [savings, setSavings]= useState([])
-  const {credentials} = useContext(UserContext)
   const fetchSavings = ()=>{
-    axios('SavingProduct/get-saving-products', {headers:{
-       Authorization:`Bearer ${credentials?.token}`
-     }})
+    axios('SavingProduct/get-saving-products')
      .then((resp)=>setSavings(resp.data.data))
    }
 

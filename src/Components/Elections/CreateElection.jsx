@@ -94,9 +94,7 @@ const CreateElection = () => {
     payload.append("AllowMemberToViewResult", input.allowViewElection);
 
     axios
-      .post("Election/create-election", payload, {
-        headers: { Authorization: `Bearer ${credentials.token}` },
-      })
+      .post("Election/create-election", payload)
       .then((resp) => {
         toast(resp.data.message, { type: "success", autoClose: 5000 });
         setTimeout(() => navigate(-1), 5000);
@@ -134,12 +132,12 @@ const CreateElection = () => {
             </div>
 
             <div className="d-flex flex-column gap-1">
-              <label>Start date *</label>
+              <label>Voting start date *</label>
               <input type="date" name="startDate" required onChange={handleChange} />
             </div>
 
             <div className="d-flex flex-column gap-1">
-              <label>Start time *</label>
+              <label>Voting start time *</label>
               <DatePicker
                 selected={input.startTime}
                 onChange={(date) => handleChange(date, "startTime")}
@@ -153,12 +151,12 @@ const CreateElection = () => {
             </div>
 
             <div className="d-flex flex-column gap-1">
-              <label>End date *</label>
+              <label>Voting end date *</label>
               <input type="date" name="endDate" required onChange={handleChange} />
             </div>
 
             <div className="d-flex flex-column gap-1">
-              <label>End time *</label>
+              <label>Voting end time *</label>
               <DatePicker
                 selected={input.endTime}
                 onChange={(date) => handleChange(date, "endTime")}

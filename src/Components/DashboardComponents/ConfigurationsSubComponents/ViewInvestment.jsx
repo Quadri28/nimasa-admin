@@ -14,11 +14,7 @@ const [terms, setTerms]= useState([])
 const {credentials} = useContext(UserContext)
 
     const getInvestment =()=>{
-        axios(`InvestmentProduct/get-investment-product-by-code?savingCode=${id}`, {
-            headers:{
-                Authorization: `Bearer ${credentials.token}`
-            }
-        }).then((resp)=>setInvestment(resp.data.data))
+        axios(`InvestmentProduct/get-investment-product-by-code?savingCode=${id}`).then((resp)=>setInvestment(resp.data.data))
     }
     const getCurrencies=()=>{
         axios('Common/get-currencies')

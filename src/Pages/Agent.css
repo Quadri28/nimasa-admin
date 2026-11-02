@@ -1,0 +1,134 @@
+.agent-container{
+    background-color: #fafafa;
+}
+.agent-header-container h2{
+    font-weight: 700;
+    font-size: 45px;
+    line-height: 62px;
+    font-family: Aeonik, serif;
+    margin-top: 2.2rem;
+}
+.agent-header-container p{
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 24px;
+    width: 70%;
+    margin: 1rem auto;
+}
+.agent-container button{
+    background-color: #022B69;
+    color: #fff;
+    font-size: 14px;
+    padding: 5px 18px;
+    border-radius: 8px;
+}
+.agent-container button:hover{
+    background-color: #022B69;
+    color: #fff;
+}
+.modal-content{
+    background-color: #fafafa;
+}
+.modal-previous{
+background-color: #F4FAFD;
+color: #022B69;
+}
+.modal-title{
+    font-weight: 600;
+    font-size: 30px;
+}
+.modal-previous:hover{ 
+background-color: #F4FAFD;
+color: #022B69;
+}
+.modal-next{
+    background-color: #022B69;
+    color: #fff;
+    border-radius: 15px;
+}
+.modal-next:hover{
+    background-color: #022B69;
+    color: #fff;
+}
+.agent-form-container{
+    background-color: #F2F2F2;
+    border-top-right-radius: 1rem;
+    border-top-left-radius: 1rem;
+    padding: 1rem;
+}
+.agent-form-container h4{
+    font-size: 15px;
+}
+.inputs-container label{
+    font-size: 14px;
+}
+.inputs-container input, .inputs-container select{
+    background-color: #f2f2f2;
+    padding: 10px 10px;
+    border-radius: 15px;
+    border: none;
+    outline: none;
+}
+.inputs-container input:hover, .inputs-container select:hover{
+background-color: #F4FAFD;
+}
+.inputs-container label{
+    font-size: 15px;
+}
+.form{
+    border-bottom-left-radius: 1rem;
+    border-bottom-right-radius: 1rem;
+}
+.form-three{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+}
+.agent-input-container{
+    display: flex;
+}
+.slide img{
+    height: 350px;
+}
+
+.responsibility{
+    width: 50%;
+    border-radius: 12px;
+}
+.inner-responsibility > div{
+    background-color: #F2F7FF;
+    padding: 5px 10px;
+    border-radius: 8px;
+}
+.inner-responsibility div span{
+    font-size: 14px;
+}
+@media screen and (max-width:789px) {
+    .agent-header-container h2{
+        font-size: 40px;
+        line-height: 45px;
+    }
+    .agent-header-container p{
+        width: 80%;
+    }
+    .slide img{
+        height: 10rem;
+    }
+    .agent-container{
+        padding: 0 1rem;
+    }
+    .responsibility{
+        width: 100%;
+    }
+}
+@media screen and (max-width:600px) {
+    .agent-header-container p{
+        width:95%
+    }
+    .agent-input-container{
+        display: block;
+    }
+    .form-three{
+    grid-template-columns: 1fr;
+    }
+}

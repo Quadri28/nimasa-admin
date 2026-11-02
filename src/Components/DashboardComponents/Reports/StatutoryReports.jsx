@@ -1,6 +1,5 @@
-import React, { useContext, useEffect, useMemo, useState } from 'react'
+import React, {  useEffect, useMemo, useState } from 'react'
 import axios from '../../axios'
-import { UserContext } from '../../AuthContext'
 import ListOfBalances from './StatutoryReportTables/ListOfBalances'
 import FinancialPosition from './StatutoryReportTables/FinancialPosition'
 import ComprehensiveIncome from './StatutoryReportTables/ComprehensiveIncome'
@@ -17,13 +16,10 @@ const [endDate, setEndDate] = useState('')
 const [startDate, setStartDate] = useState('')
 const [selected, setSelected] = useState('')
 const [error, setError] = useState('')
-const {credentials} = useContext(UserContext)
 
 
 const getTypes=()=>{
-  axios('Reports/statutory-report-type', {headers:{
-    Authorization: `Bearer ${credentials.token}`
-  }}).then(resp=>{
+  axios('Reports/statutory-report-type').then(resp=>{
     setTypes(resp.data)
   })
 }
@@ -42,9 +38,7 @@ const getReports = () => {
   setReports([]);
   setSelected('');
 
-  axios(`Reports/statutory-reports?ReportType=${type}&ReportStartDate=${startDate}&ReportEndDateDate=${endDate}`, {
-    headers: { Authorization: `Bearer ${credentials.token}` }
-  })
+  axios(`Reports/statutory-reports?ReportType=${type}&ReportStartDate=${startDate}&ReportEndDateDate=${endDate}`)
   .then(resp => {
     // Reset everything first
     setReports([]);

@@ -39,7 +39,7 @@ const ProductOverviewChart = () => {
     []
   );
 
-  const colors = ["#17becf", "#2ca02c", "#ff7f0e", "#1f77b4"];
+  const colors = ["#F6C305", "#1f77b4", "#2ca02c", "#ff7f0e", ];
 
   const datasets = useMemo(
     () => productNames.map((product, index) => ({

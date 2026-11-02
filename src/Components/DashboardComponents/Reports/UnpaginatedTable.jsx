@@ -8,7 +8,8 @@ import { FaAngleLeft, FaAngleRight } from "react-icons/fa";
 import { CSVLink } from "react-csv";
 import { LiaTimesCircle } from "react-icons/lia";
 
-const UnpaginatedTable = ({ data, columns, filename }) => {
+const UnpaginatedTable = ({ data, columns, filename, isExport=true, isSearch=true, isPaginated=true }) => {
+
   const tableInstance = useTable(
     {
       columns: columns,
@@ -41,7 +42,7 @@ const UnpaginatedTable = ({ data, columns, filename }) => {
       {data.length > 0 ? 
         <>
           <div className="d-sm-flex justify-content-between align-items-center my-3 gap-3">
-            <form className="search-form my-2 w-100">
+            {isSearch && <form className="search-form my-2 w-100">
               <input
                 type="text"
                 name="search"
@@ -50,8 +51,8 @@ const UnpaginatedTable = ({ data, columns, filename }) => {
                 placeholder="Search anything"
                 className="px-2 py-3 search-inputs w-100"
               />
-            </form>
-            <CSVLink data={data} filename={filename}>
+            </form>}
+           {isExport && <CSVLink data={data} filename={filename}>
             <button
               className="btn btn-md text-white fz-6 px-4 rounded-4"
               style={{ backgroundColor: "#033E96" }}
@@ -59,7 +60,7 @@ const UnpaginatedTable = ({ data, columns, filename }) => {
             >
               Export
             </button>
-            </CSVLink>
+            </CSVLink>}
           </div>  </> : ''}
           
           <div className="table-responsive w-100">
@@ -103,7 +104,7 @@ const UnpaginatedTable = ({ data, columns, filename }) => {
         <span className="text-center"> No record yet</span>
         </div>}
         </>
-            {data.length > 0 &&
+            {data.length > 0 && isPaginated &&
             <div className="d-flex justify-content-center gap-3 mt-2 align-items-center">
              
               <button

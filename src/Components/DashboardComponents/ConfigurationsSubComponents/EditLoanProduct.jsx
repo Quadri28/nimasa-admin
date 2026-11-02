@@ -33,7 +33,7 @@ const EditLoanProduct = () => {
     interestRate: '',
     loanRepaymentId: "",
     loanInterestRepaymentType: 0,
-    calcmeth: 0,
+    calculationMeth: 0,
     loanType: 0,
     repaymentType2: 0,
     loanClass: 0,
@@ -84,9 +84,7 @@ const EditLoanProduct = () => {
   };
 
   const getLoanDetails=()=>{
-    axios(`LoanProduct/loan-product?productCode=${productCode}`, {headers:{
-      Authorization: `Bearer ${credentials.token}`
-    }})
+    axios(`LoanProduct/loan-product?productCode=${productCode}`)
     .then((resp)=>{
       setDetails(resp.data.data)
     }).catch(error=>setError(error.message))
@@ -127,7 +125,7 @@ const EditLoanProduct = () => {
       loanRepaymentId: details.loanRepaymentId,
       repaymentMethod: details.repaymentMethod,
       loanInterestRepaymentType: Number(details.repaymentType),
-      calculationMethod: Number(details.calcmethod),
+      calculationMethod: Number(details.calculationMeth),
       loanType: Number(details.loanType),
       principalRepaymentType: Number(details.repaymentType2),
       loanClass: details.loanClass,
@@ -143,7 +141,7 @@ const EditLoanProduct = () => {
       interestReceivable: details.interestReceivable,
       suspendedInterest: details.suspendedInterest,
       suspendedPrincipal: details.suspendedPrincipal,
-      unearnedIncomeGL: details.unearnedIncomeGL,
+      unearnedIncomeGL: details.incomeUnearned,
       miscIncome: details.miscIncome,
       interBranch: details.interBranch
     };
@@ -153,11 +151,7 @@ const EditLoanProduct = () => {
       pauseOnHover: true
     }
     axios
-      .post("LoanProduct/update-loan-product", payload, {
-        headers: {
-          Authorization: `Bearer ${credentials.token}`,
-        },
-      })
+      .post("LoanProduct/update-loan-product", payload)
       .then((resp) => {
         toast(resp.data.message, toastOptions);
         setTimeout(() => {

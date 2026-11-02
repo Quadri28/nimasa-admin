@@ -20,7 +20,7 @@ const BroadcastMessage = () => {
   const [admins, setAdmins] = useState([]);
   const [customerIDs, setCustomerIDs] = useState([]);
   const [content, setContent] = useState("");
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(false)
 
   const { credentials } = useContext(UserContext);
   const navigate = useNavigate();
@@ -28,21 +28,13 @@ const BroadcastMessage = () => {
   /* ---------------- FETCHES ---------------- */
 
   useEffect(() => {
-    axios("Communication/message-channels", {
-      headers: { Authorization: `Bearer ${credentials.token}` },
-    }).then((resp) => setChannels(resp.data));
+    axios("Communication/message-channels").then((resp) => setChannels(resp.data));
 
-    axios("Communication/receiver-type", {
-      headers: { Authorization: `Bearer ${credentials.token}` },
-    }).then((resp) => setReceiverTypes(resp.data));
+    axios("Communication/receiver-type").then((resp) => setReceiverTypes(resp.data));
 
-    axios("MemberManagement/account-enquiry-select", {
-      headers: { Authorization: `Bearer ${credentials.token}` },
-    }).then((resp) => setCustomers(resp.data.data));
+    axios("Communication/members").then((resp) => setCustomers(resp.data.data));
 
-    axios("Communication/admins", {
-      headers: { Authorization: `Bearer ${credentials.token}` },
-    }).then((resp) => setAdmins(resp.data));
+    axios("Communication/admins").then((resp) => setAdmins(resp.data));
   }, []);
 
   /* ---------------- FORM CONFIG ---------------- */
@@ -61,34 +53,34 @@ const BroadcastMessage = () => {
       .required(),
   });
 
+
   const onSubmit = (values) => {
     const payload = {
       title: values.title,
       description: content,
       scheduleMessage: values.scheduleMessage,
       scheduleDate: values.scheduleDate ? values.scheduleDate : null,
-      messageChanels: values.messageChannels,
+      messageChanels: values.messageChannels, 
       receiver: Number(receiverType),
       employeeIds: customerIDs,
     };
-    setLoading(true);
+    setLoading(true)
     axios
-      .post("Communication/broad-cast", payload, {
-        headers: { Authorization: `Bearer ${credentials.token}` },
-      })
+      .post("Communication/broad-cast", payload)
       .then((resp) => {
         toast(resp.data.message, { type: "success", autoClose: 5000 });
-        setLoading(false);
+    setLoading(false)
         setTimeout(() => navigate(-1), 2000);
       })
-      .catch((error) => {
+      .catch((error) =>{
         toast(error.response?.data?.message || "Error", {
           type: "error",
           autoClose: false,
-        });
-        setLoading(false);
-      });
+        })
+        setLoading(false)}
+      );
   };
+
 
   return (
     <>
@@ -132,17 +124,20 @@ const BroadcastMessage = () => {
                     dataKey="value"
                     textField="name"
                     value={channels.filter((c) =>
-                      values.messageChannels.includes(c.value),
+                      values.messageChannels.includes(c.value)
                     )}
                     onChange={(selected) =>
                       setFieldValue(
                         "messageChannels",
-                        selected.map((c) => c.value),
+                        selected.map((c) => c.value)
                       )
                     }
                     placeholder="Select channel(s)"
                   />
-                  <ErrorMessage name="messageChannels" component={ErrorText} />
+                  <ErrorMessage
+                    name="messageChannels"
+                    component={ErrorText}
+                  />
                 </div>
 
                 <div className="d-flex gap-1 flex-column">
@@ -165,55 +160,71 @@ const BroadcastMessage = () => {
               </div>
 
               <div className="my-2 px-3">
-                <label>{receiverType === "0" ? "Admins" : "Members"}</label>
-
-                <div className="my-2">
-                  <div className="d-flex justify-content-between align-items-center">
-                    <label>{receiverType === "0" ? "Admins" : "Members"}</label>
-                    {receiverType && (
-                      <button
-                        type="button"
-                        className="btn btn-sm btn-light"
-                        onClick={() => {
-                          const allIds =
-                            receiverType === "0"
-                              ? admins.map((a) => a.employeeId)
-                              : customers.map((c) => c.customerId);
-                          setCustomerIDs(allIds);
-                        }}
-                      >
-                        Select All
-                      </button>
-                    )}
-                  </div>
-
-                  <Multiselect
-                    data={receiverType === "0" ? admins : customers}
-                    dataKey={receiverType === "0" ? "employeeId" : "customerId"}
-                    textField={
-                      receiverType === "0"
-                        ? "employeeFullName"
-                        : "customerInfomation"
-                    }
-                    value={
-                      receiverType === "0"
-                        ? admins.filter((a) =>
-                            customerIDs.includes(a.employeeId),
-                          )
-                        : customers.filter((c) =>
-                            customerIDs.includes(c.customerId),
-                          )
-                    }
-                    onChange={(list) =>
-                      setCustomerIDs(
-                        list.map((i) =>
-                          receiverType === "0" ? i.employeeId : i.customerId,
-                        ),
+                <label>
+                  {receiverType === "0" ? "Admins" : "Members"}
+                </label>
+                {/* <Multiselect
+                  data={receiverType === "0" ? admins : customers}
+                  dataKey={
+                    receiverType === "0" ? "employeeId" : "customerId"
+                  }
+                  textField={
+                    receiverType === "0"
+                      ? "employeeFullName"
+                      : "customerInfomation"
+                  }
+                  onChange={(list) =>
+                    setCustomerIDs(
+                      list.map((i) =>
+                        receiverType === "0"
+                          ? i.employeeId
+                          : i.customerId
                       )
-                    }
-                    placeholder="Select receivers"
-                  />
-                </div>
+                    )
+                  }
+                  placeholder="Select receivers"
+                /> */}
+
+                <div className="my-2 px-3">
+  <div className="d-flex justify-content-between align-items-center">
+    <label>{receiverType === "0" ? "Admins" : "Members"}</label>
+    {receiverType && (
+      <button
+        type="button"
+        className="btn btn-sm btn-light"
+        onClick={() => {
+          const allIds =
+            receiverType === "0"
+              ? admins.map((a) => a.employeeId)
+              : customers.map((c) => c.customerId);
+          setCustomerIDs(allIds);
+        }}
+      >
+        Select All
+      </button>
+    )}
+  </div>
+
+  <Multiselect
+    data={receiverType === "0" ? admins : customers}
+    dataKey={receiverType === "0" ? "employeeId" : "customerId"}
+    textField={receiverType === "0" ? "employeeFullName" : "customerInfomation"}
+    value={
+      receiverType === "0"
+        ? admins.filter((a) => customerIDs.includes(a.employeeId))
+        : customers.filter((c) => customerIDs.includes(c.customerId))
+    }
+    onChange={(list) =>
+      setCustomerIDs(
+        list.map((i) =>
+          receiverType === "0" ? i.employeeId : i.customerId
+        )
+      )
+    }
+    placeholder="Select receivers"
+  />
+</div>
+
               </div>
 
               <div className="my-2 px-3">
@@ -245,13 +256,13 @@ const BroadcastMessage = () => {
                 type="submit"
                 className="btn btn-md"
                 style={{
-                  backgroundColor: "var(--custom-color)",
+                  backgroundColor: "#0452C8",
                   color: "#fff",
                   borderRadius: "1.2rem",
                 }}
-                disabled={loading}
+              disabled={loading}
               >
-                {!loading ? "Proceed" : "Loading..."}
+               {!loading ? 'Proceed' : 'Loading...'}
               </button>
             </div>
           </Form>

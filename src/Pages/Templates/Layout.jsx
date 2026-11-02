@@ -2,11 +2,17 @@ import React, { useContext, lazy, Suspense, useState, useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import LandingPageTemplate from "./LandingPageTemplate";
 import DashboardTemplate from "./DashboardTemplate";
-
+const About = lazy(() => import("../About"));
+import Faqs from "../Faqs";
+import Contact from "../Contact";
+import Agent from "../Agent";
+import Member from "../Member";
 import Dashboard from "../../Components/DashboardComponents/Dashboard";
+import Home from "../Home";
 import Configurations from "../../Components/DashboardComponents/Configurations";
 import NotFound from "../NotFound";
 import CooperativeSignIn from "../../Components/CooperativeSignIn";
+import CooperativeSignUp from "../../Components/CooperativeSignUp";
 import AdminTasks from "../../Components/DashboardComponents/AdminTasks";
 import ConfirmAccount from "../../Components/ConfirmAccount";
 import MemberManagement from "../../Components/DashboardComponents/Operations/MemberManagement";
@@ -151,37 +157,7 @@ import CreateElection from "../../Components/Elections/CreateElection";
 import AddContestant from "../../Components/Elections/AddContestant";
 import UpdateCandidate from "../../Components/Elections/UpdateCandidate";
 import CandidateIndex from "../../Components/Elections/CandidateIndex";
-import GlobalAdminTemplate from "./GlobalAdminTemplate";
-import Setup from "../../Components/GlobalAdminComponents/Setup/Setup";
-import GlobalAdminTasks from "../../Components/GlobalAdminComponents/GlobalAdminTasks/GlobalAdminTasks";
-import GlobalReports from "../../Components/GlobalAdminComponents/GlobalReports";
-import GeneralOverview from "../../Components/GlobalAdminComponents/GeneralOverview/GeneralOverview";
-import ExpiredSubscriptions from "../../Components/GlobalAdminComponents/GeneralOverview/ExpiredSubscriptions";
-import ExpiringSoon from "../../Components/GlobalAdminComponents/GeneralOverview/ExpiringSoon";
-import ManageCooperative from "../../Components/GlobalAdminComponents/Setup/ManageCooperative";
-import ManageBank from "../../Components/GlobalAdminComponents/Setup/ManageBank";
-import OperationLockStatus from "../../Components/GlobalAdminComponents/GlobalAdminTasks/OperationLockStatus";
-import CooperativeApproval from "../../Components/GlobalAdminComponents/GlobalAdminTasks/CooperativeApproval";
-import GlobalUserReset from "../../Components/GlobalAdminComponents/GlobalAdminTasks/GlobalUserReset";
-import GlobalRoleConfig from "../../Components/GlobalAdminComponents/GlobalAdminTasks/GlobalRoleConfig";
-import ManageTenant from "../../Components/GlobalAdminComponents/GlobalAdminTasks/ManageTenant";
-import CoopSubInfo from "../../Components/GlobalAdminComponents/GlobalAdminTasks/CoopSubInfo";
-import PostCoopSettlement from "../../Components/GlobalAdminComponents/GlobalAdminTasks/PostCoopSettlement";
-import ViewRequest from "../../Components/GlobalAdminComponents/GlobalAdminTasks/ViewRequest";
-import CooperativeApprovalIndex from "../../Components/GlobalAdminComponents/GlobalAdminTasks/CooperativeApprovalIndex";
-import LoginStatus from "../../Components/GlobalAdminComponents/GlobalAdminTasks/LoginStatus";
 import AddNewUser from "../../Components/DashboardComponents/AdminTasksSubComponents/AddNewUser";
-import EditGlobalRole from "../../Components/GlobalAdminComponents/GlobalAdminTasks/EditGlobalRole";
-import GlobalRoleConfigIndex from "../../Components/GlobalAdminComponents/GlobalAdminTasks/GlobalRoleConfigIndex";
-import AddNewTenant from "../../Components/GlobalAdminComponents/GlobalAdminTasks/AddNewTenant";
-import Support from "../../Components/GlobalAdminComponents/Support/Support";
-import Supports from "../../Components/GlobalAdminComponents/Support/Supports";
-import CreateFaqs from "../../Components/GlobalAdminComponents/Support/CreateFaqs";
-import EditFaqs from "../../Components/GlobalAdminComponents/Support/EditFaq";
-import FaqSection from "../../Components/GlobalAdminComponents/Support/FaqSection";
-import CreateFaqSection from "../../Components/GlobalAdminComponents/Support/CreateFaqSection";
-import FaqSections from "../../Components/GlobalAdminComponents/Support/FaqSections";
-import EditFaqSection from "../../Components/GlobalAdminComponents/Support/EditFaqSection";
 import IdleTimer from "../../Components/IdleTimer";
 import { RequiredAuth } from "../../Components/RequiredAuth";
 import AgreementFile from "../../Components/CooperativeRegForms/AgreementFile";
@@ -225,6 +201,8 @@ import AppLoanRepaymentRequest from "../../Components/DashboardComponents/Report
 import AppLoanRequest from "../../Components/DashboardComponents/Reports/RequestReports/AppLoanRequest";
 import { UserContext } from "../../Components/AuthContext";
 import LoanRestructure from "../../Components/DashboardComponents/LoanManagement/LoanRestructure";
+import PrivacyPolicy from "../PrivacyPolicy";
+import DeleteAccount from "../DeleteAccount";
 import GLAccountStatement from "../../Components/DashboardComponents/Reports/GLAccountStatement";
 import SubscriptionRenewal from "../../Components/SubscriptionRenewal";
 import BulkLoginAccess from "../../Components/DashboardComponents/Operations/BulkLoginAccess";
@@ -233,6 +211,7 @@ import MemberContributionDetails from "../../Components/DashboardComponents/Repo
 import Signatory from "../../Components/DashboardComponents/Operations/Signatory";
 import CookieConsentModal from "../../Components/DashboardComponents/CookieModal";
 import AdminResetPassword from "../../Components/AdminResetPassword";
+
 
 const Layout = () => {
   const { credentials } = useContext(UserContext);
@@ -263,10 +242,18 @@ const Layout = () => {
         )}
         <Routes>
           <Route path="/" element={<LandingPageTemplate />}>
-            <Route path="/" element={<CooperativeSignIn/>} />
+            <Route path="/" element={<Home />} />
+            <Route path="about-us" element={<About />} />
+            <Route path="about-us/privacy-policy" element={<PrivacyPolicy />} />
+            <Route path="about-us/delete-account" element={<DeleteAccount />} />
+            <Route path="faqs" element={<Faqs />} />
+            <Route path="contact-us" element={<Contact />} />
+            <Route path="agents" element={<Agent />} />
+            <Route path="member" element={<Member />} />
             <Route path="confirm" element={<ConfirmAccount />} />
           </Route>
 
+          <Route path="/cooperative-signin" element={<CooperativeSignIn />} />
           <Route
             path="/subscription-renewal"
             element={<SubscriptionRenewal />}
@@ -276,6 +263,7 @@ const Layout = () => {
             element={<AdminResetPassword />}
           />
           <Route path="/reset-password" element={<ResetPassword />} />
+          <Route path="/cooperative-signup" element={<CooperativeSignUp />} />
           <Route path="/agreement" element={<AgreementFile />} />
           <Route
             path="/verification-payment"
@@ -631,6 +619,7 @@ const Layout = () => {
                 />
                 <Route path="shares-request" element={<SharesRequest />} />
               </Route>
+            
               <Route path="retirement-requests" element={<Retirement />}>
                 <Route index element={<RetirementRequest />} />
                 <Route
@@ -639,6 +628,8 @@ const Layout = () => {
                 />
               </Route>
             </Route>
+
+             
             {/* Inventory Management */}
             <Route path="inventory-management" element={<Inventory />}>
               <Route index element={<Product />} />
@@ -697,100 +688,6 @@ const Layout = () => {
             <Route path="notifications" element={<Notifications />} />
           </Route>
 
-          {/* Global Admin Dashboard */}
-
-          <Route
-            path="/global-admin-dashboard"
-            element={<GlobalAdminTemplate />}
-          >
-            <Route index element={<GeneralOverview />} />
-            <Route
-              path="expired-subscriptions"
-              element={<ExpiredSubscriptions />}
-            />
-            <Route
-              path="outstanding-subscriptions"
-              element={<OutstandingSubscription />}
-            />
-            <Route path="expiring-soon" element={<ExpiringSoon />} />
-            <Route path="set-up" element={<Setup />}>
-              <Route index element={<ManageCooperative />} />
-              <Route path="manage-bank-account" element={<ManageBank />} />
-            </Route>
-            <Route path="admin-tasks" element={<GlobalAdminTasks />}>
-              <Route index element={<ManageUsers />} />
-              <Route
-                path="operation-lock-status"
-                element={<OperationLockStatus />}
-              />
-              <Route path="manage-roles" element={<ManageRoleIndex />} />
-              <Route path="add-user" element={<AddNewUser />} />
-              <Route path="change-password" element={<ChangePassword />} />
-              <Route
-                path="cooperative-approval"
-                element={<CooperativeApprovalIndex />}
-              >
-                <Route index element={<CooperativeApproval />} />
-                <Route path="view-request/:id" element={<ViewRequest />} />
-              </Route>
-              <Route path="global-user-reset" element={<GlobalUserReset />} />
-
-              <Route
-                path="global-role-configuration"
-                element={<GlobalRoleConfigIndex />}
-              >
-                <Route index element={<GlobalRoleConfig />} />
-                <Route path="edit-role/:id" element={<EditGlobalRole />} />
-                <Route path="add-new-tenant" element={<AddNewTenant />} />
-              </Route>
-
-              <Route path="manage-tenants" element={<ManageTenant />} />
-              <Route
-                path="cooperative-subscription-info"
-                element={<CoopSubInfo />}
-              />
-              <Route
-                path="post-coop-settlement"
-                element={<PostCoopSettlement />}
-              />
-              <Route path="reset-user/:id" element={<ResetUser />} />
-              <Route
-                path="/global-admin-dashboard/admin-tasks/manage-roles/add-new-role"
-                element={<AddNewRole />}
-              />
-              <Route
-                path="/global-admin-dashboard/admin-tasks/manage-roles/edit-role/:id"
-                element={<EditRole />}
-              />
-              <Route path="edit-user/:id" element={<EditUser />} />
-              <Route
-                path="outstanding-subscription"
-                element={<OutstandingSubscription />}
-              />
-            </Route>
-            <Route path="reports" element={<GlobalReports />}>
-              <Route index element={<TenantReport />} />
-              <Route path="user-details" element={<UserReports />} />
-              <Route path="login-status" element={<LoginStatus />} />
-            </Route>
-            <Route path="support" element={<Supports />}>
-              <Route index element={<Support />} />
-              <Route path="create-faqs" element={<CreateFaqs />} />
-              <Route path="edit-faq/:id" element={<EditFaqs />} />
-              <Route path="faq-section" element={<FaqSections />}>
-                <Route index element={<FaqSection />} />
-                <Route
-                  path="create-faq-section"
-                  element={<CreateFaqSection />}
-                />
-                <Route
-                  path="edit-faq-section/:id"
-                  element={<EditFaqSection />}
-                />
-              </Route>
-              <Route path="edit-faqs" element={<EditFaqs />} />
-            </Route>
-          </Route>
           <Route path="*" element={<NotFound />} />
         </Routes>
       </Suspense>

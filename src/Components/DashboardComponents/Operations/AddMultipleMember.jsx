@@ -6,6 +6,7 @@ import { FileUploader } from "react-drag-drop-files";
 import { toast } from "react-toastify";
 import GeneralLedgerTable from "../ConfigurationsSubComponents/ProductSettingComponent/GeneralLedgerTable";
 import { useNavigate } from "react-router-dom";
+import UnpaginatedTable from "../Reports/UnpaginatedTable";
 
 
 const AddMultipleMember = ({file, handleChange, batchNo, setBatchNo, data}) => {
@@ -50,9 +51,6 @@ const navigate = useNavigate()
   const getTemplate = () => {
     axios("MemberManagement/member-bulk-upload-template", {
       responseType: "blob",
-      headers: {
-        Authorization: `Bearer ${credentials.token}`,
-      },
     }).then((blob) => {
       const url = window.URL.createObjectURL(new Blob([blob.data]));
       const link = document.createElement("a");
@@ -147,7 +145,7 @@ const navigate = useNavigate()
           </div>
           </div>
           <div className="px-3 mb-4">
-          <GeneralLedgerTable data={data} columns={columns}/>
+          <UnpaginatedTable isPaginated={true} isExport={false} data={data} columns={columns}/>
           </div>
           </div>
         <div className="d-sm-flex justify-content-end gap-4 p-3" 

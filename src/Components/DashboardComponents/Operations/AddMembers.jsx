@@ -113,10 +113,10 @@ middleName: Yup.string().min(3, "must be more than 3 characters"),
     acctBranch: Yup.string().required('Required'),
     acctProduct: Yup.string().required('Required'),
     acctDesc: Yup.string().required('Required'),
-    acctNo: Yup.string(),
-    paymentBank: Yup.string(),
-    amount: Yup.string(),
-    tellerNo: Yup.string(),
+    // acctNo: Yup.string(),
+    // paymentBank: Yup.string(),
+    // amount: Yup.string(),
+    // tellerNo: Yup.string(),
     refName: Yup.string(),
     refPhone: Yup.string().max(11).min(11),
     refAddress: Yup.string().min(10, 'must be at least 10 characters'),
@@ -225,7 +225,7 @@ middleName: Yup.string().min(3, "must be more than 3 characters"),
   return (
     <>
       <div className="d-flex gap-2 p-3 align-items-center flex-wrap" 
-      style={{backgroundColor:'#E6F0FF', borderRadius:'15px 15px 0 0'}}>
+      style={{backgroundColor:'var(--memcos-blue)', borderRadius:'15px 15px 0 0'}}>
         <BsArrowLeft onClick={()=>navigate(-1)} style={{cursor:'pointer'}}/>
         <span
           className={chosen === "single" ? `active-selector ${'header-links'}` : "header-links"}

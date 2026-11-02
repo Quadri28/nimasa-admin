@@ -1,15 +1,13 @@
-import React, { useContext, useEffect, useMemo, useState } from "react";
+import React, {  useEffect, useMemo, useState } from "react";
 import axios from "../../axios";
-import { UserContext } from "../../AuthContext";
 import { FaUsersViewfinder } from "react-icons/fa6";
 import UnpaginatedTable from "../Reports/UnpaginatedTable";
 import Modal from "react-modal";
 import { ToastContainer, toast } from "react-toastify";
-import useScreenSize from "../../ScreenSizeHook";
+import ImagePreview from "./ImagePreview";
 
 const RetirementRequest = () => {
   const [reports, setReports] = useState([]);
-  const { credentials } = useContext(UserContext);
   const [isOpen, setIsOpen] = useState(false);
   const [request, setRequest] = useState({});
   const [reason, setReason]= useState(null)
@@ -17,11 +15,7 @@ const RetirementRequest = () => {
   const [id, setId] = useState("");
 
   const getReports = () => {
-    axios("RequestVerification/retirement-requests", {
-      headers: {
-        Authorization: `Bearer ${credentials.token}`,
-      },
-    }).then((resp) => {
+    axios("RequestVerification/retirement-requests").then((resp) => {
       if (resp.data.data.retirements) {
         setReports(resp.data.data.retirements)
       }
@@ -32,11 +26,7 @@ const RetirementRequest = () => {
   }, []);
 
   const fetchRequest = () => {
-    axios(`RequestVerification/retirement-request?id=${id}`, {
-      headers: {
-        Authorization: `Bearer ${credentials.token}`,
-      },
-    }).then((resp) => setRequest(resp.data.data));
+    axios(`RequestVerification/retirement-request?id=${id}`).then((resp) => setRequest(resp.data.data));
   };
   useEffect(() => {
     fetchRequest();
@@ -93,9 +83,7 @@ const RetirementRequest = () => {
     const payload ={
       id: id
     }
-    axios.post('RequestVerification/retirement-request-approved', payload, {headers:{
-      Authorization:`Bearer ${credentials.token}`
-    }}).then(resp=>{
+    axios.post('RequestVerification/retirement-request-approved', payload).then(resp=>{
       toast(resp.data.message, {type:'success', autoClose: 5000, pauseOnHover: true})
       setTimeout(() => {
         getReports()
@@ -110,9 +98,7 @@ const RetirementRequest = () => {
     const payload={
       id: id
     }
-    axios.post('RequestVerification/retirement-request-reject', payload, {headers:{
-      Authorization:`Bearer ${credentials.token}`
-    }}).then(resp=>{
+    axios.post('RequestVerification/retirement-request-reject', payload).then(resp=>{
       toast(resp.data.message, {type:'success', autoClose: 5000, pauseOnHover: true})
       setTimeout(() => {
       getReports()
@@ -141,16 +127,16 @@ const RetirementRequest = () => {
             <div className="mt-3">
               <h4 style={{fontSize:'18px', fontWeight:'600'}}>Retirement Request</h4>
               <div className="d-flex flex-column gap-3 mt-3">
-                <div className="d-flex gap-3 flex-wrap align-items-center discourse">
+                <div className="d-flex gap-3 justify-content-between flex-wrap align-items-center discourse">
                     <div className="d-flex gap-3">
                   <span>Member ID: </span>
                   <span>{request?.memberId}</span>
-                </div>
-                  <div className="d-flex gap-3">
+                  </div>
+                  <div>
                   <span>Full Name: </span>
                   <span>{request?.fullName}</span>
                 </div>
-                <img src={request?.profileImageUrl} alt="profile image" className="view-img img-fluid" />
+                <ImagePreview src={request?.profileImageUrl} alt="profile image" />
                 </div>
                <div className="d-flex justify-content-between discourse flex-wrap align-items-center p-2"
                 style={{backgroundColor:'var(--light-blue)'}} >

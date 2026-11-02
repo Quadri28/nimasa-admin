@@ -1,5 +1,5 @@
 import React, { createContext, useRef, useState, useEffect } from "react";
-import axios from "./axios";
+import api from "./axios";
 import { useNavigate } from "react-router-dom";
 
 export const UserContext = createContext();
@@ -27,7 +27,7 @@ const AuthContext = ({ children }) => {
         nodeId: currentCredentials.logInfo.nodeId,
       };
 
-      const resp = await axios.post("Account/refresh-token", payload);
+      const resp = await api.post("Account/refresh-token", payload);
       const newCredentials = resp.data;
 
       sessionStorage.setItem("cooperative-details", JSON.stringify(newCredentials));

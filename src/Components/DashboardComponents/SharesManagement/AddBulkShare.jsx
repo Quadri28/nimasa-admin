@@ -6,6 +6,7 @@ import { UserContext } from "../../AuthContext";
 import { toast, ToastContainer } from "react-toastify";
 import { FileUploader } from "react-drag-drop-files";
 import UnpaginatedTable from "../Reports/UnpaginatedTable";
+import { useNavigate } from "react-router-dom";
 
 const AddBulkShare = () => {
   const [file, setFile] = useState(null);
@@ -14,6 +15,7 @@ const AddBulkShare = () => {
   const [info, setInfo] = useState([])
   const [loading, setLoading] = useState(false)
 
+  const navigate = useNavigate()
   const handleChange = (file) => {
     setFile(file);
   };
@@ -21,25 +23,18 @@ const AddBulkShare = () => {
   const { credentials } = useContext(UserContext);
 
   const getBatchNo = () => {
-    axios("MemberManagement/get-batch-no", {
-      headers: {
-        Authorization: `Bearer ${credentials.token}`,
-      },
-    }).then((resp) => setBatchNo(resp.data.message));
+    axios("MemberManagement/get-batch-no").then((resp) => setBatchNo(resp.data.message));
   };
 
   useEffect(() => {
     getBatchNo();
   }, []);
   const uploadBulkShare = () => {
+      if (!file || !batchNo) return;
     const payload = new FormData();
     payload.append("file", file);
     axios
-      .post(`ShareManagement/upload-bulk-share?batchNo=${batchNo}`, payload, {
-        headers: {
-          Authorization: `Bearer ${credentials.token}`,
-        },
-      })
+      .post(`ShareManagement/upload-bulk-share?batchNo=${batchNo}`, payload)
       .then((resp) => {
         if(resp.data.data){
           setData(resp.data.data)}
@@ -50,6 +45,7 @@ const AddBulkShare = () => {
               pauseOnHover: true,
             });
           }
+          
         }).catch(error=>{
           if(file)
           toast(error.response.data.message, {
@@ -70,11 +66,7 @@ const AddBulkShare = () => {
       batchNo: batchNo
     }
     axios
-      .post("ShareManagement/post-bulk-share", payload, {
-        headers: {
-          Authorization: `Bearer ${credentials.token}`,
-        },
-      })
+      .post("ShareManagement/post-bulk-share", payload)
       .then((resp) => {
         setFile(null);
         toast(resp.data.message, {
@@ -82,6 +74,9 @@ const AddBulkShare = () => {
           autoClose: 5000,
           pauseOnHover: true,
         });
+        setTimeout(() => {
+            navigate(-1)
+          }, 3000);
         setLoading(false)
         setInfo(resp.data.data)
       })
@@ -102,7 +97,7 @@ const AddBulkShare = () => {
     }) },
     { Header: "Purchasing Unit", accessor: "purchaseUnit" },
     { Header: "Purchased Amount", accessor: "purchasedAmount" },
-    { Header: "Savings Account",  accessor: "debitAccountNumber"},
+    { Header: "Purchasing Account",  accessor: "debitAccountNumber"},
   ];
    const column1 = [
     { Header: "Customer Name", accessor: "customerName" },

@@ -107,7 +107,7 @@ const EditUser = () => {
       </div>
       <form onSubmit={editUser}>
       <div className='p-3' 
-      style={{backgroundColor:'#F5F9FF', borderRadius:'15px 15px 0 0',}}>
+      style={{backgroundColor:'var(--memcos-blue)', borderRadius:'15px 15px 0 0',}}>
         <div className=' d-flex align-items-center gap-2 title-link' style={{ width:'fit-content'}} onClick={()=>navigate(-1)}>
       <BsArrowLeft/> <span style={{fontSize:'14px', }}> Edit user </span>
       </div>
@@ -116,7 +116,7 @@ const EditUser = () => {
         <div className='admin-task-forms'>
         <div className="d-flex flex-column gap-1">
           <label htmlFor="userId">Staff user ID<sup className="text-danger">*</sup></label>
-          <input type="text" name='userId' value={detail?.userId} onChange={handleChange} />
+          <input type="text" name='userId' value={detail?.userId} onChange={handleChange} disabled/>
         </div>
         <div className="d-flex flex-column gap-1">
           <label htmlFor="userId">Branch<sup className="text-danger">*</sup></label>

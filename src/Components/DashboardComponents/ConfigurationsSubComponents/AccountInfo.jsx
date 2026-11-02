@@ -1,8 +1,7 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import CoopLogo from "../../../assets/CoopLogo.png";
 import axios from "../../axios";
 import { toast, ToastContainer } from "react-toastify";
-import { UserContext } from "../../AuthContext";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
@@ -13,7 +12,6 @@ const AccountInfo = ({
   handleOpenModal,
 }) => {
   const [currencies, setCurrencies] = useState([]);
-  const { credentials } = useContext(UserContext);
   const [accounts, setAccounts]= useState([])
   const [resultDate, setResultDate]= useState('')
   const getCurrencies = () => {
@@ -21,9 +19,7 @@ const AccountInfo = ({
   };
 
   const fetchGLAccounts=async()=>{
-    await axios('Acounting/general-ledger-customer-enquiry?SearchOption=1', {headers:{
-      Authorization: `Bearer ${credentials.token}`
-    }}).then(resp=>setAccounts(resp.data.data)
+    await axios('Acounting/general-ledger-customer-enquiry?SearchOption=1').then(resp=>setAccounts(resp.data.data)
  )}
   useEffect(() => {
     getCurrencies();
@@ -69,11 +65,7 @@ const AccountInfo = ({
       autoClose: 5000,
     };
     axios
-      .post("SetUp/update-general-setup", payload, {
-        headers: {
-          Authorization: `Bearer ${credentials.token}`,
-        },
-      })
+      .post("SetUp/update-general-setup", payload)
       .then((resp) =>
         toast("Account information updated successfully", toastOptions)
       );
@@ -84,10 +76,10 @@ const AccountInfo = ({
 
   // Add 1 year
   const nextYear = new Date(inputDate);
-  nextYear.setFullYear(nextYear.getFullYear() + 1);
+  nextYear?.setFullYear(nextYear?.getFullYear() + 1);
 
   return {
-    endDate: nextYear.toISOString().split('T')[0]
+    endDate: nextYear?.toISOString()?.split('T')[0]
   };
 }
 
@@ -107,7 +99,7 @@ console.log(resultDate)
     >
       <div
         className="py-3 px-3 justify-content-between align-items-center form-header"
-        style={{ backgroundColor: "#f4fAfd", borderRadius: "15px 15px 0 0" }}
+        style={{ backgroundColor: "var(--memcos-blue)", borderRadius: "15px 15px 0 0" }}
       >
         <div className="d-flex gap-3">
           <img
@@ -147,7 +139,7 @@ console.log(resultDate)
             onClick={() => handleOpenModal()}
             className="btn btn-sm p-2"
             style={{
-              backgroundColor: "#0452c8",
+              backgroundColor: "var(--custom-color)",
               color: "#fff",
               borderRadius: "1.2rem",
               fontSize: "12px",
@@ -351,7 +343,7 @@ console.log(resultDate)
           <button
             className="btn btn-md"
             style={{
-              backgroundColor: "#0452c8",
+              backgroundColor: "var(--custom-color)",
               color: "#fff",
               padding: "8px 10px",
               borderRadius: "1.5rem",

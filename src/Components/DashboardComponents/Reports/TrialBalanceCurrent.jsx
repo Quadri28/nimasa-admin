@@ -1,5 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
-import { UserContext } from "../../AuthContext";
+import React, { useEffect, useState } from "react";
 import axios from "../../axios";
 import { FaAngleDown, FaAngleUp } from "react-icons/fa";
 import { LiaTimesCircle } from "react-icons/lia";
@@ -9,7 +8,6 @@ import { saveAs } from "file-saver";
 const TrialBalanceCurrent = () => {
   const [branches, setBranches] = useState([]);
   const [branch, setBranch] = useState("");
-  const { credentials } = useContext(UserContext);
   const [reports, setReports] = useState([]);
   const [openProductTypes, setOpenProductTypes] = useState([]);
   const [openGLClasses, setOpenGLClasses] = useState([]);
@@ -27,9 +25,7 @@ const TrialBalanceCurrent = () => {
   };
 
   const getReports = () => {
-    axios(`Reports/trial-balance-current?BranchCode=${branch}`, {
-      headers: { Authorization: `Bearer ${credentials.token}` },
-    }).then((resp) => {
+    axios(`Reports/trial-balance-current?BranchCode=${branch}`).then((resp) => {
       if (resp.data.data.trialBalanceCurrents) {
         setReports(resp.data.data.trialBalanceCurrents);
       }
@@ -37,9 +33,7 @@ const TrialBalanceCurrent = () => {
   };
 
   const getBranches = () => {
-    axios("MemberManagement/get-branch", {
-      headers: { Authorization: `Bearer ${credentials.token}` },
-    }).then((resp) => {
+    axios("MemberManagement/get-branch").then((resp) => {
       setBranches(resp.data.data);
     });
   };

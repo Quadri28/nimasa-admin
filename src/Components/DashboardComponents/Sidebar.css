@@ -22,7 +22,7 @@ font-family: DM Sans, sans-serif;
     font-weight: 400;
 }
 .active-sidebar-link{
-    background-color: var(--custom-color) !important;
+    background-color: var(--dark-blue) !important;
     color: #fff !important;
     border: none;
     border-radius: 20px;
@@ -45,7 +45,7 @@ font-family: DM Sans, sans-serif;
 }
 .sidebar::-webkit-scrollbar-thumb{
     border-radius: 3px;
-    background-color: var(--custom-color);
+    background-color: var(--dark-blue);
 }
   
   .icons-container:hover .outline {

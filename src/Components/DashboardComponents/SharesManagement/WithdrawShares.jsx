@@ -20,23 +20,13 @@ const WithdrawShares = () => {
   const [account, setAccount]= useState('')
   
 const getAccounts=()=>{
-  axios("Acounting/general-ledger-customer-enquiry?SearchOption=2", {headers:{
-    Authorization: `Bearer ${credentials.token}`
-  }}).then(resp=>setAccounts(resp.data.data))
+  axios("Acounting/general-ledger-customer-enquiry?SearchOption=2").then(resp=>setAccounts(resp.data.data))
 }
   const getMembers = () => {
-    axios("MemberManagement/get-member-reg-detail-slim", {
-      headers: {
-        Authorization: `Bearer ${credentials.token}`,
-      },
-    }).then((resp) => setMembers(resp.data.data));
+    axios("MemberManagement/get-member-reg-detail-slim").then((resp) => setMembers(resp.data.data));
   };
   const getSharesTypes = () => {
-    axios(`ShareManagement/member-purchased-shares?memberUniqueId=${value}`, {
-      headers: {
-        Authorization: `Bearer ${credentials.token}`,
-      },
-    }).then((resp) => setShareTypes(resp.data.data));
+    axios(`ShareManagement/member-purchased-shares?memberUniqueId=${value}`).then((resp) => setShareTypes(resp.data.data));
   };
   useEffect(() => {
     getMembers();

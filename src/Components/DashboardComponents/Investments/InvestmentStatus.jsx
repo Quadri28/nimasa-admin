@@ -1,5 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react'
-import { UserContext } from '../../AuthContext'
+import React, { useEffect, useState } from 'react'
 import axios from '../../axios'
 
 const InvestmentStatus = () => {
@@ -7,20 +6,15 @@ const InvestmentStatus = () => {
   const [details, setDetails]= useState({})
   const[accounts, setAccounts]= useState([])
   const [account, setAccount]= useState('')
-  const {credentials}= useContext(UserContext)
 
   const getDetails=()=>{
-    axios(`Investment/investment-status?placementAccountNumber=${account}`, {headers:{
-      Authorization: `Bearer ${credentials.token}`
-    }}).then(resp=>setDetails(resp.data.data))
+    axios(`Investment/investment-status?placementAccountNumber=${account}`).then(resp=>setDetails(resp.data.data))
   }
   useEffect(()=>{
     getDetails()
   }, [account])
   const getAccounts=()=>{
-    axios('Acounting/general-ledger-customer-enquiry?SearchOption=4', {headers:{
-      Authorization: `Bearer ${credentials.token}`
-    }}).then(resp=>{
+    axios('Acounting/general-ledger-customer-enquiry?SearchOption=4').then(resp=>{
       setAccounts(resp.data.data)
     })
   }
@@ -31,7 +25,7 @@ const InvestmentStatus = () => {
   return (
     <>
  <div className="p-3"
-      style={{ backgroundColor: "#F5F9FF", borderRadius: "15px 15px 0 0" }}>
+      style={{ backgroundColor: "var(--memcos-blue)", borderRadius: "15px 15px 0 0" }}>
       <div
         className=" d-flex align-items-center gap-2"
         style={{ width: "fit-content" }}

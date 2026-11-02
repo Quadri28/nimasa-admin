@@ -1,17 +1,14 @@
 import React, {
-  useContext,
   useEffect,
   useMemo,
   useState,
 } from "react";
 import { GoArrowUp } from "react-icons/go";
 import axios from "../../axios";
-import { UserContext } from "../../AuthContext";
 import { ToastContainer, toast } from "react-toastify";
 import Table from "./Table";
 
 const ManageSMS = () => {
-  const { credentials } = useContext(UserContext);
   const [messages, setMessages] = useState([]);
   const [loading, setLoading] = useState(false)
   const [pageCount, setPageCount] = useState(0)
@@ -25,13 +22,7 @@ const ManageSMS = () => {
     setTimeout(() => {
       if (fetchId === fetchIdRef.current) {
         axios(
-          `Communication/members-sms?PageSize=${pageSize}&PageNumber=${pageNumber+1}`,
-          {
-            headers: {
-              Authorization: `Bearer ${credentials.token}`,
-            },
-          }
-        ).then((resp) => {
+          `Communication/members-sms?PageSize=${pageSize}&PageNumber=${pageNumber+1}`).then((resp) => {
           if (resp.data.data.modelResult) {
             setMessages(resp.data.data.modelResult);
             setPageCount(Math.ceil(resp.data.data.totalCount / pageSize));
@@ -86,11 +77,7 @@ const ManageSMS = () => {
                     customerId: String(customerId),
                     status: true,
                   };
-                  axios.post("Communication/enable-member-sms", payload, {
-                    headers: {
-                      Authorization: `Bearer ${credentials.token}`,
-                    },
-                  }).then((resp) => {toast(resp.data.message), {
+                  axios.post("Communication/enable-member-sms", payload).then((resp) => {toast(resp.data.message), {
                     type: "success",
                     autoClose: 5000,
                     pauseOnHover: true,
@@ -118,11 +105,7 @@ const ManageSMS = () => {
                     status: false,
                   };
                   axios
-                    .post("Communication/enable-member-sms", payload, {
-                      headers: {
-                        Authorization: `Bearer ${credentials.token}`,
-                      },
-                    })
+                    .post("Communication/enable-member-sms", payload)
                     .then((resp) => {toast(resp.data.message), {
                       type: "success",
                       autoClose: 5000,

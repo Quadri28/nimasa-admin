@@ -15,9 +15,7 @@ const ViewSavings = () => {
   const [currencies, setCurrencies] = useState([])
   const {credentials}= useContext(UserContext)
   const getSavings=()=>{
-    axios(`SavingProduct/get-saving-product-by-code?savingCode=${savingCode}`, {headers:{
-      Authorization: `Bearer ${credentials.token}`
-    }}).then((resp)=>{
+    axios(`SavingProduct/get-saving-product-by-code?savingCode=${savingCode}`).then((resp)=>{
       setSavings(resp.data.data)
     })
   }
@@ -60,6 +58,16 @@ const getCurrencies=()=>{
               id="productCode"
               value={savings.productCode}
               readOnly
+            />
+          </div>
+          <div className="row g-2">
+            <label htmlFor="productName" style={{ fontWeight: "500" }}>
+              Product Name:
+            </label>
+            <input
+              name="productName"
+              value={savings.productName}
+              disabled
             />
           </div>
           <div className="row g-2">

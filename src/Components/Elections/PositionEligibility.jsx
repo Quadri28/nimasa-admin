@@ -1,21 +1,17 @@
-import React,{useContext, useEffect, useMemo, useState} from 'react'
+import React,{useEffect, useMemo, useState} from 'react'
 import {useTable, useSortBy, useGlobalFilter, usePagination, } from "react-table";
 import { FaAngleRight, FaAngleLeft } from 'react-icons/fa';
-import { UserContext } from '../AuthContext';
 import axios from '../axios';
 import Modal from 'react-modal'
 import { toast, ToastContainer } from 'react-toastify';
 
 const PositionEligibility = () => {
   const [positions, setPositions]= useState([])
-  const {credentials}= useContext(UserContext)
   const [position, setPosition]= useState('')
   const [description, setDescription]= useState('')
   const [isOpen, setIsOpen]= useState(false)
   const getPositions=()=>{
-    axios('Election/election-positions', {headers:{
-      Authorization: `Bearer ${credentials.token}`
-    }}).then(resp=>{
+    axios('Election/election-positions').then(resp=>{
       setPositions(resp.data.data.positions)
     })
   }
@@ -110,9 +106,7 @@ const updatePosition=(id, value)=>{
     id:id,
     isActive: value
   }
-axios.post('Election/set-active-or-deactive-position', payload, {headers:{
-Authorization: `Bearer ${credentials.token}`
-}}).then(resp=>{
+axios.post('Election/set-active-or-deactive-position', payload).then(resp=>{
   toast(resp.data.message, {type:'success', autoClose:5000, pauseOnHover:true})
   getPositions()
 }).catch(error=>toast(error.response.data.message, {type:'error', autoClose:false}))
@@ -123,9 +117,7 @@ Authorization: `Bearer ${credentials.token}`
           positionName: position,
           description: description
         }
-        axios.post('Election/create-position', payload, {headers:{
-          Authorization:`Bearer ${credentials.token}`
-        }}).then(resp=>{
+        axios.post('Election/create-position', payload).then(resp=>{
           toast(resp.data.message, {type:'success', autoClose:5000, pauseOnHover:true})
           getPositions()
           setTimeout(()=>{

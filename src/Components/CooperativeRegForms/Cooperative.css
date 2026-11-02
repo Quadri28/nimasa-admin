@@ -1,7 +1,10 @@
 .cooperative-form-container, .reset-password{
     width: 33%;
     border-radius: 1.5rem;
+    background-color: #fff;
+    border: solid 1px #ddd;
 }
+
 .cooperative-signup-form-container{
     width: 33%;
     position: absolute;
@@ -9,11 +12,24 @@
     top: 50%;
     transform: translate(-50%, -50%);
 }
-.cooperative-form-container, .reset-password{
+/* .cooperative-form-container, .reset-password{
     position: absolute;
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%);
+} */
+.login-page {
+  min-height: 100dvh;
+  background: #f2f2f2 !important;
+  display: flex;
+  flex-direction: column;
+}
+.cooperative-form-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 2rem 1rem;
 }
 .inputs-container{
     margin-bottom: 10px;

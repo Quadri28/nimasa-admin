@@ -13,9 +13,7 @@ const [searchParams] = useSearchParams();
   const userId = searchParams.get("userId");
 
   const getPaymentDetails=()=>{
-    axios(`Admin/load-subscription-payment/${nodeId}`, {headers:{
-    
-    }}).then(resp=>setDetails(resp.data.data))
+    axios(`Admin/load-subscription-payment/${nodeId}`).then(resp=>setDetails(resp.data.data))
   }
 
   useEffect(()=>{

@@ -1,6 +1,5 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import axios from '../../axios'
-import { UserContext } from '../../AuthContext'
 import MemberStrength from './TenantReports/MemberStrength'
 import ContactList from './TenantReports/ContactList'
 import ExpiredSubCooperative from './TenantReports/ExpiredSubCooperative'
@@ -13,23 +12,18 @@ import { useNavigate } from 'react-router-dom'
 const TenantReport = () => {
     const [types, setTypes]= useState([])
     const [type, setType]= useState('')
-    const{credentials}= useContext(UserContext)
     const [reports, setReports]= useState([])
     const [selected, setSelected] = useState('')
 
     const getTypes=()=>{
-        axios('Reports/tenant-report-types',{headers:{
-            Authorization: `Bearer ${credentials.token}`
-        }}).then(resp=>setTypes(resp.data))
+        axios('Reports/tenant-report-types').then(resp=>setTypes(resp.data))
     }
 
     useEffect(()=>{
         getTypes()
     },[])
     const getReports=()=>{
-        axios(`Reports/tenant-report?ReportType=${type}`, {headers:{
-            Authorization: `Bearer ${credentials.token}`
-        }}).then(resp=>{
+        axios(`Reports/tenant-report?ReportType=${type}`).then(resp=>{
             if (resp.data.data.cooperativeMemberStrengths) {
             setSelected('strength')
             setReports(resp.data.data.cooperativeMemberStrengths)   

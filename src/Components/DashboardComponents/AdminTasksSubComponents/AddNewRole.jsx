@@ -94,7 +94,7 @@ const AddNewRole = () => {
             <div
               className="p-3 d-flex align-items-center gap-2"
               style={{
-                backgroundColor: "#F5F9FF",
+                backgroundColor: "var(--memcos-blue)",
                 borderRadius: "15px 15px 0 0",
               }}
             >

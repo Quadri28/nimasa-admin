@@ -1,9 +1,8 @@
-import React, { useContext, useEffect, useMemo, useState } from "react";
+import React, { useEffect,  useState } from "react";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import axios from "../../../axios";
 import ErrorText from "../../ErrorText";
-import { UserContext } from "../../../AuthContext";
 import "./Accounting.css";
 import { ToastContainer, toast } from "react-toastify";
 import { Combobox } from "react-widgets/cjs";
@@ -18,32 +17,17 @@ const Withdrawal = () => {
   const [sourceAccount, setSourceAccount] = useState("");
   const [details, setDetails] = useState({});
   const [loading, setLoading] = useState(false)
-  const { credentials } = useContext(UserContext);
 
   const getVoucherNo = () => {
-    axios("MemberManagement/get-batch-no", {
-      headers: {
-        Authorization: `Bearer ${credentials.token}`,
-      },
-    }).then((resp) => setBatchNo(resp.data.message));
+    axios("MemberManagement/get-batch-no").then((resp) => setBatchNo(resp.data.message));
   };
 
   const fetchDetails = () => {
     axios(
-      `Acounting/withdrawal-account-number-text-Change?AccountNumber=${receivingAccount}`,
-      {
-        headers: {
-          Authorization: `Bearer ${credentials.token}`,
-        },
-      }
-    ).then((resp) => setDetails(resp.data.data));
+      `Acounting/withdrawal-account-number-text-Change?AccountNumber=${receivingAccount}`).then((resp) => setDetails(resp.data.data));
   };
   const fetchCurrencies = () => {
-    axios("Common/get-currencies", {
-      headers: {
-        Authorization: `Bearer ${credentials.token}`,
-      },
-    }).then((resp) => setCurrencies(resp.data));
+    axios("Common/get-currencies").then((resp) => setCurrencies(resp.data));
   };
 
   useEffect(() => {
@@ -55,18 +39,10 @@ const Withdrawal = () => {
   }, [receivingAccount]);
 
   const fetchCustomerEnquiries = () => {
-    axios("Acounting/member-account-enquiry", {
-      headers: {
-        Authorization: `Bearer ${credentials.token}`,
-      },
-    }).then((resp) => setEnquiries(resp.data.data));
+    axios("Acounting/member-account-enquiry").then((resp) => setEnquiries(resp.data.data));
   };
   const fetchLedgerAccounts = () => {
-    axios("Acounting/general-ledger-customer-enquiry?SearchOption=1", {
-      headers: {
-        Authorization: `Bearer ${credentials.token}`,
-      },
-    }).then((resp) => setLedgers(resp.data.data));
+    axios("Acounting/general-ledger-customer-enquiry?SearchOption=1").then((resp) => setLedgers(resp.data.data));
   };
   useEffect(() => {
     fetchCustomerEnquiries();
@@ -108,11 +84,7 @@ const Withdrawal = () => {
       branchCode: details.branchCode,
     };
     axios
-      .post("Acounting/withdrawal", payload, {
-        headers: {
-          Authorization: `Bearer ${credentials.token}`,
-        },
-      })
+      .post("Acounting/withdrawal", payload)
       .then((resp) =>{
         setLoading(false)
         toast(resp.data.message, {
@@ -157,7 +129,7 @@ const formattedCreditEnquiries= enquiries.map((e) => ({
       >
       <div
         style={{
-          backgroundColor: "#f4fAfd",
+          backgroundColor: "var(--memcos-blue)",
           borderRadius: "15px 15px 0 0",
         }}
         className="p-3"

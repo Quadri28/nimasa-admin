@@ -1,10 +1,10 @@
-import React, { useContext, useEffect, useMemo, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import axios from '../../axios'
-import { UserContext } from '../../AuthContext'
 import UnpaginatedTable from '../Reports/UnpaginatedTable'
 import Modal from 'react-modal'
 import { ToastContainer, toast } from 'react-toastify'
 import { AiOutlineEye  } from 'react-icons/ai'
+import ImagePreview from './ImagePreview'
 
 const SavingAccountRequest = () => {
   const [requests, setRequests]= useState([])
@@ -12,15 +12,12 @@ const SavingAccountRequest = () => {
   const [isOpen, setIsOpen]= useState(false)
   const [request, setRequest]= useState({})
   const [view, setView] = useState(null)
-  const {credentials}= useContext(UserContext)
   const [reason, setReason] = useState('')
   const [isReject, setIsReject] = useState(false)
 
 
   const getRequests=()=>{
-    axios('RequestVerification/saving-account-requests', {headers:{
-      Authorization: `Bearer ${credentials.token}`
-    }}).then(resp=>{
+    axios('RequestVerification/saving-account-requests').then(resp=>{
       if (resp.data.data.savingAccounts) {
         setRequests(resp.data.data.savingAccounts)
       }}
@@ -39,9 +36,7 @@ const SavingAccountRequest = () => {
     setIsReject(false)
   }
   const getSingleRequest=()=>{
-    axios(`RequestVerification/saving-account-request?id=${id}`,{headers:{
-      Authorization: `Bearer ${credentials.token}`
-    }}).then(resp=>setRequest(resp.data.data))
+    axios(`RequestVerification/saving-account-request?id=${id}`).then(resp=>setRequest(resp.data.data))
   }
   useEffect(()=>{
     getSingleRequest()
@@ -88,9 +83,7 @@ const approveSaving=(e)=>{
   accountDescription: request?.accountDescription,
   sweepToAmount: request?.product?.penalRate
   }
-  axios.post('RequestVerification/saving-account-request-approved', payload, {headers:{
-    Authorization: `Bearer ${credentials.token}`
-  }}).then(resp=>{
+  axios.post('RequestVerification/saving-account-request-approved', payload).then(resp=>{
     toast(resp.data.message,{type:'success', autoClose:5000, pauseOnHover:true})
     setTimeout(() => {
       closeModal()
@@ -113,9 +106,7 @@ const rejectSaving=(e)=>{
   sweepToAmount: request?.product?.penalRate,
   narration: reason
   }
-  axios.post('RequestVerification/saving-account-request-reject', payload, {headers:{
-    Authorization: `Bearer ${credentials.token}`
-  }}).then(resp=>{
+  axios.post('RequestVerification/saving-account-request-reject', payload).then(resp=>{
     toast(resp.data.message,{type:'success', autoClose:5000, pauseOnHover:true})
     setIsReject(false)
     closeModal()
@@ -140,11 +131,11 @@ const rejectSaving=(e)=>{
       >
         <h3 style={{fontSize:'18px', fontWeight:'600'}}>Add savings Account</h3>
               <div className="d-flex gap-3 flex-column mt-3" style={{fontSize:'14px'}}>
-           <div className="d-flex gap-3 align-items-center flex-wrap" style={{fontSize:'14px', color:'#0D0D0D'}}>
+           <div className="d-flex gap-3 justify-content-between align-items-center flex-wrap" style={{fontSize:'14px', color:'#0D0D0D'}}>
             <span>Member No: {request?.employeeId}</span>
             <span>Member Name: {request?.fullName}</span>
-             <img src={request?.profileImageUrl} alt="profile picture" 
-        style={{width:'4rem', height:'4rem', borderRadius:'10px'}} />
+             <ImagePreview src={request?.profileImageUrl} alt="profile picture" />
+      
           </div>
            <div className="d-flex justify-content-between discourse align-items-center p-2" style={{backgroundColor:'var(--light-blue)'}} >
                   <span>Branch Code: {request?.branchCode} </span>

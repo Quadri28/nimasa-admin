@@ -8,6 +8,7 @@ import axios from "../../../axios";
 import { UserContext } from "../../../AuthContext";
 import { ToastContainer, toast } from "react-toastify";
 import GeneralLedgerTable from "../../ConfigurationsSubComponents/ProductSettingComponent/GeneralLedgerTable";
+import UnpaginatedTable from "../../Reports/UnpaginatedTable";
 
 const Deduction = () => {
   const [file, setFile] = useState(null);
@@ -27,25 +28,13 @@ const Deduction = () => {
   const { credentials } = useContext(UserContext);
 
   const fetchSourceOptions = () => {
-    axios("Acounting/general-Ledger-search-option", {
-      headers: {
-        Authorization: `Bearer ${credentials.token}`,
-      },
-    }).then((resp) => setSourceOptions(resp.data));
+    axios("Acounting/general-Ledger-search-option").then((resp) => setSourceOptions(resp.data));
   };
   const fetchFinanceOptions = () => {
-    axios("Acounting/general-Ledger-search-option", {
-      headers: {
-        Authorization: `Bearer ${credentials.token}`,
-      },
-    }).then((resp) => setFinanceOptions(resp.data));
+    axios("Acounting/general-Ledger-search-option").then((resp) => setFinanceOptions(resp.data));
   };
   const fetchBatchNo = () => {
-    axios("MemberManagement/get-batch-no", {
-      headers: {
-        Authorization: `Bearer ${credentials.token}`,
-      },
-    }).then((resp) => setBatchNumber(resp.data.message));
+    axios("MemberManagement/get-batch-no").then((resp) => setBatchNumber(resp.data.message));
   };
 
   useEffect(() => {
@@ -56,23 +45,11 @@ const Deduction = () => {
 
   const fetchSourceEnquiries = () => {
     axios(
-      `Acounting/general-ledger-customer-enquiry?SearchOption=${sourceGL}`,
-      {
-        headers: {
-          Authorization: `Bearer ${credentials.token}`,
-        },
-      }
-    ).then((resp) => setSourceEnquiries(resp.data.data));
+      `Acounting/general-ledger-customer-enquiry?SearchOption=${sourceGL}`).then((resp) => setSourceEnquiries(resp.data.data));
   };
   const fetchFinanceEnquiries = () => {
     axios(
-      `Acounting/general-ledger-customer-enquiry?SearchOption=${financeGL}`,
-      {
-        headers: {
-          Authorization: `Bearer ${credentials.token}`,
-        },
-      }
-    ).then((resp) => setFinanceEnquiries(resp.data.data));
+      `Acounting/general-ledger-customer-enquiry?SearchOption=${financeGL}`).then((resp) => setFinanceEnquiries(resp.data.data));
   };
 
   useEffect(() => {
@@ -92,11 +69,7 @@ const Deduction = () => {
       creditGl: financeAccount,
     };
     axios
-      .post("Acounting/post-deduction-upload", payload, {
-        headers: {
-          Authorization: `Bearer ${credentials.token}`,
-        },
-      })
+      .post("Acounting/post-deduction-upload", payload)
       .then((resp) => {
         setLoading(false)
         if (resp.data.data.deductionPostErrors) {
@@ -124,18 +97,14 @@ const Deduction = () => {
         setLoading(false)
       }
       );
-  };
+  }; 
 
   const handleChange = (file) => {
     setFile(file);
     const payload = new FormData();
     payload.append("file", file);
     axios
-      .post("Acounting/deduction-upload?", payload, {
-        headers: {
-          Authorization: `Bearer ${credentials.token}`,
-        },
-      })
+      .post("Acounting/deduction-upload?", payload)
       .then((resp) => {
         setBatchNo(resp.data.data.batchNo);
         if (resp.data.data.deductionsApprovedDetails) {
@@ -187,7 +156,7 @@ const Deduction = () => {
         <form onSubmit={onSubmit}>
           <div
             style={{
-              backgroundColor: "#f4fafd",
+              backgroundColor: "var(--memcos-blue)",
               borderRadius: "15px 15px 0 0",
             }}
             className="p-3"
@@ -286,7 +255,7 @@ const Deduction = () => {
           </div>
           <div className="px-4">
             {errors.length < 1 ? (
-              <GeneralLedgerTable data={data} columns={columns} />
+              <UnpaginatedTable data={data} columns={columns} isPaginated={true} isExport={false}/>
             ) : (
               <GeneralLedgerTable data={errors} columns={errorColumns} />
             )}

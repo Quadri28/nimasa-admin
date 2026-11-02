@@ -1,5 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react'
-import { UserContext } from '../../AuthContext'
+import React, { useEffect, useState } from 'react'
 import axios from '../../axios'
 import { toast, ToastContainer } from 'react-toastify'
 import { BsArrowLeft } from 'react-icons/bs'
@@ -7,7 +6,6 @@ import { useNavigate } from 'react-router-dom'
 
 const AddLiquidation = () => {
   const [banks, setBanks] = useState([]);
-  const { credentials } = useContext(UserContext);
   const [accounts, setAccounts] = useState([]);
   const [input, setInput] = useState({});
 
@@ -17,11 +15,7 @@ const AddLiquidation = () => {
     }
     
     try {
-      const resp = await axios(`Investment/placement-liquidation-investment-bank-selected-changed?BankCode=${input.investmentBank}`, {
-        headers: {
-          Authorization: `Bearer ${credentials.token}`
-        }
-      });
+      const resp = await axios(`Investment/placement-liquidation-investment-bank-selected-changed?BankCode=${input.investmentBank}`);
       setAccounts(resp.data.data.investmentBankAccountNumbers);
     } catch (error) {
       toast(error.response?.data?.message || 'Error fetching accounts', { type: 'error', autoClose: false });
@@ -36,11 +30,7 @@ const AddLiquidation = () => {
 
   const getBanks = async () => {
     try {
-      const resp = await axios('Investment/get-investment-bank-select', {
-        headers: {
-          Authorization: `Bearer ${credentials.token}`
-        }
-      });
+      const resp = await axios('Investment/get-investment-bank-select');
       setBanks(resp.data.data);
     } catch (error) {
       toast(error.response?.data?.message, { type: 'error', autoClose: false });
@@ -64,11 +54,7 @@ const AddLiquidation = () => {
       valueDate: input.valueDate,
     };
     try {
-      const resp = await axios.post('Investment/placement-liquidation', payload, {
-        headers: {
-          Authorization: `Bearer ${credentials.token}`
-        }
-      });
+      const resp = await axios.post('Investment/placement-liquidation', payload);
       toast(resp.data.message, { type: 'success', autoClose: 5000, pauseOnHover: true });
     } catch (error) {
       toast(error.response?.data?.message || 'Error liquidating investment', { type: 'error', autoClose: false });
@@ -87,7 +73,7 @@ const AddLiquidation = () => {
         </h4>
       </div>
       <form onSubmit={liquidateInvestment}>
-        <div className="p-3" style={{ backgroundColor: "#F5F9FF", borderRadius: "15px 15px 0 0" }}>
+        <div className="p-3" style={{ backgroundColor: "var(--memcos-blue)", borderRadius: "15px 15px 0 0" }}>
           <div
             className=" d-flex align-items-center gap-2 title-link"
             style={{ width: "fit-content" }}

@@ -16,15 +16,11 @@ const LoanDesave = () => {
   const [due, setDue] = useState({})
 
 const getAccounts=()=>{
-  axios("Acounting/general-ledger-customer-enquiry?SearchOption=3", {headers:{
-    Authorization: `Bearer ${credentials.token}`
-  }}).then(resp=>setAccounts(resp.data.data))
+  axios("Acounting/general-ledger-customer-enquiry?SearchOption=3").then(resp=>setAccounts(resp.data.data))
 }
 
 const getDetails=()=>{
-  axios(`LoanApplication/loan-repayment-account-number-text-changed?AccountNumber=${account}`, {headers:{
-    Authorization: `Bearer ${credentials.token}`
-  }}).then(resp=>setDetails(resp.data.data))
+  axios(`LoanApplication/loan-repayment-account-number-text-changed?AccountNumber=${account}`).then(resp=>setDetails(resp.data.data))
 }
 useEffect(()=>{
   getAccounts()
@@ -34,19 +30,14 @@ useEffect(()=>{
 getDetails()
 },[account])
 const getSettlementAccountDetails=()=>{
-  axios(`LoanApplication/loan-de-save-account-to-repay-from-selected-changed?AccountToRepayFrom=${gl}`,
-     {headers:{
-    Authorization: `Bearer ${credentials.token}`
-  }}).then(resp=>setSettlement(resp.data.data.loanFundingSourceAccountNoDetails))
+  axios(`LoanApplication/loan-de-save-account-to-repay-from-selected-changed?AccountToRepayFrom=${gl}`).then(resp=>setSettlement(resp.data.data.loanFundingSourceAccountNoDetails))
 }
 useEffect(()=>{
 getSettlementAccountDetails()
 }, [gl])
 
 const getDues=()=>{
-  axios(`LoanApplication/loan-de-save-liquidation-mode-selected-index-changed?AccountNumber=${account}&ValueDate=${new Date().toLocaleDateString('en-CA')}&LiquidationMode=${mode}&CurrentBalance=${details?.loanAccountDetails?.currentBalance}`, {headers:{
-    Authorization: `Bearer ${credentials.token}`
-  }})
+  axios(`LoanApplication/loan-de-save-liquidation-mode-selected-index-changed?AccountNumber=${account}&ValueDate=${new Date().toLocaleDateString('en-CA')}&LiquidationMode=${mode}&CurrentBalance=${details?.loanAccountDetails?.currentBalance}`)
   .then(resp=>setDue(resp.data.data))
 }
 
@@ -62,9 +53,7 @@ const postDesave=(e)=>{
   liquidationMode: mode
   }
   e.preventDefault()
-  axios.post('LoanApplication/loan-de-save',payload, {headers:{
-    Authorization: `Bearer ${credentials.token}`
-  }}).then(resp=>toast(resp.data.data, {type:'success', autoClose:5000, pauseOnHover:true}))
+  axios.post('LoanApplication/loan-de-save',payload).then(resp=>toast(resp.data.data, {type:'success', autoClose:5000, pauseOnHover:true}))
   .catch(error=>toast(error.response.data.message, {type:'error', autoClose:false}))
 }
 
@@ -80,7 +69,7 @@ const postDesave=(e)=>{
     <div style={{ border: "solid 1px #fafafa" }} className="rounded-4">
       <div
         className="py-3 px-4 justify-content-between align-items-center d-flex"
-        style={{ backgroundColor: "#f4fAfd", borderRadius: "10px 10px 0 0" }}
+        style={{ backgroundColor: "var(--memcos-blue)", borderRadius: "10px 10px 0 0" }}
       >
         <span style={{ fontWeight: "500", fontSize: "16px", color:'#333' }}>
          Liquidate Loan

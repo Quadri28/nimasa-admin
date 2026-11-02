@@ -1,12 +1,8 @@
-import React, { useContext, useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { CSVLink } from "react-csv";
 import "./Investment.css";
-import { CiSquareCheck } from "react-icons/ci";
-import { PiXSquareThin } from "react-icons/pi";
-import { BsBagCheck } from "react-icons/bs";
 import { Link } from "react-router-dom";
 import axios from "../../axios";
-import { UserContext } from "../../AuthContext";
 import Table from "../CommunicationSubComponents/Table";
 
 const Investment = () => {
@@ -19,12 +15,9 @@ const Investment = () => {
  const [detail, setDetail]= useState({})
 
  const getInvestmentDetail=()=>{
-  axios('Investment/investments-dashboard', {headers:{
-    Authorization: `Bearer ${credentials.token}`
-  }}).then(resp=>setDetail(resp.data.data))
+  axios('Investment/investments-dashboard').then(resp=>setDetail(resp.data.data))
  }
   const fetchIdRef = React.useRef(0);
-  const{credentials}= useContext(UserContext)
   const fetchData = React.useCallback(({ pageSize, pageNumber, search }) => {
     const fetchId = ++fetchIdRef.current;
     setLoading(true);
@@ -32,11 +25,7 @@ const Investment = () => {
       if (fetchId === fetchIdRef.current) {
         axios
           .get(
-            `Investment/get-all-investments?PageSize=${pageSize}&PageNumber=${pageNumber+1}&Filter=${encodeURIComponent(search)}`,
-            {
-              headers: {
-                Authorization: `Bearer ${credentials.token}`,
-              },}
+            `Investment/get-all-investments?PageSize=${pageSize}&PageNumber=${pageNumber+1}&Filter=${encodeURIComponent(search)}`
           )
           .then((resp) => {
             if (resp.data.data.modelResult) {
@@ -67,8 +56,12 @@ useEffect(() => {
 
   const column = [
     { Header: "Issuer", accessor: "issuer" },
+    { Header: "Bank Name", accessor: "bankName" },
     { Header: "Amount", accessor: "amount", Cell:(({value})=>{
       return <span>{new Intl.NumberFormat('en-US', {minimumFractionDigits:2}).format(value)}</span>
+    }) },
+     { Header: "Start Date", accessor: "startDate", Cell:(({value})=>{
+      return <span>{new Date(value).toLocaleDateString('en-Us')}</span>
     }) },
     { Header: "Maturity Date", accessor: "matuarityDate", Cell:(({value})=>{
       return <span>{new Date(value).toLocaleDateString('en-Us')}</span>
@@ -80,9 +73,7 @@ useEffect(() => {
     { Header: "Expected Return Amount", accessor: "expectedReturnAmount", Cell:(({value})=>{
       return <span>{new Intl.NumberFormat('en-US', {minimumFractionDigits:2}).format(value)}</span>
     }) },
-    { Header: "Date", accessor: "startDate", Cell:(({value})=>{
-      return <span>{new Date(value).toLocaleDateString('en-Us')}</span>
-    }) },
+   
     { Header: "Liquidate", accessor: "liquidate", Cell:(({value})=>{
       return <span>{new Intl.NumberFormat('en-US', {minimumFractionDigits:2}).format(value)} </span> })},
   ];
@@ -146,7 +137,7 @@ useEffect(() => {
           <h6>Investment</h6>
           <Link to='add-investment'
             className="btn btn-md text-white px-3"
-            style={{ backgroundColor: "#0452C8", borderRadius: "2rem" , fontSize:'14px'}}
+            style={{ backgroundColor: "var(--custom-color)", borderRadius: "2rem" , fontSize:'14px'}}
           >
            + Add new investment
           </Link>

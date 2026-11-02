@@ -1,8 +1,7 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { BsArrowLeft } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
 import axios from "../../axios";
-import { UserContext } from "../../AuthContext";
 import { toast, ToastContainer } from "react-toastify";
 
 const AddInvestment = () => {
@@ -19,12 +18,9 @@ const AddInvestment = () => {
   const [gls, setGLs] = useState([]);
   const [tax, setTax] = useState(true);
   const navigate = useNavigate();
-  const { credentials } = useContext(UserContext);
 
 const getAccountDetails=()=>{
-    axios(`Investment/funding-account-selected-index-change?FundingAccount=${input.fundingAccount}`, {
-        headers:{Authorization: `Bearer ${credentials.token}`}
-    }).then(resp=>setAccountDetails(resp.data.data.fundingAccountDetail))
+    axios(`Investment/funding-account-selected-index-change?FundingAccount=${input.fundingAccount}`).then(resp=>setAccountDetails(resp.data.data.fundingAccountDetail))
 }
 useEffect(()=>{
 getAccountDetails()
@@ -33,25 +29,13 @@ getAccountDetails()
     axios(
       `Investment/investment-product-select-changed?ProductCode=${String(
         input.product
-      )}`,
-      {
-        headers: {
-          Authorization: `Bearer ${credentials.token}`,
-        },
-      }
-    ).then((resp) => setProductDetails(resp.data.data.productDetail));
+      )}`).then((resp) => setProductDetails(resp.data.data.productDetail));
   };
   const getInstruments = () => {
     axios(
       `Investment/instrument-type-selected-index-change?ProductCode=${String(
         input.product
-      )}`,
-      {
-        headers: {
-          Authorization: `Bearer ${credentials.token}`,
-        },
-      }
-    ).then((resp) => setInstruments(resp.data.data.instrumentTypes));
+      )}`).then((resp) => setInstruments(resp.data.data.instrumentTypes));
   };
   useEffect(() => {
     getProductDetail();
@@ -59,40 +43,20 @@ getAccountDetails()
   }, [input.product]);
 
   const getFrequencies = () => {
-    axios("Common/getloanfrequencies", {
-      headers: {
-        Authorization: `Bearer ${credentials.token}`,
-      },
-    }).then((resp) => setFrequencies(resp.data));
+    axios("Common/getloanfrequencies").then((resp) => setFrequencies(resp.data));
   };
   const getBranches = () => {
-    axios("Common/get-branches", {
-      headers: {
-        Authorization: `Bearer ${credentials.token}`,
-      },
-    }).then((resp) => setBranches(resp.data));
+    axios("Common/get-branches").then((resp) => setBranches(resp.data));
   };
   const getProducts = () => {
-    axios("Investment/get-investment-product-select", {
-      headers: {
-        Authorization: `Bearer ${credentials.token}`,
-      },
-    }).then((resp) => setProducts(resp.data.data));
+    axios("Investment/get-investment-product-select").then((resp) => setProducts(resp.data.data));
   };
   const getBanks = () => {
-    axios("Investment/get-investment-bank-select", {
-      headers: {
-        Authorization: `Bearer ${credentials.token}`,
-      },
-    }).then((resp) => setBanks(resp.data.data));
+    axios("Investment/get-investment-bank-select").then((resp) => setBanks(resp.data.data));
   };
 
   const fetchGLs = () => {
-    axios(`Acounting/general-ledger-customer-enquiry?SearchOption=${1}`, {
-      headers: {
-        Authorization: `Bearer ${credentials.token}`,
-      },
-    }).then((resp) => setGLs(resp.data.data));
+    axios(`Acounting/general-ledger-customer-enquiry?SearchOption=${1}`).then((resp) => setGLs(resp.data.data));
   };
 
   useEffect(() => {
@@ -105,9 +69,7 @@ getAccountDetails()
 
   const getGeneralDetails=()=>{
     axios(`Investment/general-selected-change?InvestmentProduct=${input.product}&InvestmentAmount=
-        ${input.amount}&Term=${input.term}&Frequency=${input.frequency}&NoOfDays=${noOfDays}&InvestmentRate=${input.investmentRate}&PaymentType=${input.paymentType}&IncludeTax=${tax}&StartDate=${input.startDate}`, {headers:{
-          Authorization: `Bearer ${credentials.token}`
-        }})
+        ${input.amount}&Term=${input.term}&Frequency=${input.frequency}&NoOfDays=${noOfDays}&InvestmentRate=${input.investmentRate}&PaymentType=${input.paymentType}&IncludeTax=${tax}&StartDate=${input.startDate}`)
         .then(resp=>setGeneralDetails(resp.data.data))
   }
   useEffect(()=>{
@@ -145,9 +107,7 @@ getAccountDetails()
       minimumInvestmentAmount: productDetails.minimumInvestmentAmount,
       maximumInvestmentAmount: productDetails.maximumInvestmentAmount,
     };
-    axios.post("Investment/add-placement", payload, {
-      headers:{Authorization: `Bearer ${credentials.token}`,},
-    }).then(resp=>{
+    axios.post("Investment/add-placement", payload).then(resp=>{
       toast(resp.data.message, {type:'success', autoClose:5000, pauseOnHover:true})
       setTimeout(() => {
         navigate(-1)

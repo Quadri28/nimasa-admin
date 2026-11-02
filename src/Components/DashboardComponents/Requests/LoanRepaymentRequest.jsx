@@ -1,11 +1,11 @@
-import React, { useContext, useEffect, useMemo, useState } from "react";
+import React, {  useEffect, useMemo, useState } from "react";
 import UnpaginatedTable from "../Reports/UnpaginatedTable";
 import { FaUsersViewfinder } from "react-icons/fa6";
-import { UserContext } from "../../AuthContext";
 import axios from "../../axios";
 import useScreenSize from "../../ScreenSizeHook";
 import Modal from "react-modal";
 import { ToastContainer, toast } from "react-toastify";
+import ImagePreview from "./ImagePreview";
 
 const LoanRepaymentRequest = () => {
   const [reports, setReports] = useState([]);
@@ -14,38 +14,25 @@ const LoanRepaymentRequest = () => {
   const [isReject, setIsReject] = useState(false);
   const [reason, setReason] = useState(null);
   const [id, setId] = useState("");
-  const { credentials } = useContext(UserContext);
   const [request, setRequest] = useState({});
   const [isOpen, setIsOpen] = useState(false);
 
   const getReports = () => {
-    axios("RequestVerification/loan-repayment-requests", {
-      headers: {
-        Authorization: `Bearer ${credentials.token}`,
-      },
-    }).then((resp) => {
+    axios("RequestVerification/loan-repayment-requests").then((resp) => {
       if (resp.data.data.loanRepayments) {
         setReports(resp.data.data.loanRepayments);
       }
     });
   };
   const getAccounts = () => {
-    axios("RequestVerification/gl-account-select", {
-      headers: {
-        Authorization: `Bearer ${credentials.token}`,
-      },
-    }).then((resp) => setAccounts(resp.data.data.glAccounts));
+    axios("RequestVerification/gl-account-select").then((resp) => setAccounts(resp.data.data.glAccounts));
   };
   useEffect(() => {
     getReports();
     getAccounts();
   }, []);
   const getRequest = () => {
-    axios(`RequestVerification/loan-repayment-request?id=${id}`, {
-      headers: {
-        Authorization: `Bearer ${credentials.token}`,
-      },
-    }).then((resp) => setRequest(resp.data.data));
+    axios(`RequestVerification/loan-repayment-request?id=${id}`).then((resp) => setRequest(resp.data.data));
   };
   useEffect(() => {
     getRequest();
@@ -66,6 +53,8 @@ const LoanRepaymentRequest = () => {
         );
       },
     },
+    {Header:'Loan Product', accessor:'loanProductName'},
+    {Header:'Payment Mode', accessor:'payType'},
     {
       Header: "Transaction Date",
       accessor: "datePaid",
@@ -152,11 +141,7 @@ const LoanRepaymentRequest = () => {
       accountNumber: request.accountNumber,
     };
     axios
-      .post("RequestVerification/loan-repayment-request-approved", payload, {
-        headers: {
-          Authorization: `Bearer ${credentials.token}`,
-        },
-      })
+      .post("RequestVerification/loan-repayment-request-approved", payload)
       .then((resp) => {
         toast(resp.data.message, {
           type: "success",
@@ -181,11 +166,7 @@ const LoanRepaymentRequest = () => {
       id: request.id,
     };
     axios
-      .post("RequestVerification/loan-repayment-request-reject", payload, {
-        headers: {
-          Authorization: `Bearer ${credentials.token}`,
-        },
-      })
+      .post("RequestVerification/loan-repayment-request-reject", payload)
       .then((resp) =>
         toast(resp.data.message, {
           type: "success",
@@ -218,14 +199,14 @@ const LoanRepaymentRequest = () => {
           Loan Repayment Request{" "}
         </h4>
         <div className="d-flex flex-column gap-3 mt-3">
-          <div className="d-flex gap-3 align-items-center flex-wrap discourse">
-            <div>
+          <div className="d-flex gap-3 justify-content-between align-items-center flex-wrap discourse">
+            <div className="d-flex gap-3">
             <span>Member ID: </span> <span>{request?.memberNo}</span>
             </div>
-             <div>
+            <div>
               <span>Full Name:</span> <span>{request?.memberName}</span>
             </div>
-            <img src={request?.profileImage} alt="profile image" className="view-img img-fluid"/>
+            <ImagePreview src={request?.profileImage} alt="profile image" />
           </div>
           <div
             className="d-flex justify-content-between discourse align-items-center p-2"
@@ -289,6 +270,8 @@ const LoanRepaymentRequest = () => {
             </span>
           </div>
           </div>
+          <label> Teller Image</label>
+          <ImagePreview src={request?.tellerUploadLink} alt="Teller image" />
         </div>
         <h3 style={{ fontSize: "18px", fontWeight: "600", marginBlock: "1.5rem" }}>
           Loan Schedules

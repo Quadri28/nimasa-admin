@@ -1,6 +1,5 @@
-import React,{useState, useEffect, useContext, useMemo} from 'react'
+import React,{useState, useEffect, useMemo} from 'react'
 import { Formik, Form, ErrorMessage, Field } from 'formik'
-import { UserContext } from '../../AuthContext'
 import axios from '../../axios'
 import UnpaginatedTable from '../Reports/UnpaginatedTable'
 import { toast, ToastContainer } from 'react-toastify'
@@ -12,18 +11,13 @@ const Skipping = () => {
   const [account, setAccount]= useState('')
   const [data, setData]= useState([])
   const [details, setDetails]= useState({})
-  const {credentials}= useContext(UserContext)
 
 const getAccounts=()=>{
-  axios("Acounting/general-ledger-customer-enquiry?SearchOption=3", {headers:{
-    Authorization: `Bearer ${credentials.token}`
-  }}).then(resp=>setAccounts(resp.data.data))
+  axios("Acounting/general-ledger-customer-enquiry?SearchOption=3").then(resp=>setAccounts(resp.data.data))
 }
 
 const getDetails=()=>{
-  axios(`LoanApplication/loan-skipping-account-number-text-changed?AccountNumber=${account}`, {headers:{
-    Authorization: `Bearer ${credentials.token}`
-  }}).then(resp=>{
+  axios(`LoanApplication/loan-skipping-account-number-text-changed?AccountNumber=${account}`).then(resp=>{
     if (resp.data.data.loanScheduleDetails) {
       setData(resp.data.data.loanScheduleDetails)
     }
@@ -44,11 +38,7 @@ const postSkipping=(id)=>{
       id
     ]
   }
-  axios.post('LoanApplication/loan-skipping', payload, {
-    headers:{
-      Authorization: `Bearer ${credentials.token}`
-    }
-  }).then(resp=>{
+  axios.post('LoanApplication/loan-skipping', payload).then(resp=>{
     // getDetails()
     toast(resp.data.message, {type:'success', autoClose:5000, pauseOnHover:true})
   })
@@ -85,7 +75,7 @@ const columns = useMemo(() => column, []);
     <div style={{ border: "solid 1px #fafafa" }} className="rounded-4">
       <div
         className="py-3 px-4 justify-content-between align-items-center d-flex"
-        style={{ backgroundColor: "#f4fAfd", borderRadius: "10px 10px 0 0" }}
+        style={{ backgroundColor: "var(--memcos-blue)", borderRadius: "10px 10px 0 0" }}
       >
         <span style={{ fontWeight: "500", fontSize: "16px", color:'#333' }}>
             Loan Skipping

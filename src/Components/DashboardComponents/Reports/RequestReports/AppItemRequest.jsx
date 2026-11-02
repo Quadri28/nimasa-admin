@@ -1,12 +1,10 @@
-import React, { useContext, useEffect, useMemo, useState } from 'react'
-import { UserContext } from '../../../AuthContext'
+import React, { useEffect, useMemo, useState } from 'react'
 import Table from '../../CommunicationSubComponents/Table'
 import axios from '../../../axios'
 
 
 const AppItemRequest = () => {
   const [data, setData]= useState([])
-     const {credentials}=useContext(UserContext)
      const [loading, setLoading]= useState(false)
      const [pageCount, setPageCount]= useState(0)
      const [pageNumber, setPageNumber]= useState(0)
@@ -23,11 +21,6 @@ const AppItemRequest = () => {
                 `RequestApproved/get-app-items?PageNumber=${
                   pageNumber + 1
                 }&PageSize=${pageSize}`,
-                {
-                  headers: {
-                    Authorization: `Bearer ${credentials.token}`,
-                  },
-                }
               )
               .then((resp) => {
                 if (resp.data.data.modelResult) {

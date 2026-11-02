@@ -1,9 +1,8 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import axios from "../../../../Components/axios";
 import ErrorText from "../../ErrorText";
-import { UserContext } from "../../../AuthContext";
 import { ToastContainer, toast } from "react-toastify";
 import { Combobox } from "react-widgets/cjs";
 
@@ -18,71 +17,41 @@ const Transfer = () => {
   const [creditEnquiries, setCreditEnquiries] = useState([]);
   const [debitDetails, setDebitDetails] = useState({});
   const [creditDetails, setCreditDetails] = useState({});
-  const { credentials } = useContext(UserContext);
   const [currencies, setCurrencies] = useState([]);
   const [loading, setLoading] = useState(false)
   const [paymentAmount, setPaymentAmount] = useState("");
 
   const getVoucherNo = () => {
-    axios("MemberManagement/get-batch-no", {
-      headers: {
-        Authorization: `Bearer ${credentials.token}`,
-      },
-    }).then((resp) => setBatchNo(resp.data.message));
+    axios("MemberManagement/get-batch-no").then((resp) => setBatchNo(resp.data.message));
   };
 
   const getCurrencies = () => {
     axios("Common/get-currencies").then((resp) => setCurrencies(resp.data));
   };
   const fetchOptions = () => {
-    axios("Acounting/general-Ledger-search-option", {
-      headers: {
-        Authorization: `Bearer ${credentials.token}`,
-      },
-    }).then((resp) => setOptions(resp.data));
+    axios("Acounting/general-Ledger-search-option").then((resp) => setOptions(resp.data));
   };
 
   const fetchDebitAccountDetails = () => {
     axios(
-      `Acounting/account-number-text-changed?DebitAccountNumber=${debitAccount}`,
-      {
-        headers: {
-          Authorization: `Bearer ${credentials.token}`,
-        },
-      }
-    ).then((resp) => setDebitDetails(resp.data.data.accountDetails));
+      `Acounting/account-number-text-changed?DebitAccountNumber=${debitAccount}`).then((resp) => setDebitDetails(resp.data.data.accountDetails));
   };
 
   const fetchCreditAccountDetails = () => {
     axios(
-      `Acounting/account-number-text-changed?DebitAccountNumber=${creditAccount}`,
-      {
-        headers: {
-          Authorization: `Bearer ${credentials.token}`,
-        },
-      }
+      `Acounting/account-number-text-changed?DebitAccountNumber=${creditAccount}`
     ).then((resp) => {
       setCreditDetails(resp.data.data.accountDetails);
     });
   };
   const fetchDebitCustomerEnquiries = () => {
     axios(
-      `Acounting/general-ledger-customer-enquiry?SearchOption=${debitOption}`,
-      {
-        headers: {
-          Authorization: `Bearer ${credentials.token}`,
-        },
-      }
+      `Acounting/general-ledger-customer-enquiry?SearchOption=${debitOption}`
     ).then((resp) => setDebitEnquiries(resp.data.data));
   };
   const fetchCreditCustomerEnquiries = () => {
     axios(
-      `Acounting/general-ledger-customer-enquiry?SearchOption=${creditOption}`,
-      {
-        headers: {
-          Authorization: `Bearer ${credentials.token}`,
-        },
-      }
+      `Acounting/general-ledger-customer-enquiry?SearchOption=${creditOption}`
     ).then((resp) => setCreditEnquiries(resp.data.data));
   };
 
@@ -119,13 +88,7 @@ const Transfer = () => {
 
   const validateDebitAccount = () => {
     axios(
-      `Acounting/transfer-account-number-text-Change?AccountNumber=${debitAccount}`,
-      {
-        headers: {
-          Authorization: `Bearer ${credentials.token}`,
-        },
-      }
-    ).catch((error) =>
+      `Acounting/transfer-account-number-text-Change?AccountNumber=${debitAccount}`).catch((error) =>
       toast(error.response.data.message, {
         type: "error",
         pauseOnHover: true,
@@ -153,11 +116,7 @@ const Transfer = () => {
       rate: 1,
     };
     axios
-      .post("Acounting/transfer", payload, {
-        headers: {
-          Authorization: `Bearer ${credentials.token}`,
-        },
-      })
+      .post("Acounting/transfer", payload)
       .then((resp) =>{
         setLoading(false)
         toast(resp.data.message, {
@@ -197,7 +156,7 @@ const Transfer = () => {
     <div className="mt-3">
       <div
         style={{
-          backgroundColor: "#F4FAFD",
+          backgroundColor: "var(--memcos-blue)",
           borderRadius: "15px 15px 0 0",
         }}
         className="p-3"

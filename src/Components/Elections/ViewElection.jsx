@@ -1,8 +1,7 @@
-import React, { useContext, useEffect, useMemo, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import { BsArrowLeft } from 'react-icons/bs'
 import { useNavigate, useParams } from 'react-router-dom'
 import axios from '../axios'
-import { UserContext } from '../AuthContext'
 import {
   useTable,
   useSortBy,
@@ -16,12 +15,9 @@ const ViewElection = () => {
     const [election, setElection]= useState({})
     const [contestants, setContestants]= useState([])
     const navigate = useNavigate()
-    const {credentials}= useContext(UserContext)
     
     const getElection=()=>{
-        axios(`Election/get-election?id=${id}`, {headers:{
-            Authorization: `Bearer ${credentials.token}`
-        }}).then(resp=>{
+        axios(`Election/get-election?id=${id}`).then(resp=>{
           if (resp.data.data) {
           setElection(resp.data.data)
             setContestants(resp.data.data.contestants)

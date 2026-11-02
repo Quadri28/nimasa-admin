@@ -7,14 +7,27 @@ import { GoArrowUpRight } from "react-icons/go";
 
 const Articles = () => {
   const [articles, setArticles] = useState([]);
+const fetchArticles = async () => {
+  try {
+    const rssFeedUrl = "https://medium.com/feed/@oawoyomi";
 
-  const fetchArticles = async () => {
-    const apiKey = import.meta.env.VITE_MEDIUM_API_KEY
-    const rssFeedUrl = 'https://medium.com/feed/@oawoyomi';
-    const apiUrl = `https://api.rss2json.com/v1/api.json?rss_url=${rssFeedUrl}&api_key=${apiKey}`;
-      await axios(apiUrl).then(feed =>
-      setArticles(feed.data));
-  };
+    const apiUrl =
+      `https://api.rss2json.com/v1/api.json` +
+      `?rss_url=${encodeURIComponent(rssFeedUrl)}`;
+
+    const response = await axios.get(apiUrl);
+
+    if (response.data?.status === "ok") {
+      setArticles(response.data);
+    } else {
+      console.error("RSS error:", response.data);
+      setArticles({ items: [] });
+    }
+  } catch (error) {
+    console.error("Failed to fetch Medium articles:", error);
+    setArticles({ items: [] });
+  }
+};
   useEffect(() => {
     fetchArticles();
   }, []);

@@ -1,8 +1,7 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { BsArrowLeft } from 'react-icons/bs'
 import { ToastContainer, toast } from 'react-toastify'
 import axios from '../../axios'
-import { UserContext } from '../../AuthContext'
 import { NumericFormat } from 'react-number-format'
 
 const InvestmentPartialPay = () => {
@@ -10,7 +9,6 @@ const InvestmentPartialPay = () => {
     const [accounts, setAccounts]= useState([])
     const [input, setInput]= useState({})
     const [loading, setLoading]= useState(false)
-const {credentials}= useContext(UserContext)
 const handleChange=(e)=>{
     const name=e.target.name;
     const value=e.target.value;
@@ -24,11 +22,7 @@ const handleChange=(e)=>{
     setLoading(true)
     
     try {
-      const resp = await axios(`Investment/placement-liquidation-investment-bank-selected-changed?BankCode=${input?.investmentBank}`, {
-        headers: {
-          Authorization: `Bearer ${credentials.token}`
-        }
-      });
+      const resp = await axios(`Investment/placement-liquidation-investment-bank-selected-changed?BankCode=${input?.investmentBank}`);
       setLoading(false)
       setAccounts(resp.data.data.investmentBankAccountNumbers);
     } catch (error) {
@@ -47,9 +41,7 @@ const handleChange=(e)=>{
   },[input?.investmentBank])
   
   const getBanks=()=>{
-      axios('Investment/get-investment-bank-select', {headers:{
-          Authorization: `Bearer ${credentials.token}`
-      }}).then(resp=>setBanks(resp.data.data))
+      axios('Investment/get-investment-bank-select').then(resp=>setBanks(resp.data.data))
     
   }
   useEffect(()=>{
@@ -64,9 +56,7 @@ const handleChange=(e)=>{
         placementAmount: Number(input.amount.replace(/,/g, "")),
         valueDate: input.valueDate
     }
-    axios.post('Investment/placement-partial-pay', payload, {headers:{
-        Authorization: `Bearer ${credentials.token}`
-    }}).then(resp=>toast(resp.data.message, {type:'success', autoClose:5000, pauseOnHover:true}))
+    axios.post('Investment/placement-partial-pay', payload).then(resp=>toast(resp.data.message, {type:'success', autoClose:5000, pauseOnHover:true}))
     .catch(error=>{
       toast(error.response.data.message, {type:'error', autoClose:false})
       setLoading(false)
@@ -84,7 +74,7 @@ const handleChange=(e)=>{
     <form onSubmit={onSubmit}>
       <div
         className="p-3"
-        style={{ backgroundColor: "#F5F9FF", borderRadius: "15px 15px 0 0" }}
+        style={{ backgroundColor: "var(--memcos-blue)", borderRadius: "15px 15px 0 0" }}
       >
         <div
           className=" d-flex align-items-center gap-2 title-link"

@@ -103,7 +103,7 @@ const EditRole = () => {
       >
         <div
           className="p-3 d-flex align-items-center gap-2"
-          style={{ backgroundColor: "#F5F9FF", borderRadius: "15px 15px 0 0" }}
+          style={{ backgroundColor: "var(--memcos-blue)", borderRadius: "15px 15px 0 0" }}
         >
           <BsArrowLeft
             onClick={() => navigate(-1)}

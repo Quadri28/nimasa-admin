@@ -1,7 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
 import axios from "../../axios";
-import { UserContext } from "../../AuthContext";
-import { NumericFormat } from "react-number-format";
 import DatePicker from "react-datepicker";
 
 const EditCooperativeLoanFormOne = ({ handleChange, details }) => {
@@ -10,7 +8,6 @@ const EditCooperativeLoanFormOne = ({ handleChange, details }) => {
   const [classes, setClasses] = useState([]);
   const [frequencies, setFrequencies] = useState([]);
 
-  const { credentials } = useContext(UserContext);
   const getCurrencies = async () => {
     await axios("Common/get-currencies").then((resp) =>
       setCurrencies(resp.data)
@@ -28,11 +25,7 @@ const EditCooperativeLoanFormOne = ({ handleChange, details }) => {
   };
 
   const getClasses = () => {
-    axios("LoanProduct/list-product-class", {
-      headers: {
-        Authorization: `Bearer ${credentials.token}`,
-      },
-    }).then((resp) => {
+    axios("LoanProduct/list-product-class").then((resp) => {
       setClasses(resp.data.data);
     });
   };

@@ -1,5 +1,4 @@
-import React, { useContext, useState, useEffect } from "react";
-import { UserContext } from "../../../AuthContext";
+import React, {  useState, useEffect } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import axios from "../../../axios";
@@ -14,19 +13,14 @@ const AddNewSavings = () => {
   const [currencies, setCurrencies] = useState([]);
   const [classes, setClasses] = useState([])
   const navigate = useNavigate();
-  const { credentials } = useContext(UserContext);
 
   const getProductTypes=()=>{
-    axios('SavingProduct/get-saving-product-type', {headers:{
-      Authorization: `Bearer ${credentials.token}`
-    }}).then(resp=>{
+    axios('SavingProduct/get-saving-product-type').then(resp=>{
       setTypes(resp.data.data)
     })
   }
   const getClasses=()=>{
-    axios('SavingProduct/get-saving-product-class', {headers:{
-      Authorization: `Bearer ${credentials.token}`
-    }}).then(resp=>setClasses(resp.data.data))
+    axios('SavingProduct/get-saving-product-class').then(resp=>setClasses(resp.data.data))
   }
   const getCurrencies = async () => {
     await axios("Common/get-currencies").then((resp) =>
@@ -40,11 +34,7 @@ const AddNewSavings = () => {
     getProductTypes()
   }, []);
   const getCodes = async () => {
-    await axios("SavingProduct/get-saving-product-code", {
-      headers: {
-        Authorization: `Bearer ${credentials.token}`,
-      },
-    }).then((resp) => setCode(resp.data.data));
+    await axios("SavingProduct/get-saving-product-code").then((resp) => setCode(resp.data.data));
   };
 
   useEffect(() => {
@@ -116,7 +106,7 @@ const AddNewSavings = () => {
       sweepIn: values.sweepIn,
       si: values.si,
       od: values.od,
-      yrProcessMethod: values.yrProcessMethod ? 1 :0,
+      yrProcessMethod: Number(values.yrProcessMethod),
       siFloor: values.siFloor ? 1 :0,
       penalRate: values.penalRate,
       productshort: values.productshort,
@@ -128,11 +118,7 @@ const AddNewSavings = () => {
     };
     console.log(values)
     axios
-      .post("SavingProduct/create-saving-product",payload, {
-        headers: {
-          Authorization: `Bearer ${credentials.token}`,
-        },
-      })
+      .post("SavingProduct/create-saving-product",payload)
       .then(() =>{
         toast("Saving product created successfully", {
           autoClose: 5000,
@@ -165,7 +151,7 @@ const AddNewSavings = () => {
           <div
             className="p-3"
             style={{
-              backgroundColor: "#F5F9FF",
+              backgroundColor: "var(--memcos-blue)",
               borderRadius: "15px 15px 0 0",
             }}
           >
@@ -297,11 +283,11 @@ const AddNewSavings = () => {
               <ErrorMessage component={ErrorText} name="shortName" />
             </div>
             <div className="row g-2">
-              <label htmlFor="interestRate" style={{ fontWeight: "500" }}>
+              <label htmlFor="yrProcessMethod" style={{ fontWeight: "500" }}>
                 Interest Calc. Basis (Days in year for processing)
               </label>
-              <Field name="interestRate" id="interestRate" type='number'/>
-              <ErrorMessage component={ErrorText} name="interestRate" />
+              <Field name="yrProcessMethod" type='number'/>
+              <ErrorMessage component={ErrorText} name="yrProcessMethod" />
             </div>
             <div className="row g-2">
               <label htmlFor="penalRate" style={{ fontWeight: "500" }}>
@@ -341,7 +327,7 @@ const AddNewSavings = () => {
             </div>
               <span style={{ fontWeight: "500" }} className="px-4 mt-3">Others</span>
             <div className="general-ledger px-4 mt-2 mb-4">
-                <label
+                {/* <label
                   htmlFor="others"
                   className="d-flex align-items-center gap-2"
                 >
@@ -352,7 +338,7 @@ const AddNewSavings = () => {
                    
                   />{" "}
                   Allow cheque book
-                </label>
+                </label> */}
                  <label
                   htmlFor="others"
                   className="d-flex align-items-center gap-2"
@@ -365,7 +351,7 @@ const AddNewSavings = () => {
                   />{" "}
                   Lock withdrawal
                 </label>
-                <label
+                {/* <label
                   htmlFor="others"
                   className="d-flex align-items-center gap-2"
                 >
@@ -374,7 +360,7 @@ const AddNewSavings = () => {
                     type="checkbox"
                   />
                   Allow standing instructions
-                </label>
+                </label> */}
                 <label
                   htmlFor="others"
                   className="d-flex align-items-center gap-2"
@@ -385,7 +371,7 @@ const AddNewSavings = () => {
                   />
                   Allow OD
                 </label>
-                <label
+                {/* <label
                   htmlFor="others"
                   className="d-flex align-items-center gap-2"
                 >
@@ -395,8 +381,8 @@ const AddNewSavings = () => {
                     type="checkbox"
                   />{" "}
                   Allow Sweep in
-                </label>
-                <label
+                </label> */}
+                {/* <label
                   htmlFor="lien"
                   className="d-flex align-items-center gap-2"
                 >
@@ -408,8 +394,8 @@ const AddNewSavings = () => {
                   />{" "}
                   
                   Allow Lien
-                </label>
-                <label
+                </label> */}
+                {/* <label
                   htmlFor="stateInactive"
                   className="d-flex align-items-center gap-2"
                 >
@@ -419,7 +405,7 @@ const AddNewSavings = () => {
                     // value="Stat to all Inactive/ Dormant A/C"
                   />{" "}
                   Stat to all Inactive/ Dormant A/C
-                </label>
+                </label> */}
             </div>
           <div
             className="d-flex justify-content-end p-3 gap-3"

@@ -35,9 +35,7 @@ const EditElection = () => {
   };
 
   const getElection = () => {
-    axios(`Election/get-election?id=${id}`, {
-      headers: { Authorization: `Bearer ${credentials.token}` },
-    })
+    axios(`Election/get-election?id=${id}`)
       .then((resp) => {
         const data = resp.data.data;
         setInput(data);
@@ -85,9 +83,7 @@ const EditElection = () => {
     payload.append("IsActive", input.isActive);
 
     axios
-      .post("Election/update-election", payload, {
-        headers: { Authorization: `Bearer ${credentials.token}` },
-      })
+      .post("Election/update-election", payload)
       .then((resp) => {
         toast(resp.data.message, { type: "success", autoClose: 3000 });
         setTimeout(() => navigate(-1), 3000);
@@ -132,7 +128,7 @@ const EditElection = () => {
 
             {/* Start Date */}
             <div className="d-flex flex-column gap-1">
-              <label>Start date & time:</label>
+              <label>Voting start date & time:</label>
               <DatePicker
                 selected={startDateTime}
                 onChange={setStartDateTime}
@@ -145,7 +141,7 @@ const EditElection = () => {
 
             {/* End Date */}
             <div className="d-flex flex-column gap-1">
-              <label>End date & time:</label>
+              <label>Voting end date & time:</label>
               <DatePicker
                 selected={endDateTime}
                 onChange={setEndDateTime}

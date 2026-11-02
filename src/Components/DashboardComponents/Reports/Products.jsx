@@ -1,12 +1,5 @@
-import React,{useContext, useEffect, useMemo, useState} from 'react'
-import {
-    useTable,
-    useSortBy,
-    useGlobalFilter,
-    usePagination,
-  } from "react-table";
-import { FaAngleRight, FaAngleLeft } from 'react-icons/fa';
-import { CSVLink } from 'react-csv'
+import React,{useContext, useEffect, useState} from 'react'
+
 import { UserContext } from '../../AuthContext';
 import axios from '../../axios';
 import { LuView } from 'react-icons/lu';
@@ -18,18 +11,12 @@ const Products = () => {
   const [showVariance, setShowVariance]= useState(false)
   const{credentials} = useContext(UserContext)
   const getReports=()=>{
-    axios('Reports/product-summary-analysis', {headers:{
-      Authorization: `Bearer ${credentials.token}`
-    }}).then(resp=>setReports(resp.data.data.productSummaryAnalysissdue))
+    axios('Reports/product-summary-analysis').then(resp=>setReports(resp.data.data.productSummaryAnalysissdue))
   }
 
 
   const getVariances=()=>{
-    axios(`Reports/product-summary-analysis-variance?NodeId=${credentials.logInfo.nodeId}`, {
-      headers:{
-        Authorization:`Bearer ${credentials.token}`
-      }
-    }).then(resp=>setVariances(resp.data.data.productSummaryAnalysisVariances))
+    axios(`Reports/product-summary-analysis-variance?NodeId=${credentials.logInfo.nodeId}`).then(resp=>setVariances(resp.data.data.productSummaryAnalysisVariances))
   }
  
   useEffect(()=>{

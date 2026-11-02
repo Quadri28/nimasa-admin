@@ -1,6 +1,6 @@
 import { UserContext } from '../../AuthContext';
 import axios from '../../axios';
-import React, { useContext, useEffect, useState, useMemo } from 'react'
+import React, { useEffect, useState, useMemo } from 'react'
 import UnpaginatedTable from './UnpaginatedTable';
 import { Link } from 'react-router-dom';
 import { BsViewList } from 'react-icons/bs';
@@ -9,12 +9,9 @@ const TransactionReports = () => {
     const [startDate, setStartDate]= useState('')
     const [endDate, setEndDate]= useState('')
     const [reports, setReports] = useState([])
-    const {credentials} = useContext(UserContext)
 
     const getReport=()=>{
-        axios(`Reports/transactions-report?StartDate=${startDate}&EndDate=${endDate}`, {headers:{
-            Authorization: `Bearer ${credentials.token}`
-        }}).then(resp=>{
+        axios(`Reports/transactions-report?StartDate=${startDate}&EndDate=${endDate}`).then(resp=>{
             if (resp.data.data.transactionReports) {
             setReports(resp.data.data.transactionReports)
             }

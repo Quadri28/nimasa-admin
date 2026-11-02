@@ -21,12 +21,7 @@ const Candidates = () => {
     setLoading(true);
     setTimeout(() => {
       if (fetchId === fetchIdRef.current) {
-        axios(`Election/get-contestants?PageSize=${pageSize}&PageNumber=${pageNumber+1}`,
-            {
-              headers: {
-                Authorization: `Bearer ${credentials.token}`,
-              },}
-          )
+        axios(`Election/get-contestants?PageSize=${pageSize}&PageNumber=${pageNumber+1}&ApprovalStatus=3`)
           .then((resp) => {
             if (resp.data.data.modelResult) {
               setCandidates(resp.data.data.modelResult);

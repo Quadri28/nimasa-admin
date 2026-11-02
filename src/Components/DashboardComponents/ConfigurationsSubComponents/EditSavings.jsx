@@ -44,17 +44,13 @@ const EditSavings = () => {
       const [classes, setClasses] = useState([])
     const {credentials}= useContext(UserContext)
     const getSavings=()=>{
-      axios(`SavingProduct/get-saving-product-by-code?savingCode=${savingCode}`, {headers:{
-        Authorization: `Bearer ${credentials.token}`
-      }}).then((resp)=>{
+      axios(`SavingProduct/get-saving-product-by-code?savingCode=${savingCode}`).then((resp)=>{
         setSavings(resp.data.data)
       })
     }
     const navigate = useNavigate()
      const getClasses=()=>{
-        axios('SavingProduct/get-saving-product-class', {headers:{
-          Authorization: `Bearer ${credentials.token}`
-        }}).then(resp=>setClasses(resp.data.data))
+        axios('SavingProduct/get-saving-product-class').then(resp=>setClasses(resp.data.data))
       }
     const getTypes=()=>{
       axios('Common/getproducttype')
@@ -65,9 +61,7 @@ const EditSavings = () => {
     .then((resp)=>setCurrencies(resp.data))
   }
   const getSavingProducts=()=>{
-    axios('SavingProduct/get-saving-products', {headers:{
-      Authorization: `Bearer ${credentials.token}`
-    }}).then(resp=>{
+    axios('SavingProduct/get-saving-products').then(resp=>{
       setProducts(resp.data.data)
     })
   }
@@ -109,7 +103,7 @@ const handleSubmit =(e)=>{
   sweepIn: savings.sweepIn,
   si: savings.si,
   od: savings.od,
-  yrProcessMethod: savings.yrProcessMethod,
+  yrProcessMethod: Number(savings.yrProcessMethod),
   siFloor: savings.siFloor,
   penalRate: savings.penalRate,
   productShort: savings.productShort,
@@ -119,9 +113,7 @@ const handleSubmit =(e)=>{
   maximumAmount: savings.maximumAmount,
   lockSaving: savings.lockSaving
   }
-  axios.post('SavingProduct/update-saving-product', payload, {headers:{
-    Authorization: `Bearer ${credentials.token}`
-  }}).then(resp=>{
+  axios.post('SavingProduct/update-saving-product', payload).then(resp=>{
     toast(resp.data.message, {type:'success', autoClose:5000, pauseOnHover:true})
     setTimeout(()=>{
       navigate(-1)
@@ -149,19 +141,24 @@ const handleSubmit =(e)=>{
               <label htmlFor="productCode" style={{ fontWeight: "500" }}>
                 Product Code:
               </label>
-              <select
+              <input
                 name="productCode"
                 id="productCode"
                 value={savings?.productCode}
+                disabled
+              />
+              
+            </div>
+             <div className="row g-2">
+              <label htmlFor="productName" style={{ fontWeight: "500" }}>
+                Product Name:
+              </label>
+              <input
+                name="productName"
+                value={savings?.productName}
                 onChange={handleChange}
-              >
-              <option value="">Select product</option>
-              {
-                products.map(product=>(
-                  <option value={product.productCode} key={product.productCode}>{product.productName}</option>
-                ))
-              }
-              </select>
+              />
+              
             </div>
             <div className="row g-2">
               <label htmlFor="productClass" style={{ fontWeight: "500" }}>
@@ -312,14 +309,15 @@ const handleSubmit =(e)=>{
               />
             </div>
             <div className="row g-2">
-              <label htmlFor="productCode" style={{ fontWeight: "500" }}>
+              <label htmlFor="yrProcessMethod" style={{ fontWeight: "500" }}>
                 Interest Calculation Basis:
               </label>
               <input
-                name="interestCalc"
-                id="productCode"
-                value={savings?.productCode}
+                name="yrProcessMethod"
+                value={savings?.yrProcessMethod}
                 onChange={handleChange}
+          type='number'
+          min={0}
               />
             </div>
             <div className="row g-2">
@@ -347,7 +345,7 @@ const handleSubmit =(e)=>{
           </div>
            <span style={{ fontWeight: "500" }} className="px-4 mt-3">Others</span>
                       <div className="general-ledger px-4 mt-2 mb-4">
-                          <label
+                          {/* <label
                             htmlFor="others"
                             className="d-flex align-items-center gap-2"
                           >
@@ -359,7 +357,7 @@ const handleSubmit =(e)=>{
                              onChange={handleChange}
                             />{" "}
                             Allow cheque book
-                          </label>
+                          </label> */}
                            <label
                             htmlFor="others"
                             className="d-flex align-items-center gap-2"
@@ -372,7 +370,7 @@ const handleSubmit =(e)=>{
                             />
                             Lock withdrawal
                           </label>
-                          <label
+                          {/* <label
                             htmlFor="others"
                             className="d-flex align-items-center gap-2"
                           >
@@ -384,7 +382,7 @@ const handleSubmit =(e)=>{
 
                             />
                             Allow standing instructions
-                          </label>
+                          </label> */}
                           <label
                             htmlFor="others"
                             className="d-flex align-items-center gap-2"
@@ -397,7 +395,7 @@ const handleSubmit =(e)=>{
                             />
                             Allow OD
                           </label>
-                          <label
+                          {/* <label
                             htmlFor="others"
                             className="d-flex align-items-center gap-2"
                           >
@@ -408,8 +406,8 @@ const handleSubmit =(e)=>{
                              onChange={handleChange}
                             />{" "}
                             Allow Sweep in
-                          </label>
-                          <label
+                          </label> */}
+                          {/* <label
                             htmlFor="lien"
                             className="d-flex align-items-center gap-2"
                           >
@@ -421,8 +419,8 @@ const handleSubmit =(e)=>{
                             />{" "}
                             
                             Allow Lien
-                          </label>
-                          <label
+                          </label> */}
+                          {/* <label
                             htmlFor="stateInactive"
                             className="d-flex align-items-center gap-2"
                           >
@@ -433,7 +431,7 @@ const handleSubmit =(e)=>{
                              onChange={handleChange}
                             />{" "}
                             Stat to all Inactive/ Dormant A/C
-                          </label>
+                          </label> */}
                       </div>
           <div className="d-flex gap-3 justify-content-end px-4 py-3 mt-4"
            style={{backgroundColor:'#f2f2f2', borderRadius:' 0 0 15px 15px'}}>

@@ -49,11 +49,7 @@ const CooperativeSettings = () => {
     const {credentials}= useContext(UserContext)
 
     const getProfile = async () => {
-      await axios("SetUp/general-setup", {
-       headers: {
-         Authorization: `Bearer ${credentials?.token}`,
-       },
-     }).then((resp) => setDetails(resp?.data.data));
+      await axios("SetUp/general-setup").then((resp) => setDetails(resp?.data.data));
    };
 
    useEffect(() => {
@@ -92,11 +88,7 @@ const CooperativeSettings = () => {
     };
     if (logo) {
     axios
-      .post("SetUp/update-cooperative-logo", payload, {
-        headers: {
-          Authorization: `Bearer ${credentials.token}`,
-        },
-      })
+      .post("SetUp/update-cooperative-logo", payload)
       .then(() => {
         toast("Logo uploaded successfully", toastOptions);
         getProfile()
@@ -123,14 +115,7 @@ const CooperativeSettings = () => {
     };
     if (byLaw) {
       axios
-        .post("SetUp/update-cooperative-bylaw-document", payload, {
-          headers: {
-            Authorization: `Bearer ${credentials.token}`,
-            "Content-Type": "multipart/form-data",
-            Accept: "application/json",
-            type: "formData",
-          },
-        })
+        .post("SetUp/update-cooperative-bylaw-document", payload)
         .then(() => {
           toast("ByLaw document uploaded successfully", toastOptions);
           setTimeout(() => {

@@ -1,52 +1,39 @@
 import "./Requests.css";
-import React, { useContext, useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import UnpaginatedTable from "../Reports/UnpaginatedTable";
 import { FaUsersViewfinder } from "react-icons/fa6";
 import axios from "../../axios";
 import useScreenSize from "../../ScreenSizeHook";
 import Modal from "react-modal";
 import { ToastContainer, toast } from "react-toastify";
-import { UserContext } from "../../AuthContext";
+import ImagePreview from "./ImagePreview";
 
 const DepositRequest = () => {
   const [reports, setReports] = useState([]);
   const [accounts, setAccounts] = useState([]);
   const [account, setAccount] = useState(null);
   const [id, setId] = useState("");
-  const { credentials } = useContext(UserContext);
   const [request, setRequest] = useState({});
   const [isOpen, setIsOpen] = useState(false);
   const [reason, setReason]= useState('')
   const [isReject, setIsReject] = useState(false)
 
   const getReports = () => {
-    axios("RequestVerification/deposit-requests", {
-      headers: {
-        Authorization: `Bearer ${credentials.token}`,
-      },
-    }).then((resp) => {
+    axios("RequestVerification/deposit-requests").then((resp) => {
       if (resp.data.data.memberContributions) {
         setReports(resp.data.data.memberContributions);
       }
     });
   };
   const getAccounts = () => {
-    axios("RequestVerification/gl-account-select", {
-      headers: {
-        Authorization: `Bearer ${credentials.token}`,
-      },
-    }).then((resp) => setAccounts(resp.data.data.glAccounts));
+    axios("RequestVerification/gl-account-select").then((resp) => setAccounts(resp.data.data.glAccounts));
   };
   useEffect(() => {
     getReports();
     getAccounts();
   }, []);
   const getRequest = () => {
-    axios(`RequestVerification/deposit-request?id=${id}`, {
-      headers: {
-        Authorization: `Bearer ${credentials.token}`,
-      },
-    }).then((resp) => setRequest(resp.data.data));
+    axios(`RequestVerification/deposit-request?id=${id}`).then((resp) => setRequest(resp.data.data));
   };
   useEffect(() => {
     getRequest();
@@ -54,7 +41,8 @@ const DepositRequest = () => {
   const column = [
     { Header: "Member ID", accessor: "id" },
     { Header: "Full Name", accessor: "fullName" },
-    { Header: "Contribution", accessor: "contribution" },
+    { Header: "Savings Account", accessor: "savingsAccount" },
+    { Header: "Payment Mode", accessor: "paymentMode" },
     {
       Header: "Request Amount",
       accessor: "requestAmount",
@@ -68,7 +56,10 @@ const DepositRequest = () => {
         );
       },
     },
-    { Header: "Payment Mode", accessor: "paymentMode" },
+    // { Header: "Payment Mode", accessor: "payment" },
+    { Header: "Transaction Date", accessor: "submitedDate", Cell:(({value})=>{
+      return <span>{new Date(value).toLocaleDateString('en-US')}</span>
+    }) },
     {
       Header: "Status",
       accessor: "status",
@@ -135,11 +126,7 @@ const DepositRequest = () => {
       debitAccount: account,
     };
     axios
-      .post("RequestVerification/deposit-request-approved", payload, {
-        headers: {
-          Authorization: `Bearer ${credentials.token}`,
-        },
-      })
+      .post("RequestVerification/deposit-request-approved", payload)
       .then((resp) => {
         toast(resp.data.message, {
           type: "success",
@@ -165,11 +152,7 @@ const DepositRequest = () => {
       userName: request.userName,
     };
     axios
-      .post("RequestVerification/deposit-request-reject", payload, {
-        headers: {
-          Authorization: `Bearer ${credentials.token}`,
-        },
-      })
+      .post("RequestVerification/deposit-request-reject", payload)
       .then((resp) =>{
         toast(resp.data.message, {
           type: "success",
@@ -207,12 +190,10 @@ const DepositRequest = () => {
           Deposit posting
         </h4>
         <div className="d-flex flex-column gap-2 mt-3">
-          <div className="d-flex gap-3 flex-wrap align-items-center discourse">
-           <div> <span>Member ID: </span> <span>{request?.id}</span></div>
- <div>
-            <span>Full Name:</span> <span>{request?.fullName}</span>
-          </div>
-          <img src={request?.profileImageUrl} alt="Profile picture" className="view-img img-fluid"/>
+          <div className="d-flex gap-3 justify-content-between flex-wrap align-items-center discourse">
+           <div> <span>Member ID: </span> <span>{request?.id}</span> </div>
+          <div> <span>Full Name:</span> <span>{request?.fullName}</span></div>
+          <ImagePreview src={request?.profileImageUrl} alt="Profile picture"/>
           </div>
           <div className="d-flex justify-content-between discourse align-items-center p-2" style={{backgroundColor:'var(--light-blue)'}} >
            <div> <span>Account Number:</span> <span> {request?.accountNumber}</span></div>
@@ -245,11 +226,14 @@ const DepositRequest = () => {
           </div>
 
           {request?.paymentMode === "Paid At Bank" && (
-            <img
-              src={request?.tellerUploadLink}
-              alt=""
-              style={{ height: "200px" }}
+            <div>
+             <ImagePreview
+                    src={request?.tellerUploadLink}
+                    alt="teller-image"
+                    className="img-fluid"
+                
             />
+            </div>
           )} 
         </div>
         <div className="d-flex flex-column gap-3 mt-3">

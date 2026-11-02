@@ -5,6 +5,7 @@ import { FaUsersViewfinder } from "react-icons/fa6";
 import UnpaginatedTable from "../Reports/UnpaginatedTable";
 import Modal from "react-modal";
 import { ToastContainer, toast } from "react-toastify";
+import ImagePreview from "./ImagePreview";
 
 const SMSRequests = () => {
   const [reports, setReports] = useState([]);
@@ -24,11 +25,7 @@ const SMSRequests = () => {
   }
 
   const getReports = () => {
-    axios("RequestVerification/sms-requests", {
-      headers: {
-        Authorization: `Bearer ${credentials.token}`,
-      },
-    }).then((resp) => {
+    axios("RequestVerification/sms-requests").then((resp) => {
       if (resp.data.data.smsRequests) {
         setReports(resp.data.data.smsRequests);
       }
@@ -39,11 +36,7 @@ const SMSRequests = () => {
   }, []);
 
   const fetchRequest = () => {
-    axios(`RequestVerification/sms-request?id=${id}`, {
-      headers: {
-        Authorization: `Bearer ${credentials.token}`,
-      },
-    }).then((resp) => setRequest(resp.data.data));
+    axios(`RequestVerification/sms-request?id=${id}`).then((resp) => setRequest(resp.data.data));
   };
   useEffect(() => {
     fetchRequest();
@@ -81,11 +74,7 @@ const SMSRequests = () => {
       id: id,
     };
     axios
-      .post("RequestVerification/sms-request-approved", payload, {
-        headers: {
-          Authorization: `Bearer ${credentials.token}`,
-        },
-      })
+      .post("RequestVerification/sms-request-approved", payload)
       .then((resp) =>
         toast(resp.data.message, {
           type: "success",
@@ -104,11 +93,7 @@ const SMSRequests = () => {
       id: id,
     };
     axios
-      .post("RequestVerification/sms-request-reject", payload, {
-        headers: {
-          Authorization: `Bearer ${credentials.token}`,
-        },
-      })
+      .post("RequestVerification/sms-request-reject", payload)
       .then((resp) => {
         toast(resp.data.message, {
           type: "success",
@@ -144,11 +129,15 @@ const SMSRequests = () => {
             SMS Request
           </h4>
           <div className="d-flex flex-column gap-2 mt-3">
-             <div className="d-flex gap-3 flex-wrap align-items-center mb-3 discourse">
-             <div> <span>Member ID: </span> <span>{request?.employeeId}</span> </div>
-              <div><span>Full Name: </span> <span className="text-capitalize">{request?.fullName}</span></div>
-              <img src={request?.profileImageUrl} alt="Profile Image" className="view-img img-fluid"/>
+             <div className="d-flex gap-3 justify-content-between flex-wrap align-items-center mb-3 discourse">
+              <div className="d-flex gap-3 align-items-center">
+             <span>Member ID: </span> <span>{request?.employeeId}</span>
              </div>
+             <div>
+              <span>Full Name: </span> <span className="text-capitalize">{request?.fullName}</span>
+              </div>
+              <ImagePreview src={request?.profileImageUrl}/>
+               </div>
               <div className="d-flex justify-content-between discourse align-items-center p-2" style={{backgroundColor:'var(--light-blue)'}} >
              <div>
               <span>Phone Number: </span> <span>{request?.phoneNumber}</span>

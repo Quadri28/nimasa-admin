@@ -69,11 +69,7 @@ const CooperativeInfo = ({
       autoClose: 5000,
     };
     axios
-      .post("SetUp/update-general-setup", payload, {
-        headers: {
-          Authorization: `Bearer ${credentials.token}`,
-        },
-      })
+      .post("SetUp/update-general-setup", payload)
       .then(() =>
         toast("Cooperative information updated successfully", toastOptions)
       ).catch(error=>toast(error.response.data.message, {type:'error', autoClose:false}))
@@ -86,7 +82,7 @@ const CooperativeInfo = ({
     >
       <div
         className="py-3 px-3 justify-content-between align-items-center form-header"
-        style={{ backgroundColor: "#f4fAfd", borderRadius: "15px 15px 0 0" }}
+        style={{ backgroundColor: "var(--memcos-blue)", borderRadius: "15px 15px 0 0" }}
       >
         <div className="d-flex gap-3">
           <img
@@ -129,7 +125,7 @@ const CooperativeInfo = ({
             onClick={() => handleOpenModal()}
             className="btn btn-sm p-2"
             style={{
-              backgroundColor: "#0452c8",
+              backgroundColor: "var(--custom-color)",
               color: "#fff",
               borderRadius: "1.2rem",
               fontSize: "12px",
@@ -324,7 +320,7 @@ const CooperativeInfo = ({
             <button
               className="btn btn-md py-2"
               style={{
-                backgroundColor: "#0452c8",
+                backgroundColor: "var(--custom-color)",
                 color: "#fff",
                 borderRadius: "1.5rem",
                 fontSize: "14px",

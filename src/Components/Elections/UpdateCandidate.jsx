@@ -1,8 +1,7 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { BsArrowLeft } from 'react-icons/bs'
 import { useNavigate, useParams } from 'react-router-dom'
 import axios from '../axios'
-import { UserContext } from '../AuthContext'
 import { toast, ToastContainer } from 'react-toastify'
 
 const UpdateCandidate = () => {
@@ -13,22 +12,15 @@ const UpdateCandidate = () => {
     const [positions, setPositions]= useState([])
     const {id}= useParams()
     const navigate=useNavigate()
-    const {credentials}= useContext(UserContext)
 
     const getPositions=()=>{
-        axios('Election/election-positions-slim', {headers:{
-            Authorization: `Bearer ${credentials.token}`
-        }}).then(resp=>setPositions(resp.data.data.positions))
+        axios('Election/election-positions-slim').then(resp=>setPositions(resp.data.data.positions))
     }
     const getElections=()=>{
-        axios('Election/get-elections-slim', {headers:{
-            Authorization: `Bearer ${credentials.token}`
-        }}).then(resp=>setElections(resp.data.data))
+        axios('Election/get-elections-slim').then(resp=>setElections(resp.data.data))
     }
     const getCandidate=()=>{
-        axios(`Election/get-contestant?id=${id}`, {headers:{
-            Authorization: `Bearer ${credentials.token}`
-        }}).then(resp=>setInput(resp.data.data))
+        axios(`Election/get-contestant?id=${id}`).then(resp=>setInput(resp.data.data))
     }
     useEffect(()=>{
         getCandidate()
@@ -50,9 +42,7 @@ const UpdateCandidate = () => {
         payload.append('MemberId', input.memberId)
         payload.append('ProfileImage', image ? image : input.profileImage)
         payload.append('ManifestoDocumentFile', file ? file : input.manifestoDocument)
-        axios.post('Election/update-contestant', payload, {headers:{
-            Authorization: `Bearer ${credentials.token}`
-        }}).then(resp=>{
+        axios.post('Election/update-contestant', payload).then(resp=>{
           toast(resp.data.message, {type:'success', autoClose:5000, pauseOnHover:true})
           setTimeout(() => {
             navigate(-1)
@@ -123,7 +113,7 @@ const UpdateCandidate = () => {
     </button>
     <button
       className="btn btn-md text-white rounded-5"
-      style={{ backgroundColor: "#0452C8", fontSize: "14px" }}
+      style={{ backgroundColor: "var(--custom-color)", fontSize: "14px" }}
       type="submit"
     >
       Update

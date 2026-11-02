@@ -9,6 +9,7 @@ import axios from "../axios";
 import { Link, useNavigate } from "react-router-dom";
 import Modal from 'react-modal'
 import useScreenSize from "../ScreenSizeHook";
+import AccountSetupPopup from "./AccountSetupPopup";
 
 const Dashboard = () => {
   const {credentials} = useContext(UserContext)
@@ -41,7 +42,6 @@ const getDashboardDetails=()=>{
     setDetails(resp.data.data)
   })
 }
-console.log(isVerified)
 const getMemberOverview=()=>{
   axios('DashBoard/member-overview', {headers:{
     Authorization: `Bearer ${credentials.token}`
@@ -107,11 +107,11 @@ const customStyles = {
         <h5 className="dash-title" style={{fontSize:'18px', fontWeight:'500'}}> General Overview</h5>
         <div className="small-card-container">
           <div className=" p-1">
-            <div className="p-3 bg-white align-items-center rounded-3 small-cards">
+            <div className="p-3 align-items-center rounded-3 small-cards">
               <div>
                 <p className="text-uppercase small-card-title">Total Savings</p>
                 <div className="d-flex justify-content-between align-items-baseline">
-                  <span style={{fontWeight:'500'}}>{new Intl.NumberFormat('en-US', 
+                  <span style={{fontWeight:'500',}}>{new Intl.NumberFormat('en-US', 
                     {minimumFractionDigits:2}).format(details?.totalContributions)} </span>
                 </div>
               </div>
@@ -189,8 +189,7 @@ const customStyles = {
           <div className="d-flex justify-content-between flex-wrap member-overview-container align-items-center">
             <h5 className="overview-title" style={{fontSize:'16px'}}>Member Overview</h5>
             <Link to='/member-management/members'
-              className="border-0 btn-md mng-btn px-2 py-1" style={{textDecoration:'none'}}>  
-                  Membership Management
+              className="border-0 btn-md mng-btn px-2 py-1" style={{textDecoration:'none'}}>      Membership Management
             </Link>
           </div>
           <OverviewChart members={members}/>
@@ -209,7 +208,7 @@ const customStyles = {
             <ProductOverviewChart/>
         </div>
     </div>
-       <Modal
+       {/* <Modal
         isOpen={isOpen}
         onRequestClose={handleCloseModal}
         overlayClassName="loan-overlay"
@@ -226,7 +225,9 @@ const customStyles = {
                  onClick={()=>navigate('/admin-dashboard/configurations/manage-bank-account')}>
                   Set up account</button>
               </div>
-             </Modal>
+             </Modal> */}
+             <AccountSetupPopup show={isOpen}
+   onClose={() => setIsOpen(false)}/>
 
     </>
   );

@@ -8,10 +8,8 @@ import {
 import { FaAngleRight, FaAngleLeft } from "react-icons/fa";
 import { MdOutlineEdit } from "react-icons/md";
 import axios from "../../../Components/axios";
-import { UserContext } from "../../AuthContext";
 import { ToastContainer, toast } from "react-toastify";
 import Modal from 'react-modal'
-import useScreenSize from "../../ScreenSizeHook";
 import { LiaTimesCircle } from "react-icons/lia";
 
 const Vendor = () => {
@@ -29,7 +27,6 @@ const Vendor = () => {
     accountPayable:'',
     registrationNo:'',
   })
-  const { credentials } = useContext(UserContext);
   function openModal(){
     setIsOpen(true)
   }
@@ -50,11 +47,7 @@ const changeHandler =(e)=>{
   setText({...text, [name]:value})
 }
   const getSalesAccounts = () => {
-    axios("InventoryManagement/inventory-category-account-select", {
-      headers: {
-        Authorization: `Bearer ${credentials.token}`,
-      },
-    }).then((resp) => {
+    axios("InventoryManagement/inventory-category-account-select").then((resp) => {
       setAccounts(resp.data.data);
     });
   };
@@ -62,11 +55,7 @@ const changeHandler =(e)=>{
     getSalesAccounts();
   }, []);
   const getVendors = () => {
-    axios("InventoryManagement/vendors", {
-      headers: {
-        Authorization: `Bearer ${credentials.token}`,
-      },
-    }).then((resp) =>{
+    axios("InventoryManagement/vendors").then((resp) =>{
 if (resp.data.data.vendors) {
   setData(resp.data.data.vendors)
 }}
@@ -140,9 +129,7 @@ if (resp.data.data.vendors) {
   }
 
   const getVendorDetails=()=>{
-    axios(`InventoryManagement/vendor?vendorId=${id}`, {headers:{
-      Authorization: `Bearer ${credentials.token}`
-    }}).then((resp)=>setInput(resp.data.data))
+    axios(`InventoryManagement/vendor?vendorId=${id}`).then((resp)=>setInput(resp.data.data))
   }
   useEffect(()=>{
 getVendorDetails()
@@ -160,11 +147,7 @@ getVendorDetails()
       accountPayable: text.acctPayable,
     };
     axios
-      .post("InventoryManagement/add-Vendor", payload, {
-        headers: {
-          Authorization: `Bearer ${credentials.token}`,
-        },
-      })
+      .post("InventoryManagement/add-Vendor", payload)
       .then((resp) => {
         toast(resp.data.message, {
           type: "success",
@@ -192,9 +175,7 @@ getVendorDetails()
       address: input.address,
       accountPayable: input.accountPayable,
     }
-    axios.post('InventoryManagement/update-Vendor', payload,{headers:{
-      Authorization: `Bearer ${credentials.token}`
-    }}).then(resp=>{
+    axios.post('InventoryManagement/update-Vendor', payload).then(resp=>{
       toast(resp.data.message, {type:'success', autoClose: 5000, pauseOnHover:true})
       setTimeout(() => {
         getVendors()

@@ -10,17 +10,52 @@ import {
   import { FaAngleLeft, FaAngleRight } from "react-icons/fa";
 import { toast, ToastContainer } from "react-toastify";
 import { Link } from "react-router-dom";
+import Table from "../CommunicationSubComponents/Table";
 
 const ViewLoanApplications = () => {
   const [choice, setChoice] = useState(null);
   const [applications, setApplications]= useState([])
 const [applicationNo, setApplicationNo] = useState('')
+const [pageSize, setPageSize] = useState(10)
+const [pageNumber, setPageNumber] = useState(0)
 const [endpoint, setEndpoint]= useState('')
 const [endDate, setEndDate] = useState('')
 const [startDate, setStartDate] = useState('')
+const fetchIdRef = React.useRef(0);
+  const [pageCount, setPageCount] = useState(0);
+const [loading, setLoading] = useState(false)
 const {credentials} = useContext(UserContext)
  
-  
+const fetchData = React.useCallback(({ pageSize, pageNumber, search }) => {
+    const fetchId = ++fetchIdRef.current;
+    setLoading(true);
+    setTimeout(() => {
+      if (fetchId === fetchIdRef.current) {
+        axios(
+            `LoanApplication/paginated-loan-applications?StartDate=${startDate}&EndDate=${endDate}&Search=${encodeURIComponent(search)}&PageSize=${pageSize}&PageNumber=${
+              pageNumber + 1
+            }`,            
+          )
+          .then((resp) => {
+            if (resp.data.data.modelResult) {
+              setApplications(resp.data.data.modelResult);
+              setPageCount(Math.ceil(resp.data.data.totalCount / pageSize));
+            }
+          });
+        setLoading(false);
+      }
+    });
+  }, []);
+
+ useEffect(() => {
+    const delayDebounce = setTimeout(() => {
+      fetchData({ pageSize, pageNumber, search: applicationNo });
+    }, 500);
+
+    return () => clearTimeout(delayDebounce);
+  }, [applicationNo, pageNumber, pageSize, fetchData]);
+
+
   const getApplications=()=>{
     if (applicationNo) {
         setEndpoint(`LoanApplication/get-loan-applications?LoanApplicationNo=${applicationNo}`)
@@ -115,33 +150,7 @@ return <Link className="btn btn-success btn-sm" to={`view-application/${id}`} st
     ],
     []
   );
-const tableInstance = useTable(
-    {
-      columns: columns,
-      data: applications
-    },
-    useGlobalFilter,
-    useSortBy,
-    usePagination
-  );
 
-  const {
-    getTableProps,
-    getTableBodyProps,
-    page,
-    prepareRow,
-    headerGroups,
-    state,
-    setGlobalFilter,
-    nextPage,
-    previousPage,
-    canNextPage,
-    canPreviousPage,
-    pageOptions,
-    gotoPage,
-    pageCount,
-  } = tableInstance;
-  const { pageIndex } = state;
   
   return (
     <div className="card p-3 border-0 rounded-4">
@@ -151,7 +160,7 @@ const tableInstance = useTable(
       <div className="rounded-4 mt-4" style={{ border: "solid 1px #f7f4f7" }}>
         <div
           className="py-3 px-4 form-header "
-          style={{ backgroundColor: "#f4fAfd", borderRadius: "15px 15px 0 0" }}
+          style={{ backgroundColor: "var(--memcos-blue)", borderRadius: "15px 15px 0 0" }}
         >
           <span>View loan application</span>
           </div>
@@ -195,81 +204,25 @@ const tableInstance = useTable(
                 onChange={(e) => setEndDate(e.target.value)}
               />
             </div>
-        <button className="btn btn-md btn-primary" onClick={()=>getApplications()}>Search</button>
           </div>
       </>
 
       <>
       <div className="mt-4 px-3">
-        <form className="search-anything my-2 w-100">
-          <input
-            type="text"
-            title="search"
-            // value={globalFilter || ""}
-            onChange={(e) => setGlobalFilter(e.target.value)}
-            placeholder="Search anything"
-            className="p-2 search-inputs w-50 rounded-3"
-            style={{border:'solid 1px #ddd'}}
-          />
-        </form>
-        <div className="table-responsive mt-3">
-        <table {...getTableProps()} id="customers" className="table" style={{fontSize:'13px'}}>
-          <thead>
-            {headerGroups.map((headerGroup) => (
-              <tr {...headerGroup.getHeaderGroupProps()}>
-                {headerGroup.headers.map((column) => (
-                  <th {...column.getHeaderProps()}>
-                    {column.render("Header")}
-                  </th>
-                ))}
-              </tr>
-            ))}
-          </thead>
-        
-          <tbody {...getTableBodyProps()}>
-            {page.map((row) => {
-              prepareRow(row);
-              return (
-                <tr {...row.getRowProps()}>
-                  {row.cells.map((cell) => (
-                    <td {...cell.getCellProps()}>{cell.render("Cell")}</td>
-                  ))}
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
-      </div>
-      {applications.length ? <div className="d-flex justify-content-center gap-3 mt-2 align-items-center">
-        <span>
-          page {""}
-          <strong>
-            {pageIndex + 1} of {pageOptions.length}
-          </strong>
-        </span>
-        <button
-          onClick={() => gotoPage(0)}
-          className="btn btn-sm"
-          disabled={!canPreviousPage}
-        >
-          {"<<"}
-        </button>
-        <button disabled={!canPreviousPage} className="btn btn-sm">
-          {" "}
-          <FaAngleLeft onClick={() => previousPage()} />{" "}
-        </button>
-        <button disabled={!canNextPage} className="btn btn-sm">
-          <FaAngleRight onClick={() => nextPage()} />
-        </button>
-        <button
-          onClick={() => gotoPage(pageCount - 1)}
-          className="btn btn-sm"
-          disabled={!canNextPage}
-        >
-          {">>"}
-        </button>
-      </div> : <div className="d-flex justify-content-center">No data yet...</div> }
-      </div>
+       <Table
+          fetchData={fetchData}
+          pageCount={pageCount}
+          data={applications}
+          loading={loading}
+          columns={columns}
+          pageNumber={pageNumber}
+          setPageNumber={setPageNumber}
+          pageSize={pageSize}
+          setPageSize={setPageSize}
+          searchQuery={applicationNo}
+          setSearchQuery={setApplicationNo}
+        />
+        </div>
       <ToastContainer/>
       </>
     </div>

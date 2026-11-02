@@ -1,5 +1,4 @@
-import React, { useContext, useEffect, useMemo, useState } from 'react'
-import { UserContext } from '../../../AuthContext'
+import React, {  useEffect, useMemo, useState } from 'react'
 import Table from '../../CommunicationSubComponents/Table'
 import axios from '../../../axios'
 import { BsArrowLeft } from 'react-icons/bs'
@@ -9,7 +8,6 @@ const ViewDeduction = () => {
     const {id} = useParams() 
     const navigate = useNavigate()
  const [data, setData]= useState([])
-    const {credentials}=useContext(UserContext)
     const [loading, setLoading]= useState(false)
     const [pageCount, setPageCount]= useState(0)
     const [pageNumber, setPageNumber]= useState(0)
@@ -23,13 +21,7 @@ const ViewDeduction = () => {
          if (fetchId === fetchIdRef.current) {
            axios
              .get(
-               `Reports/deduction-report-detail?PageSize=${pageSize}&PageNumber=${pageNumber + 1}&BatchNumber=${id}`,
-               {
-                 headers: {
-                   Authorization: `Bearer ${credentials.token}`,
-                 },
-               }
-             )
+               `Reports/deduction-report-detail?PageSize=${pageSize}&PageNumber=${pageNumber + 1}&BatchNumber=${id}`)
              .then((resp) => {
                if (resp.data.data.modelResult) {
                  setData(resp.data.data.modelResult);

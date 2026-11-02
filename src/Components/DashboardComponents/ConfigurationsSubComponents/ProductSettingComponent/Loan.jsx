@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import {
   useTable,
   useSortBy,
@@ -13,15 +13,12 @@ import {FaAngleRight, FaAngleLeft} from 'react-icons/fa'
 import { LiaTimesCircle } from "react-icons/lia";
 import { Link } from "react-router-dom";
 import axios from "../../../axios";
-import { UserContext } from "../../../AuthContext";
 
 const Loan = () => {
 
   const [loans, setLoans] = useState([])
-  const {credentials} = useContext(UserContext)
   const getLoans= async ()=>{
-    await axios('LoanProduct/loan-products', {headers:{
-      Authorization:`Bearer ${credentials?.token}`}})
+    await axios('LoanProduct/loan-products')
     .then((resp)=>setLoans(resp.data.data))
   }
   useEffect(()=>{

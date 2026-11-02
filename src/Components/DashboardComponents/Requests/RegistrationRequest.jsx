@@ -1,27 +1,24 @@
-import React, { useContext, useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import UnpaginatedTable from "../Reports/UnpaginatedTable";
 import { FaUsersViewfinder } from "react-icons/fa6";
-import { UserContext } from "../../AuthContext";
 import axios from "../../axios";
 import useScreenSize from "../../ScreenSizeHook";
 import Modal from "react-modal";
 import { ToastContainer, toast } from "react-toastify";
+import ImagePreview from "./ImagePreview";
 
 const RegistrationRequest = () => {
   const [reports, setReports] = useState([]);
   const [account, setAccount] = useState("");
   const [id, setId] = useState("");
-  const { credentials } = useContext(UserContext);
+  const [reason, setReason] = useState("");
   const [request, setRequest] = useState({});
   const [isOpen, setIsOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [isReject, setIsReject] = useState(false);
 
   const getReports = () => {
-    axios("RequestVerification/user-registration-requests", {
-      headers: {
-        Authorization: `Bearer ${credentials.token}`,
-      },
-    }).then((resp) => {
+    axios("RequestVerification/user-registration-requests").then((resp) => {
       if (resp.data.data.userRegistrations) {
         setReports(resp.data.data.userRegistrations);
       }
@@ -32,11 +29,9 @@ const RegistrationRequest = () => {
     getReports();
   }, []);
   const getRequest = () => {
-    axios(`RequestVerification/user-registration-request?uniqueId=${id}`, {
-      headers: {
-        Authorization: `Bearer ${credentials.token}`,
-      },
-    }).then((resp) => setRequest(resp.data.data));
+    axios(`RequestVerification/user-registration-request?uniqueId=${id}`).then(
+      (resp) => setRequest(resp.data.data),
+    );
   };
   useEffect(() => {
     getRequest();
@@ -121,11 +116,7 @@ const RegistrationRequest = () => {
       productCode: account,
     };
     axios
-      .post("RequestVerification/user-registration-request-approved", payload, {
-        headers: {
-          Authorization: `Bearer ${credentials.token}`,
-        },
-      })
+      .post("RequestVerification/user-registration-request-approved", payload)
       .then((resp) =>
         toast(resp.data.message, {
           type: "success",
@@ -139,28 +130,32 @@ const RegistrationRequest = () => {
   };
 
   // Function to reject Withdrawal account
-  const rejectAccount = (e) => {
-    e.preventDefault();
+  const rejectAccount = () => {
+    setLoading(true);
     const payload = {
-      narration: request.narration,
+      narration: reason,
       uniqueId: Number(id),
     };
     axios
-      .post("RequestVerification/user-registration-request-reject", payload, {
-        headers: {
-          Authorization: `Bearer ${credentials.token}`,
-        },
-      })
-      .then((resp) =>
-        toast(resp.data.message, {
+      .post("RequestVerification/user-registration-request-reject", payload)
+      .then((resp) => {
+        setLoading(false);
+        (toast(resp.data.message, {
           type: "success",
           autoClose: 5000,
           pauseOnHover: true,
         }),
-      )
-      .catch((error) =>
-        toast(error.response.data.message, { type: "error", autoClose: false }),
-      );
+          setTimeout(() => {
+            setIsOpen(false);
+          }, 3000));
+      })
+      .catch((error) => {
+        (toast(error.response.data.message, {
+          type: "error",
+          autoClose: false,
+        }),
+          setLoading(false));
+      });
   };
   return (
     <div>
@@ -180,19 +175,18 @@ const RegistrationRequest = () => {
           className="text-capitalize"
           style={{ fontSize: "18px", fontWeight: "600" }}
         >
-          User Details{" "}
+          User Details
         </h4>
         <div className="d-flex flex-column gap-3 mt-3">
-          <div className="d-flex gap-3 align-items-center flex-wrap discourse">
-            <div className="d-flex gap-2">
-              <span>Full Name:</span> <span>{request?.fullName}</span>
-            </div>
-            <div className="d-flex gap-2">
+          <div className="d-flex gap-3 justify-content-between flex-wrap align-items-center discourse">
+            <div>
+              {" "}
               <span>Member ID: </span> <span>{request?.memberId}</span>
             </div>
             <div>
-              <img src={request?.profileImage} alt="profile-img view-img" />
+              <span>Full Name:</span> <span>{request?.fullName}</span>
             </div>
+            <ImagePreview src={request?.profileImage} alt="profile image" />
           </div>
           <div
             className="d-flex justify-content-between discourse align-items-center p-2"
@@ -227,26 +221,26 @@ const RegistrationRequest = () => {
             </div>
           </div>
           <div className="d-flex justify-content-between discourse align-items-center p-2">
-          <div className="d-flex gap-3">
-            <span>Phone NO: </span> <span>{request?.mobileNumber}</span>
-          </div>
-          <div className="d-flex gap-3">
-            <span>DOB: </span> <span> {request?.dob}</span>
-          </div>
+            <div className="d-flex gap-3">
+              <span>Phone No: </span> <span>{request?.mobileNumber}</span>
+            </div>
+            <div className="d-flex gap-3">
+              <span>DOB: </span> <span> {request?.dob}</span>
+            </div>
           </div>
           <div
             className="d-flex justify-content-between discourse align-items-center p-2"
             style={{ backgroundColor: "var(--light-blue)" }}
           >
-          {request.uniqueId}
-          <div className="d-flex gap-3" style={{ fontSize: "14px" }}>
-            <span>Monthly Contribution: </span>{" "}
-            <span>
-              {new Intl.NumberFormat("en-US", {
-                minimumFractionDigits: 2,
-              }).format(request?.monthlyContribution)}
-            </span>
-          </div>
+            {request.uniqueId}
+            <div className="d-flex gap-3" style={{ fontSize: "14px" }}>
+              <span>Monthly Contribution: </span>{" "}
+              <span>
+                {new Intl.NumberFormat("en-US", {
+                  minimumFractionDigits: 2,
+                }).format(request?.monthlyContribution)}
+              </span>
+            </div>
           </div>
         </div>
         <div className="d-flex flex-column gap-3 mt-4">
@@ -264,11 +258,27 @@ const RegistrationRequest = () => {
               </option>
             ))}
           </select>
+          {isReject && (
+            <div className="d-flex mt-3 flex-column">
+              <label htmlFor="reason" className="text-capitalize">
+                Enter reason to reject
+              </label>
+              <input
+                type="text"
+                name={reason}
+                onChange={(e) => setReason(e.target.value)}
+                className="rounded-3 p-2"
+                style={{ border: "solid 1px #d3d3d3" }}
+              />
+            </div>
+          )}
           <div className="d-flex gap-3 mt-4 justify-content-end">
             <form onSubmit={postAccount}>
-              <button className="border-0 btn-md member" type="submit">
-                Approve
-              </button>
+              {!isReject && (
+                <button className="border-0 btn-md member" type="submit">
+                  Approve
+                </button>
+              )}
             </form>
             {!isReject ? (
               <button
@@ -280,11 +290,11 @@ const RegistrationRequest = () => {
               </button>
             ) : (
               <button
-                className="border-0 btn-md rounded-5"
-                onClick={() => rejectAccount}
-                style={{ backgroundColor: "#ddd", fontSize: "14px" }}
+                className="border-0 member btn-md rounded-5"
+                onClick={() => rejectAccount()}
+                style={{ fontSize: "14px" }}
               >
-                Reject
+                {loading ? "Loading... " : "Submit"}
               </button>
             )}
           </div>

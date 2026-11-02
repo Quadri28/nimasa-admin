@@ -1,7 +1,6 @@
-import React, { useState, useContext, useEffect, useMemo } from "react";
+import React, { useState,  useEffect, useMemo } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "../../axios";
-import { UserContext } from "../../AuthContext";
 import { toast, ToastContainer } from "react-toastify";
 import { BsArrowLeft } from "react-icons/bs";
 import { CiSearch } from "react-icons/ci";
@@ -49,7 +48,6 @@ const EditInvestment = () => {
   const [modalShow, setModalShow] = useState(false);
   const [input, setInput] = useState({});
   const [accountSelector, setAccountSelector] = useState("");
-  const { credentials } = useContext(UserContext);
 
   const { width } = useScreenSize();
   const customStyles = {
@@ -104,32 +102,24 @@ const EditInvestment = () => {
 
   const fetchGlTypes = async () => {
     await axios
-      .get("GlAccount/gl-type", {
-        headers: { Authorization: `Bearer ${credentials.token}` },
-      })
+      .get("GlAccount/gl-type")
       .then((resp) => setGlTypes(resp.data));
   };
 
   const fetchGlNodes = async () => {
     await axios
-      .get(`GlAccount/gl-type-node?prodTypeCode=${input.glType}`, {
-        headers: { Authorization: `Bearer ${credentials.token}` },
-      })
+      .get(`GlAccount/gl-type-node?prodTypeCode=${input.glType}`)
       .then((resp) => setGlNodes(resp.data.data));
   };
 
   const fetchNodeClasses = () => {
-    axios(`GlAccount/gl-type-class?glTypeNodeCode=${input.glNode}`, {
-      headers: { Authorization: `Bearer ${credentials.token}` },
-    }).then((resp) => {
+    axios(`GlAccount/gl-type-class?glTypeNodeCode=${input.glNode}`).then((resp) => {
       setGlClasses(resp.data.data);
     });
   };
 
   const fetchGlAccounts = () => {
-    axios(`LoanProduct/gl-account-number?glClass=${input.glClass}`, {
-      headers: { Authorization: `Bearer ${credentials.token}` },
-    }).then((resp) => {
+    axios(`LoanProduct/gl-account-number?glClass=${input.glClass}`).then((resp) => {
       setAccounts(resp.data.data);
     });
   };
@@ -191,11 +181,7 @@ const EditInvestment = () => {
   const columns = useMemo(() => column, []);
 
   const getInvestment = () => {
-    axios(`InvestmentProduct/get-investment-product-by-code?savingCode=${id}`, {
-      headers: {
-        Authorization: `Bearer ${credentials.token}`,
-      },
-    }).then((resp) => setInvestment(resp.data.data));
+    axios(`InvestmentProduct/get-investment-product-by-code?savingCode=${id}`).then((resp) => setInvestment(resp.data.data));
   };
   const getCurrencies = () => {
     axios("Common/get-currencies").then((resp) => setCurrencies(resp.data));
@@ -250,11 +236,7 @@ const EditInvestment = () => {
       type: "success",
     };
     axios
-      .post("InvestmentProduct/update-investment-product", payload, {
-        headers: {
-          Authorization: `Bearer ${credentials.token}`,
-        },
-      })
+      .post("InvestmentProduct/update-investment-product", payload)
       .then((resp) => {
         toast(resp.data.message, toastOptions);
         setTimeout(() => {
@@ -528,9 +510,10 @@ const EditInvestment = () => {
           <Modal
             isOpen={modalShow}
             onRequestClose={handleClose}
-            style={customStyles}
-            contentLabel="Example Modal"
-            ariaHideApp={false}
+             contentLabel="Example Modal"
+        overlayClassName="loan-overlay"
+        ariaHideApp={false}
+        className="loan-modal rounded-3 card p-3"
           >
             <div
               style={{

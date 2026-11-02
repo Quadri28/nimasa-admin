@@ -83,7 +83,7 @@ const AccountReactivation = () => {
       }}
     >
       <div
-        style={{ backgroundColor: "#F5F9FF", borderRadius: "10px 10px 0 0" }}
+        style={{ backgroundColor: "var(--memcos-blue)", borderRadius: "10px 10px 0 0" }}
         className="p-3"
       >
         <h5>Account Reactivation</h5>

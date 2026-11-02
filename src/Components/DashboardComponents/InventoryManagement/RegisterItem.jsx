@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState, useContext } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import {
   useTable,
   useSortBy,
@@ -10,8 +10,6 @@ import { MdOutlineEdit } from "react-icons/md";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import axios from "../../../Components/axios";
 import Modal from "react-modal";
-import { UserContext } from "../../AuthContext";
-import useScreenSize from "../../ScreenSizeHook";
 import { ToastContainer, toast } from "react-toastify";
 import DatePicker from "react-datepicker";
 import * as Yup from 'yup'
@@ -31,7 +29,6 @@ const RegisterItem = () => {
   const [image, setImage]= useState('')
   const [file, setFile]= useState('')
   const [totalCost, setTotalCost]= useState(0)
-  const { credentials } = useContext(UserContext);
   const [input, setInput]= useState({
     sellingPrice:'', unitCost:'', amountPaid:''
   })
@@ -44,30 +41,16 @@ const RegisterItem = () => {
   }
 
   const getVendors = () => {
-    axios("InventoryManagement/vendor-select", {
-      headers: {
-        Authorization: `Bearer ${credentials.token}`,
-      },
-    }).then((resp) => setVendors(resp.data.data));
+    axios("InventoryManagement/vendor-select").then((resp) => setVendors(resp.data.data));
   };
   const fetchAccounts=()=>{
-    axios('InventoryManagement/inventory-category-account-select', {headers:{
-      Authorization: `Bearer ${credentials.token}`
-    }}).then(resp=>setAccounts(resp.data.data))
+    axios('InventoryManagement/inventory-category-account-select').then(resp=>setAccounts(resp.data.data))
   }
   const getCategories = () => {
-    axios("InventoryManagement/inventory-category-select", {
-      headers: {
-        Authorization: `Bearer ${credentials.token}`,
-      },
-    }).then((resp) => setCategories(resp.data.data));
+    axios("InventoryManagement/inventory-category-select").then((resp) => setCategories(resp.data.data));
   };
   const getItems = () => {
-    axios("InventoryManagement/register-items", {
-      headers: {
-        Authorization: `Bearer ${credentials.token}`,
-      },
-    }).then((resp) =>{ 
+    axios("InventoryManagement/register-items").then((resp) =>{ 
       if (resp.data.data.registerItems) {
         setData(resp.data.data.registerItems)
       }}
@@ -81,11 +64,7 @@ const RegisterItem = () => {
   }, []);
 
   const getItem = () => {
-    axios(`InventoryManagement/register-item?itemCode=${id}`, {
-      headers: {
-        Authorization: `Bearer ${credentials.token}`,
-      },
-    }).then((resp) => setItem(resp.data.data));
+    axios(`InventoryManagement/register-item?itemCode=${id}`).then((resp) => setItem(resp.data.data));
   };
   useEffect(() => {
     getItem();
@@ -133,11 +112,7 @@ const RegisterItem = () => {
       payload.append('Narration', item.narration)
       payload.append('ProductImage', file)
     axios
-      .post("InventoryManagement/update-register-item", payload, {
-        headers: {
-          Authorization: `Bearer ${credentials.token}`,
-        },
-      })
+      .post("InventoryManagement/update-register-item", payload)
       .then((resp) =>{
         toast(resp.data.message, {
           type: "success",
@@ -199,9 +174,7 @@ const onSubmit=(values)=>{
     payload.append('Narration', values.narration),
     payload.append('ProductImage', image)
   
-  axios.post('InventoryManagement/add-register-item', payload, {headers:{
-    Authorization: `Bearer ${credentials.token}`
-  }}).then(resp=>{
+  axios.post('InventoryManagement/add-register-item', payload).then(resp=>{
     toast(resp.data.message, {type:'success', autoClose:5000, pauseOnHover:true})
     setInput({})
     setTimeout(() => {
@@ -290,7 +263,7 @@ const onSubmit=(values)=>{
         <p className="active-selector">Register Item</p>
         <button
           className="btn btn-md text-white rounded-5"
-          style={{ backgroundColor: "#0452C8", fontSize: "14px" }}
+          style={{ backgroundColor: "var(--custom-color)", fontSize: "14px" }}
           onClick={openAddRegister}
         >
           + Register items

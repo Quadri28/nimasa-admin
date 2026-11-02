@@ -9,15 +9,7 @@
     font-family: 'General sans';
     padding-inline: 10px;
 }
-.active-selector{
-    color: var(--custom-color) !important;
-    position: relative;
-    font-weight: 400;
-    cursor: pointer;
-    padding-inline: 10px;
-    width: fit-content;
-    background-color: var(--light-blue);
-}
+
 .pub-btn{
     background-color: var(--custom-color) !important;
     color: #fff !important;
@@ -30,15 +22,7 @@
     padding: 8px 10px !important;
     border-radius: 1.5rem !important;
 }
-.active-selector::before{
-    content: '';
-    width: 100%;
-    background-color: var(--custom-color);
-    height: 1px;
-    position: absolute;
-    left: 0;
-    top: 25px;
-}
+
 .inner-selector{
     width:40%
 }

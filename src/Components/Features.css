@@ -1,0 +1,67 @@
+.feature-title-wrapper span{
+    cursor: pointer;
+    font-size: 13px;
+}
+.acting{
+    background-color: #0452C8;
+    color: #fff;
+    width: max-content;
+    border-radius: 10px;
+    padding: 1px 10px;
+}
+.topper{
+    top:15%; 
+    right:3%;
+}
+.img-container img{
+    border-radius: 3rem;
+}
+ .bottom{
+    top: 25%; 
+    right:3%;
+}
+.fawaz{
+    left: 35%;
+    top: 6%;
+    max-width: 300px;
+}
+.floating-card{
+    max-width: 130px;
+}
+.pie-card{
+    bottom: 0%;
+    right: 8%;
+    max-width: 160px;
+}
+.success{
+    bottom: 5%;
+    right: 3%;
+    max-width: 250px;
+}
+.piled{
+    max-width: 250px;
+    bottom: 5%;
+    left: 20%;
+}
+.spendings{
+    bottom: 2%;
+    right: 2%;
+    max-width: 250px;
+}
+
+@media screen and (max-width: 768px) {
+    .img-container img{
+        border-radius: 2rem;
+        /* margin-inline: auto; */
+    }
+}
+
+@media screen  and (max-width:600px) {
+    .floating-card{
+        max-width: 80px;
+        right: -5%;
+    }
+    .bottom{
+        top: 28%;
+    }
+}

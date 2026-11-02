@@ -7,23 +7,19 @@ import { toast, ToastContainer } from 'react-toastify'
 import ErrorText from '../ErrorText'
 import { BsArrowLeft } from 'react-icons/bs'
 import { useNavigate } from 'react-router-dom'
+import { Combobox } from "react-widgets";
 
 
 const AddNewShareType = () => {
     const {credentials}= useContext(UserContext)
     const [sharesCode, setShareCode]= useState('')
+    const [selectedLedger, setSelectedLedger]= useState('')
     const [ledgers, setLedgers]= useState([])
   const getShareCode=()=>{
-    axios('ShareManagement/share-code', {headers:{
-      Authorization: `Bearer ${credentials.token}`
-    }}).then(resp=>setShareCode(resp.data.data.shareCode))
+    axios('ShareManagement/share-code').then(resp=>setShareCode(resp.data.data.shareCode))
   }
   const fetchLedgerAccounts = () => {
-      axios("Acounting/general-ledger-customer-enquiry?SearchOption=1", {
-        headers: {
-          Authorization: `Bearer ${credentials.token}`,
-        },
-      }).then((resp) => setLedgers(resp.data.data));
+      axios("Acounting/general-ledger-customer-enquiry?SearchOption=1").then((resp) => setLedgers(resp.data.data));
     };
 useEffect(()=>{
 getShareCode()
@@ -44,9 +40,14 @@ fetchLedgerAccounts()
       maximumShareUnit: Yup.string().required().label('Max. percentage'),
       noOfShares: Yup.string().required().label('No of shares'),
       sharePrice: Yup.string().required().label('Shares price'),
-      shareGl: Yup.string().required().label('Shares GL account'),
+      // shareGl: Yup.string().required().label('Shares GL account'),
       lockShareWithdrawal: Yup.bool().label('Lock Share Withdrawal')
     })
+
+     const formattedEnquiries = ledgers.map((e) => ({
+    ...e,
+    label: `${e.acctName} >> ${e.product}`,
+  }));
     const navigate= useNavigate()
 
     const onSubmit=(values)=>{
@@ -58,12 +59,10 @@ fetchLedgerAccounts()
       noOfShares: values.noOfShares,
       sharePrice: values.sharePrice,
       shareDescription: values.shareDescription,
-      shareTypeGL: values.shareGl,
+      shareTypeGL: selectedLedger,
       lockShareWithdrawal: values.lockShareWithdrawal
       }
-      axios.post('ShareManagement/create-share-type', payload, {headers:{
-        Authorization: `Bearer ${credentials.token}`
-      }}).then(resp=>{
+      axios.post('ShareManagement/create-share-type', payload).then(resp=>{
        setTimeout(() => {
         navigate(-1)
        }, 5000);
@@ -131,17 +130,15 @@ fetchLedgerAccounts()
               <label htmlFor="sharesAccount" style={{ fontWeight: "500" }}>
                 Shares Account<sup className="text-danger">*</sup>
               </label>
-              <Field name="shareGl" as='select'>
-              <option value="">Select Account</option>
-              {ledgers.map((enquiry) => (
-                    <option
-                      value={enquiry.accountNumber}
-                      key={enquiry.accountNumber}
-                    >
-                      {enquiry.acctName} {`>> ${enquiry.product}`}
-                    </option>
-                  ))}
-              </Field>
+         
+       <Combobox
+                      data={formattedEnquiries}
+                      value={selectedLedger}
+                      onChange={(val) => setSelectedLedger(val.accountNumber)}
+                      valueField="accountNumber"
+                      textField="label"
+                      filter="contains"
+                    />
               <ErrorMessage component={ErrorText} name='sharesAccount'/>
             </div>
           </div>

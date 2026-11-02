@@ -158,7 +158,7 @@ const AddAssetClass = () => {
         <div
           className="p-3"
           style={{
-            backgroundColor: "#F5F9FF",
+            backgroundColor: "var(--memcos-blue)",
             borderRadius: "15px 15px 0 0",
           }}
         >

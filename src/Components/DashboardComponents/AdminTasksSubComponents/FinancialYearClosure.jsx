@@ -32,7 +32,7 @@ const FinancialYearClosure = () => {
         <div className='bg-white p-3 rounded-4'>
         <h4 style={{fontSize:'18px', fontFamily:'General sans'}}>Financial year closure</h4>
         <div className='bg-white mt-4' style={{border:'solid 1px #ddd', borderRadius:'15px'}}>
-          <div className='p-3 d-flex align-items-center gap-2' style={{backgroundColor:'#F5F9FF', borderRadius:'15px 15px 0 0'}}>
+          <div className='p-3 d-flex align-items-center gap-2' style={{backgroundColor:'var(--memcos-blue)', borderRadius:'15px 15px 0 0'}}>
           <BsArrowLeft/> <span style={{fontSize:'14px', color:'#4D4D4D'}}> Financial year closure</span>
           </div>
             <form onSubmit={onSubmit}>

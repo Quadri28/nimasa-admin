@@ -1,26 +1,18 @@
-import React, { useContext, useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import axios from "../../axios";
 import { useNavigate, useParams } from "react-router-dom";
-import { UserContext } from "../../AuthContext";
 import { BsArrowLeft } from "react-icons/bs";
 import UnpaginatedTable from "./UnpaginatedTable";
 
 const MemberContributionDetails = () => {
   const [detail, setDetail] = useState({});
   const [reports, setReports]= useState([])
-  const { credentials } = useContext(UserContext);
   const { id } = useParams();
   const navigate=useNavigate()
 
   const fetchMemberContributionDetails = async () => {
     await axios(
-      `Reports/get-member-contribution-report-history-by-memberId?MemberId=${id}`,
-      {
-        headers: {
-          Authorization: `Bearer ${credentials.token}`,
-        },
-      }
-    ).then((resp) => {
+      `Reports/get-member-contribution-report-history-by-memberId?MemberId=${id}`).then((resp) => {
         setDetail(resp.data.data)
         setReports(resp?.data?.data?.contributionHistroyReports)
     });

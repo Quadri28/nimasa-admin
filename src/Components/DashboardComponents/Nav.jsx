@@ -40,8 +40,8 @@ const handleSubmit =(e)=>{
   // .then((resp)=>{
   //   toast(resp.data.message, {type:'success', autoClose:3000})
     // setTimeout(() => {
-      sessionStorage.clear('cooperative-details')
-      window.location.replace("/"); 
+      sessionStorage.removeItem('cooperative-details')
+      window.location.replace("/cooperative-signin"); 
     // }, 3000);
   // })
 }
@@ -83,8 +83,8 @@ const [searchTerm, setSearchTerm] = useState("");
   return (
     <div className="py-3 row admin-nav bg-white container-fluid align-items-center">
      <div className="ml-2 col-2">
-        <img src={credentials?.logInfo?.cooperativeImageUrl || adminLogo} 
-        alt="Logo" className="img-fluid" style={{width:'70px', height:'60px', objectFit:'contain'}}/>
+        <img src={adminLogo} 
+        alt="Logo" className="img-fluid" style={{width:'70px', height:'40px', objectFit:'contain'}}/>
       </div>
       <div className="icon-container align-items-center col position-relative">
       <input

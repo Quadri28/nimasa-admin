@@ -1,22 +1,18 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import ProgressBar from "@ramonak/react-progress-bar";
 import axios from "../axios";
-import { UserContext } from "../AuthContext";
 import "./styles.css";
 import crown from "../../assets/crown.png";
+
+
 const FinalResults = () => {
   const [reports, setReports] = useState([]);
   const [elections, setElections] = useState([]);
   const [id, setId] = useState(null);
-  const { credentials } = useContext(UserContext);
   const [active, setActive] = useState(null);
 
   const getElections = () => {
-    axios("Election/get-elections-slim", {
-      headers: {
-        Authorization: `Bearer ${credentials.token}`,
-      },
-    }).then((resp) => {
+    axios("Election/get-elections-slim").then((resp) => {
       const electionReport = resp.data.data;
       setElections(electionReport);
       if (electionReport.length > 0) {
@@ -29,11 +25,7 @@ const FinalResults = () => {
     getElections();
   }, []);
   const getElectionReport = () => {
-    axios(`Election/get-election-report/${id}`, {
-      headers: {
-        Authorization: `Bearer ${credentials.token}`,
-      },
-    }).then((resp) => {
+    axios(`Election/get-election-report/${id}`).then((resp) => {
       setReports(resp.data.data.electionGeneralReport);
     });
   };

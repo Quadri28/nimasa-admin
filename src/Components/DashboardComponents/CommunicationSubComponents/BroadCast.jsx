@@ -31,11 +31,7 @@ const BroadCast = () => {
   const [admins, setAdmins] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const fetchMembers = () => {
-    axios("MemberManagement/account-enquiry-select", {
-      headers: {
-        Authorization: `Bearer ${credentials.token}`,
-      },
-    }).then((resp) => setCustomers(resp.data.data));
+    axios("MemberManagement/account-enquiry-select").then((resp) => setCustomers(resp.data.data));
   };
 
   const { width } = useScreenSize();
@@ -68,28 +64,16 @@ const BroadCast = () => {
     setOpen(false);
   }
   const fetchAdmins = () => {
-    axios("Communication/admins", {
-      headers: {
-        Authorization: `Bearer ${credentials.token}`,
-      },
-    }).then((resp) => setAdmins(resp.data));
+    axios("Communication/admins").then((resp) => setAdmins(resp.data));
   };
   // Fetching channels
   const getChannels = () => {
-    axios("Communication/message-channels", {
-      headers: {
-        Authorization: `Bearer ${credentials.token}`,
-      },
-    }).then((resp) => setChannels(resp.data));
+    axios("Communication/message-channels").then((resp) => setChannels(resp.data));
   };
 
   // Fetching Receivers Types
   const fetchReceiverTypes = () => {
-    axios("Communication/receiver-type", {
-      headers: {
-        Authorization: `Bearer ${credentials.token}`,
-      },
-    }).then((resp) => setReceiverTypes(resp.data));
+    axios("Communication/receiver-type").then((resp) => setReceiverTypes(resp.data));
   };
   useEffect(() => {
     getChannels();
@@ -124,13 +108,7 @@ const BroadCast = () => {
           .get(
             `Communication/get-broad-casts?PageNumber=${
               pageNumber + 1
-            }&PageSize=${pageSize}&Filter=${encodeURIComponent(search)}`,
-            {
-              headers: {
-                Authorization: `Bearer ${credentials.token}`,
-              },
-            }
-          )
+            }&PageSize=${pageSize}&Filter=${encodeURIComponent(search)}`)
           .then((resp) => {
             if (resp.data.data.modelResult) {
               setData(resp.data.data.modelResult);
@@ -151,11 +129,7 @@ const BroadCast = () => {
   }, [searchQuery, pageNumber, pageSize, fetchData]);
 
   const getSelectedBroadCast = () => {
-    axios(`Communication/get-broad-cast?id=${id}`, {
-      headers: {
-        Authorization: `Bearer ${credentials.token}`,
-      },
-    }).then((resp) => setInput(resp.data.data));
+    axios(`Communication/get-broad-cast?id=${id}`).then((resp) => setInput(resp.data.data));
   };
 
   useEffect(() => {
@@ -165,11 +139,7 @@ const BroadCast = () => {
   const deleteBroadCast = (id) => {
     const isConfirmed = window.confirm("Are you sure to delete the broadcast?");
     if (isConfirmed) {
-      axios(`Communication/delete-broad-cast?id=${id}`, {
-        headers: {
-          Authorization: `Bearer ${credentials.token}`,
-        },
-      })
+      axios(`Communication/delete-broad-cast?id=${id}`)
         .then((resp) => {
           toast(resp.data.message, { type: "success", autoClose: 5000 });
           setTimeout(() => {
@@ -312,9 +282,7 @@ const BroadCast = () => {
     };
     setLoading(true);
     axios
-      .post("Communication/update-broad-cast", payload, {
-        headers: { Authorization: `Bearer ${credentials.token}` },
-      })
+      .post("Communication/update-broad-cast", payload)
       .then((resp) => {
         toast(resp.data.message, { type: "success", autoClose: 5000 });
         setLoading(false);

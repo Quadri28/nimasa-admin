@@ -7,6 +7,7 @@ import { UserContext } from "../../AuthContext";
 import { toast, ToastContainer } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import {BsArrowLeft} from 'react-icons/bs'
+import UnpaginatedTable from "../Reports/UnpaginatedTable";
 
 const BulkLoginAccess = () => {
   const [file, setFile] = useState(null);
@@ -156,15 +157,15 @@ fetchBatchNo()
 
             {feebacks.length === 0 &&<div className="px-4">
               {errors.length < 1 ? (
-                 <GeneralLedgerTable data={data} columns={columns} />
+                 <UnpaginatedTable isPaginated={true} isExport={false} data={data} columns={columns} />
               ) : (
-                <GeneralLedgerTable data={errors} columns={errorColumns} />
+                <UnpaginatedTable data={errors} columns={errorColumns} isPaginated={true} isExport={false}/>
               )}
             </div>}
               <div className="px-4 mb-2">
             {
               feebacks.length > 0 && 
-                <GeneralLedgerTable data={feebacks} columns={respcolumns} />
+                <UnpaginatedTable data={feebacks} columns={respcolumns} isPaginated={true} isExport={false}/>
             }
             </div>
             <div

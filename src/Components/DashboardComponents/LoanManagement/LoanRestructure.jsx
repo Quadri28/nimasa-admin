@@ -1,6 +1,5 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "../../axios";
-import { UserContext } from "../../AuthContext";
 import { toast, ToastContainer } from "react-toastify";
 import { NumericFormat } from "react-number-format";
 import DatePicker from "react-datepicker";
@@ -38,7 +37,6 @@ const LoanRestructure = () => {
     collateralDetail: "",
     loanPurpose: "",
   });
-  const { credentials } = useContext(UserContext);
   const handleChange = (e) => {
     const name = e.target.name;
     const value = e.target.value;
@@ -54,62 +52,30 @@ const LoanRestructure = () => {
   const futureDate = addMonths(details?.firstPaymentDate, details?.term - 1);
 
   const getMembers = () => {
-    axios("MemberManagement/get-member-detail-slim", {
-      headers: {
-        Authorization: `Bearer ${credentials.token}`,
-      },
-    }).then((resp) => setMembers(resp.data.data));
+    axios("MemberManagement/get-member-detail-slim").then((resp) => setMembers(resp.data.data));
   };
   const getRepaymentTypes = () => {
-    axios("LoanApplication/loan-repayment-type", {
-      headers: {
-        Authorization: `Bearer ${credentials.token}`,
-      },
-    }).then((resp) => setRepayTypes(resp.data.data));
+    axios("LoanApplication/loan-repayment-type").then((resp) => setRepayTypes(resp.data.data));
   };
   const getCollateralTypes = () => {
-    axios("LoanApplication/get-collateral-type", {
-      headers: {
-        Authorization: `Bearer ${credentials.token}`,
-      },
-    }).then((resp) => setColTypes(resp.data.data));
+    axios("LoanApplication/get-collateral-type").then((resp) => setColTypes(resp.data.data));
   };
 
   const getLoanSources = () => {
-    axios("LoanApplication/get-loan-source-type", {
-      headers: {
-        Authorization: `Bearer ${credentials.token}`,
-      },
-    }).then((resp) => setLoanSources(resp.data.data));
+    axios("LoanApplication/get-loan-source-type").then((resp) => setLoanSources(resp.data.data));
   };
   const getFrequencies = () => {
-    axios("LoanApplication/loan-frequency-type", {
-      headers: {
-        Authorization: `Bearer ${credentials.token}`,
-      },
-    }).then((resp) => setFrequencies(resp.data.data));
+    axios("LoanApplication/loan-frequency-type").then((resp) => setFrequencies(resp.data.data));
   };
   const getCalculationMethods = () => {
-    axios("Common/calculation-method", {
-      headers: {
-        Authorization: `Bearer ${credentials.token}`,
-      },
-    }).then((resp) => setCalcMethods(resp.data));
+    axios("Common/calculation-method").then((resp) => setCalcMethods(resp.data));
   };
 
   const getSources = () => {
-    axios("LoanApplication/get-loan-funding-source", {
-      headers: {
-        Authorization: `Bearer ${credentials.token}`,
-      },
-    }).then((resp) => setSources(resp.data.data));
+    axios("LoanApplication/get-loan-funding-source").then((resp) => setSources(resp.data.data));
   };
   const getLoans = () => {
-    axios("LoanApplication/get-loan-product", {
-      headers: {
-        Authorization: `Bearer ${credentials.token}`,
-      },
-    }).then((resp) => setLoans(resp.data.data));
+    axios("LoanApplication/get-loan-product").then((resp) => setLoans(resp.data.data));
   };
 
   const getNoOfDays = () => {
@@ -141,13 +107,7 @@ const LoanRestructure = () => {
 
   const getLoanAccounts = async () => {
     await axios(
-      `LoanApplication/get-member-loan-account-numbers?customerId=${member}`,
-      {
-        headers: {
-          Authorization: `Bearer ${credentials.token}`,
-        },
-      },
-    ).then((resp) => setAccounts(resp.data.data));
+      `LoanApplication/get-member-loan-account-numbers?customerId=${member}`).then((resp) => setAccounts(resp.data.data));
   };
 
   useEffect(() => {
@@ -156,8 +116,7 @@ const LoanRestructure = () => {
 
   const getDetails = async () => {
     await axios(
-      `LoanApplication/get-loan-account-detail-by-loan-account-number?AccountNumber=${loanAccount}`,
-      { headers: { Authorization: `Bearer ${credentials.token}` } },
+      `LoanApplication/get-loan-account-detail-by-loan-account-number?AccountNumber=${loanAccount}`
     ).then((resp) => setDetails(resp.data.data));
   };
   useEffect(() => {
@@ -197,11 +156,7 @@ const LoanRestructure = () => {
     };
     setLoading(true);
     axios
-      .post("LoanApplication/loan-restructure", payload, {
-        headers: {
-          Authorization: `Bearer ${credentials.token}`,
-        },
-      })
+      .post("LoanApplication/loan-restructure", payload)
       .then((resp) => {
         toast(resp.data.message, {
           type: "success",

@@ -37,11 +37,7 @@ const SharesReport = () => {
   };
 
   const getShareTypes = () => {
-    axios('ShareManagement/share-types-slim', {
-      headers: {
-        Authorization: `Bearer ${credentials.token}`,
-      }
-    }).then(resp => setShareTypes(resp.data.data));
+    axios('ShareManagement/share-types-slim').then(resp => setShareTypes(resp.data.data));
   };
 
   // Fetch Share Types when the component mounts
@@ -55,11 +51,7 @@ const SharesReport = () => {
     setLoading(true);
     
     axios
-      .get(`ShareManagement/shares?StartDate=${input.startDate}&EndDate=${input.endDate}&Active=${input.shareStatus}&ShareType=${input.share}&PageSize=${pageSize}&PageNumber=${pageNumber + 1}&Filter=${encodeURIComponent(search)}`, {
-        headers: {
-          Authorization: `Bearer ${credentials.token}`,
-        },
-      }) 
+      .get(`ShareManagement/shares?StartDate=${input.startDate}&EndDate=${input.endDate}&Active=${input.shareStatus}&ShareType=${input.share}&PageSize=${pageSize}&PageNumber=${pageNumber + 1}&Filter=${encodeURIComponent(search)}`) 
       .then((resp) => {
         if (fetchId === fetchIdRef.current) {
           if (resp.data.data.modelResult) {

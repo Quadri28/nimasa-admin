@@ -1,0 +1,121 @@
+.about-hero{
+    background-color:  #EDF4FF;
+    padding: 0 1rem;
+}
+.img-scroll{
+    margin-top: 3rem;
+}
+
+.about-promise-header{
+    font-family: Aeonik, serif;
+    font-size: 25px;
+    margin-bottom: 1rem;
+}
+
+.why-us{
+    background-color: #CDE1FE;
+    border-radius: 10px;
+    padding: 4px 8px;
+    margin-bottom: 1rem;
+    width: max-content;
+    font-weight: 400;
+
+}
+.wrapper {
+width: max-content;
+background-color: #E6F0FF !important;
+border-radius: 7px;
+padding: 4px 8px;
+margin-bottom: 1rem;
+}
+.wrapper span{
+    font-size: 14px;
+    font-weight: 400;
+    color: #002b69;
+}
+.about-slide-images{
+    height: 350px;
+}
+.testimonial-header{
+    font-size: 40px;
+    font-weight: 700;
+    line-height: 40px;
+    font-family: Aeonik, serif;
+}
+.feature-heading{
+ font-family: Aeonik, sans-serif;
+}
+.feature-para{
+    width: 55%;
+}
+
+.about-para{
+    font-size: 16px;
+    width: 93%;
+    margin-inline: auto;
+    font-weight: 400;
+    line-height: 24px;
+    color: #4D4D4D;
+}
+.star{
+    color: #F79F3B;
+}
+.about-fraction {
+    font-size: 14px;
+}
+.slide img{
+    margin: 0 5px;
+}
+.about-promise{
+    padding-inline: 5rem;
+    background-color: #F4FAFD;
+    font-size: 14px;
+}
+@media (max-width:789px) {
+    .slide img{
+        height: 8rem;
+    }
+    .testimonial-header{
+        font-size: 30px;
+        line-height: 40px;
+    }
+    .about-promise{
+        padding: 0 5%;
+    }
+    .img-scroll{
+        padding-inline: 0rem;
+    }
+    .about-promise-header{
+        font-size: 28px;
+    }
+    .feature-para{
+        width: 80%;
+    }
+    .about-para{
+        width: 90%;
+    }
+    .about-slide-images{
+        height: 180px !important;
+    }
+}
+@media (max-width:480px) {
+    .slide img{
+        height: 6rem;
+    }
+    .testimonial-header{
+        font-size: 28px;
+        line-height: 35px;
+    }
+    .feature-para{
+        width: 100%;
+    }
+    .about-promise{
+        padding: 1rem;
+    }
+    .about-para{
+        width: 98%;
+    }
+    .about-slide-images{
+        height: 100px !important;
+    }
+}

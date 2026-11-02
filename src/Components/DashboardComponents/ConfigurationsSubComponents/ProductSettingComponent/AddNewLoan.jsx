@@ -1,8 +1,7 @@
-import React, { useState, useEffect, useContext, useMemo } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import axios from "../../../axios";
-import { UserContext } from "../../../AuthContext";
 import { toast, ToastContainer } from "react-toastify";
 import { BsArrowLeft } from "react-icons/bs";
 import ErrorText from "../../ErrorText";
@@ -17,7 +16,6 @@ import { NumericFormat } from "react-number-format";
 
 
 const AddNewLoan = () => {
-  const { credentials } = useContext(UserContext);
   const [code, setCode] = useState("");
   const [currencies, setCurrencies] = useState([]);
   const [types, setTypes] = useState([]);
@@ -56,26 +54,18 @@ const AddNewLoan = () => {
     .then(resp=>setLoanRepayments(resp.data))
   }
   const fetchGlTypes = async () => {
-  await axios.get("GlAccount/gl-type", {
-        headers: { Authorization: `Bearer ${credentials.token}` },
-      }).then(resp=>setGlTypes(resp.data));
+  await axios.get("GlAccount/gl-type").then(resp=>setGlTypes(resp.data));
   }
 
   const fetchGlNodes = async () => {
  await axios.get(
-        `GlAccount/gl-type-node?prodTypeCode=${input.glType}`,
-        {
-          headers: { Authorization: `Bearer ${credentials.token}` },
-        }
+        `GlAccount/gl-type-node?prodTypeCode=${input.glType}`
       ).then(resp=>setGlNodes(resp.data.data))
   };
 
   const fetchNodeClasses = () => {
     axios(
-      `GlAccount/gl-type-class?glTypeNodeCode=${input.glNode}`,
-      {
-        headers: { Authorization: `Bearer ${credentials.token}` },
-      }
+      `GlAccount/gl-type-class?glTypeNodeCode=${input.glNode}`
     ).then((resp) => {
       setGlClasses(resp.data.data)
     });
@@ -83,10 +73,7 @@ const AddNewLoan = () => {
 
   const fetchGlAccounts = () => {
     axios(
-      `LoanProduct/gl-account-number?glClass=${input.glClass}`,
-      {
-        headers: { Authorization: `Bearer ${credentials.token}` },
-      }
+      `LoanProduct/gl-account-number?glClass=${input.glClass}`
     ).then((resp) => {
       setAccounts(resp.data.data)
   })
@@ -127,9 +114,7 @@ const AddNewLoan = () => {
   };
 
   const getLoanTypes = () => {
-    axios(`LoanProduct/list-product-type-by-product-class?productClassCode=${input.productClass}`,
-       {headers:{Authorization: `Bearer ${credentials.token}`
-    }})
+    axios(`LoanProduct/list-product-type-by-product-class?productClassCode=${input.productClass}`)
     .then((resp) => setTypes(resp.data.data));
   };
 
@@ -137,20 +122,12 @@ const AddNewLoan = () => {
     getLoanTypes();
   }, [input?.productClass])
   const getClasses = () => {
-    axios("LoanProduct/list-product-class", {
-      headers: {
-        Authorization: `Bearer ${credentials.token}`,
-      },
-    }).then((resp) => {
+    axios("LoanProduct/list-product-class").then((resp) => {
       setClasses(resp.data.data);
     });
   };
   const getProductCode = () => {
-    axios("LoanProduct/GetLoanProductCode", {
-      headers: {
-        Authorization: `Bearer ${credentials.token}`,
-      },
-    }).then((resp) => {
+    axios("LoanProduct/GetLoanProductCode").then((resp) => {
       setCode(resp.data.data);
     });
   };
@@ -310,11 +287,7 @@ const AddNewLoan = () => {
       numberOfGauratorRequired: values.numberOfGauratorRequired,
     };
     axios
-      .post("LoanProduct/create-loan-product", {...payload, ...result}, {
-        headers: {
-          authorization: `Bearer ${credentials.token}`,
-        },
-      })
+      .post("LoanProduct/create-loan-product", {...payload, ...result})
       .then((resp) =>{
         toast(resp.data.message, {
           type: "success",
@@ -385,7 +358,7 @@ const AddNewLoan = () => {
             <div
               className="p-3"
               style={{
-                backgroundColor: "#F5F9FF",
+                backgroundColor: "var(--memcos-blue)",
                 borderRadius: "15px 15px 0 0",
               }}
             >
@@ -449,7 +422,7 @@ const AddNewLoan = () => {
                 <label htmlFor="interestRate" style={{ fontWeight: "500" }}>
                   Interest Rate <sup className="text-danger">*</sup>
                 </label>
-                <Field name="interestRate" id="interestRate" type="number" min={0}/>
+                <Field name="interestRate" type="number" min={0}/>
                 <ErrorMessage component={ErrorText} name="interestRate" />
               </div>
               <div className="row g-2">
@@ -723,7 +696,7 @@ const AddNewLoan = () => {
               </div>
               <div className="row g-2">
                 <label htmlFor="productCharges" style={{ fontWeight: "500" }}>
-                  Product Charges <sup className="text-danger">*</sup>
+                  Product Charges
                 </label>
                 <Multiselect 
                  data={productCharges}
@@ -776,9 +749,11 @@ const AddNewLoan = () => {
             <Modal
             isOpen={modalShow}
             onRequestClose={handleClose}
-            style={customStyles}
-            contentLabel="Example Modal"
-            ariaHideApp={false}
+    contentLabel="Example Modal"
+        overlayClassName="loan-overlay"
+        ariaHideApp={false}
+        className="loan-modal rounded-3 card p-3"
+
             >
              <div style={{backgroundColor:'#F5F9FF', borderRadius:'15px  15px 0 0',
                padding:'15px 20px'}} >

@@ -1,9 +1,8 @@
-import React,{useContext, useEffect, useState} from 'react'
+import React,{useEffect, useState} from 'react'
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup'
 import axios from '../../../../Components/axios'
 import ErrorText from '../../ErrorText'
-import { UserContext } from '../../../AuthContext';
 import { ToastContainer, toast } from 'react-toastify';
 import { Combobox } from 'react-widgets/cjs';
 
@@ -20,53 +19,36 @@ const Deposit = () => {
   const [creditEnquiries, setCreditEnquiries] = useState([])
   const [debitDetails, setDebitDetails] = useState({})
   const [creditDetails, setCreditDetails] = useState({})
-  const {credentials} = useContext(UserContext)
 
 
   const getVoucherNo = () => {
-    axios("MemberManagement/get-batch-no", {
-      headers: {
-        Authorization: `Bearer ${credentials.token}`,
-      },
-    }).then((resp) => setBatchNo(resp.data.message));
+    axios("MemberManagement/get-batch-no").then((resp) => setBatchNo(resp.data.message));
   };
 
 
   const fetchOptions=()=>{
-    axios('Acounting/general-Ledger-search-option', {headers:{
-      Authorization: `Bearer ${credentials.token}`
-    }}).then(resp=>setOptions(resp.data))
+    axios('Acounting/general-Ledger-search-option').then(resp=>setOptions(resp.data))
   }
 
   const fetchDebitAccountDetails=()=>{
-    axios(`Acounting/account-number-text-changed?DebitAccountNumber=${debitAccount}`, {headers:{
-      Authorization: `Bearer ${credentials.token}`
-    }})
+    axios(`Acounting/account-number-text-changed?DebitAccountNumber=${debitAccount}`)
     .then(resp=>setDebitDetails(resp.data.data.accountDetails))
   }
 
   const fetchCreditAccountDetails=()=>{
-    axios(`Acounting/account-number-text-changed?DebitAccountNumber=${creditAccount}`, {headers:{
-      Authorization: `Bearer ${credentials.token}`
-    }})
+    axios(`Acounting/account-number-text-changed?DebitAccountNumber=${creditAccount}`)
     .then(resp=>{
       setCreditDetails(resp.data.data.accountDetails)
     })
   }
   const fetchDebitCustomerEnquiries=()=>{
-    axios(`Acounting/general-ledger-customer-enquiry?SearchOption=${debitOption}`, {headers:{
-      Authorization: `Bearer ${credentials.token}`
-    }}).then(resp=>setDebitEnquiries(resp.data.data))
+    axios(`Acounting/general-ledger-customer-enquiry?SearchOption=${debitOption}`).then(resp=>setDebitEnquiries(resp.data.data))
   }
   const fetchCreditCustomerEnquiries=()=>{
-    axios(`Acounting/general-ledger-customer-enquiry?SearchOption=${creditOption}`, {headers:{
-      Authorization: `Bearer ${credentials.token}`
-    }}).then(resp=>setCreditEnquiries(resp.data.data))
+    axios(`Acounting/general-ledger-customer-enquiry?SearchOption=${creditOption}`).then(resp=>setCreditEnquiries(resp.data.data))
   }
   const getModes=()=>{
-    axios('Acounting/deposit-payment-mode', {headers:{
-      Authorization: `Bearer ${credentials.token}`
-    }}).then(resp=> setModes(resp.data))
+    axios('Acounting/deposit-payment-mode').then(resp=> setModes(resp.data))
   }
 
   useEffect(()=>{
@@ -125,9 +107,7 @@ const Deposit = () => {
       currencyCode: '001',
       isReversa: false
     }
-    axios.post('Acounting/deposit', payload,{headers:{
-      Authorization: `Bearer ${credentials.token}`
-    }}).then(resp=>{
+    axios.post('Acounting/deposit', payload).then(resp=>{
       toast(resp.data.message, 
       {type:'success', autoClose:5000, pauseOnHover:true})
       setLoading(false)
@@ -151,7 +131,7 @@ const Deposit = () => {
               }}>
         <div
           style={{
-            backgroundColor: "#f4fAfd",
+            backgroundColor: "var(--memcos-blue)",
             borderRadius: "15px 15px 0 0",
           }}
           className="p-3"

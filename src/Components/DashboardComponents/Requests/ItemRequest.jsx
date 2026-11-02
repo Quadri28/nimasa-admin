@@ -1,19 +1,18 @@
-import React, { useContext, useEffect, useMemo, useState } from "react";
-import { UserContext } from "../../AuthContext";
+import React, { useEffect, useMemo, useState } from "react";
 import axios from "../../axios";
 import UnpaginatedTable from "../Reports/UnpaginatedTable";
 import { FaCheck, FaCloudUploadAlt } from "react-icons/fa";
-import { FaUsersViewfinder } from "react-icons/fa6";
 import Modal from "react-modal";
 import useScreenSize from "../../../Components/ScreenSizeHook";
 import { ToastContainer, toast } from "react-toastify";
+import ImagePreview from "./ImagePreview";
 
 const ItemRequest = () => {
   const [reports, setReports] = useState([]);
   const [loans, setLoans] = useState([]);
-  const { credentials } = useContext(UserContext);
   const [isOpen, setIsOpen] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
+  const [previewImage, setPreviewImage] = useState(null);
   const [paymentId, setPaymentId] = useState("");
   const [input, setInput] = useState({});
   const [request, setRequest] = useState({});
@@ -61,31 +60,20 @@ const ItemRequest = () => {
   };
 
   const getAccounts = async () => {
-    await axios("RequestVerification/get-debit-and-credit-account-numbers", {
-      headers: {
-        Authorization: `Bearer ${credentials.token}`,
-      },
-    }).then((resp) => {
+    await axios(
+      "RequestVerification/get-debit-and-credit-account-numbers",
+    ).then((resp) => {
       setAccounts(resp.data.data);
     });
   };
   const getMemberSavingsAccount = async () => {
     await axios(
       `RequestVerification/get-member-savings-account-numbers-for-item-request-purchased?username=${request?.username}`,
-      {
-        headers: {
-          Authorization: `Bearer ${credentials.token}`,
-        },
-      },
     ).then((resp) => setSavings(resp.data.data));
   };
 
   const getRequests = () => {
-    axios("RequestVerification/item-requests", {
-      headers: {
-        Authorization: `Bearer ${credentials.token}`,
-      },
-    }).then((resp) => {
+    axios("RequestVerification/item-requests").then((resp) => {
       if (resp.data.data.items) {
         setReports(resp.data.data.items);
       }
@@ -100,15 +88,13 @@ const ItemRequest = () => {
     getMemberSavingsAccount();
   }, [request?.username]);
   const getSingleRequest = () => {
-    axios(`RequestVerification/item-request?paymentId=${paymentId}`, {
-      headers: {
-        Authorization: `Bearer ${credentials.token}`,
+    axios(`RequestVerification/item-request?paymentId=${paymentId}`).then(
+      (resp) => {
+        setRequest(resp.data.data.itemRequest);
+        setItems(resp.data.data.items);
+        setRequests(resp.data.data.items);
       },
-    }).then((resp) => {
-      setRequest(resp.data.data.itemRequest);
-      setItems(resp.data.data.items);
-      setRequests(resp.data.data.items);
-    });
+    );
   };
   useEffect(() => {
     getSingleRequest();
@@ -121,11 +107,7 @@ const ItemRequest = () => {
     };
     setLoading(true);
     axios
-      .post("RequestVerification/item-request-approved", payload, {
-        headers: {
-          Authorization: `Bearer ${credentials.token}`,
-        },
-      })
+      .post("RequestVerification/item-request-approved", payload)
       .then((resp) => {
         setLoading(false);
         toast(resp.data.message, {
@@ -158,11 +140,7 @@ const ItemRequest = () => {
     };
     setLoading(true);
     axios
-      .post("RequestVerification/item-request-reject", payload, {
-        headers: {
-          Authorization: `Bearer ${credentials.token}`,
-        },
-      })
+      .post("RequestVerification/item-request-reject", payload)
       .then((resp) => {
         setLoading(false);
         toast(resp.data.message, {
@@ -285,11 +263,7 @@ const ItemRequest = () => {
   const columns = useMemo(() => column, []);
 
   const getLoanProduct = () => {
-    axios("LoanApplication/get-loan-product", {
-      headers: {
-        Authorization: `Bearer ${credentials.token}`,
-      },
-    }).then((resp) => {
+    axios("LoanApplication/get-loan-product").then((resp) => {
       if (resp.data.data) {
         setLoans(resp.data.data);
       }
@@ -313,11 +287,7 @@ const ItemRequest = () => {
         request.paymentOption === "Pay At Banks" ? "" : input.product,
     };
     axios
-      .post("RequestVerification/post-item-request-purchased", payload, {
-        headers: {
-          Authorization: `Bearer ${credentials.token}`,
-        },
-      })
+      .post("RequestVerification/post-item-request-purchased", payload)
       .then((resp) => {
         toast(resp.data.message, {
           type: "success",
@@ -352,16 +322,20 @@ const ItemRequest = () => {
             View Item Request
           </h3>
           <div
-            className="d-flex gap-3 mt-3 align-items-center flex-wrap"
+            className="d-flex gap-3 mt-3 align-items-center flex-wrap justify-content-between"
             style={{ fontSize: "14px", color: "#0D0D0D" }}
           >
             <span>Member No: {request?.employeeid}</span>
             <span>Member Name: {request?.memberName}</span>
-            <img
-              src={request?.profileImage}
-              alt="profile picture"
-              style={{ width: "4rem", height: "4rem", borderRadius: "10px" }}
-            />
+            <div>
+              <img
+                src={request?.profileImage}
+                alt="Profile"
+                className="view-img"
+                onClick={() => setPreviewImage(request?.profileImageUrl)}
+              />
+              <span className="zoom-icon">🔍</span>
+            </div>
           </div>
           <div className="table-responsive mt-3">
             <table className="border request-table" id="customers">
@@ -457,14 +431,13 @@ const ItemRequest = () => {
           Post Items Purchased
         </h4>
         <div>
-          <div className="d-flex gap-3 flex-wrap align-items-center discourse">
-            <span>Member Name: {request?.memberName}</span>
+          <div className="d-flex gap-3 justify-content-between flex-wrap align-items-center discourse">
             <span>Member No: {request?.employeeid}</span>
-            <img
-              src={request?.profileImage}
-              alt="profile picture"
-              style={{ width: "4rem", height: "4rem", borderRadius: "10px" }}
-            />
+            <span>Member Name: {request?.memberName}</span>
+           <ImagePreview
+  src={request?.profileImage}
+  alt="Profile Picture"
+/>
           </div>
           <div className="mt-4">
             <div className="d-flex flex-wrap flex-column gap-3 discourse">
@@ -547,21 +520,25 @@ const ItemRequest = () => {
                 )}
               </div>
             </div>
-              <div className="d-flex gap-2 align-items-center p-2 mt-3 discourse">
-                <span>Mode of payment:</span>
-                <span>{request?.paymentOption}</span>
-              </div>
+            <div className="d-flex gap-2 align-items-center p-2 mt-3 discourse">
+              <span>Mode of payment:</span>
+              <span>{request?.paymentOption}</span>
+            </div>
           </div>
           <form onSubmit={uploadRequest}>
             <div className="d-flex flex-column gap-2 mt-4">
               {request?.paymentOption === "Pay At Banks" && (
-                <div className="d-flex justify-content-between align-items-center">
+                <div className="d-flex flex-column align-items-center">
                   <label htmlFor="tellerImage">Teller Image</label>
+                  <div className="image-box">
                   <img
                     src={request?.bankteller}
-                    alt="teller-image"
-                    className="img-fluid view-img"
+                    alt="Teller"
+                    className="view-img"
+                    onClick={() => setPreviewImage(request?.bankteller)}
                   />
+                    <span className="zoom-icon">🔍</span>
+        </div>
                 </div>
               )}
               {request?.paymentOption === "Loan" && (
@@ -679,6 +656,15 @@ const ItemRequest = () => {
             </div>
           </form>
         </div>
+      </Modal>
+      <Modal
+        isOpen={!!previewImage}
+        onRequestClose={() => setPreviewImage(null)}
+        ariaHideApp={false}
+        className="image-preview-modal"
+        overlayClassName="image-preview-overlay"
+      >
+        <img src={previewImage} alt="Preview" className="preview-image" />
       </Modal>
       <ToastContainer />
     </div>
