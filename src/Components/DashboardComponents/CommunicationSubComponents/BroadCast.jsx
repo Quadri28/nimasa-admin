@@ -10,7 +10,7 @@ import { RiDeleteBin6Line } from "react-icons/ri";
 import useScreenSize from "../../ScreenSizeHook";
 import Modal from "react-modal";
 import { Multiselect } from "react-widgets";
-import ReactQuill from "react-quill";
+import ReactQuill from "react-quill-new";
 
 const BroadCast = () => {
   const [data, setData] = useState([]);
