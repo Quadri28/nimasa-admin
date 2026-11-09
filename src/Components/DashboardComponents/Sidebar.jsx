@@ -102,14 +102,6 @@ function Sidebar() {
       icon1: <HiInboxStack />,
       icon2: <HiOutlineInboxStack />,
     },
-     {
-      menuName: "E-bidding",
-      menuId: "163",
-      category: "Assets Management And Inventory",
-      url: "/admin-dashboard/e-bidding",
-      icon1: <IoIosGitCompare />,
-      icon2: <IoMdGitCompare />,
-    },
     {
       menuName: "Inventory Management",
       category: "Assets Management And Inventory",
